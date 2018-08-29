@@ -13,8 +13,8 @@ const alertPop = (state, action) => {
 const pingServer = (state, action) => {
   console.log("pingServer reducer");
 
-  return dispatch => {
-    setTimeout(() => {
+	return dispatch => {
+		setTimeout(() => {
      // Yay! Can invoke sync or async actions with `dispatch`
      console.log("Ici apres 5s");
      dispatch(alertPop("Je"));
