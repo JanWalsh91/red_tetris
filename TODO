@@ -1,0 +1,84 @@
+Component Structure:
+
+<Provider>
+	<App>
+		<Header>
+		<Game>
+			<Board type=[main / shadow], colors=[][]>
+				<div>s
+			<HostList>
+				<Host>
+			<Error>
+
+			<ShadowBoards>
+				<Board>
+		<GameInfo>
+
+
+Actions:
+
+NEW_GAME
+START_GAME
+END_GAME
+MOVE_PIECE (sends update to server)
+{
+ type: MOVE_PIECE,
+ moveType: [right, left, down, down2, rotate]
+}
+NEW_PIECE
+NEXT_PIECE
+
+UPDATE_BOARDS (after new boards received from server, update boards) (connection info)
+
+NEW_ROOM
+CONNECT_TO_ROOM
+DISCONNECT
+
+
+TODO:
+- how css?
+- server client connection?
+- tester React et Redux et Socketio ensemble
+
+
+Structures:
+
+Server:
+Game
+{
+	Players[]
+	isPlaying
+	numPlayers
+	allPieces[]
+
+	generatePieces()
+}
+
+Player
+{
+	Board
+	name
+	isHost
+}
+
+Board
+{
+	size (10 cols 20 rows)
+	pieces[]
+	currentPiece
+	newPieces[]
+	isPlaying
+	winStatus
+}
+
+Piece
+{
+	type
+	{
+		int
+		color
+	}
+	coords
+	rotation
+	isMoving
+}

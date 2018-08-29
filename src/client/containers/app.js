@@ -1,10 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
+import styles from './app.css'
 
 const App = ({message}) => {
   return (
-    <span>{message}</span>
+    <div className={styles.app}>
+      <span>{message}</span>
+      <span>Test</span>
+    </div>
   )
 }
 
