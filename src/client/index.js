@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
 import reducer from './reducers'
 import App from './containers/app/app'
-import {alert} from './actions/alert'
+import {alert} from './actions/client'
 
 const initialState = {
   message: 'Soon, will be here a fantastic Tetris ...'
