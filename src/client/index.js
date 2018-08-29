@@ -3,13 +3,15 @@ import ReactDom from 'react-dom'
 import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'                                                                                                                                                    
+import { Provider } from 'react-redux'
 import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
 import reducer from './reducers'
-import App from './containers/app'
+import App from './containers/app/app'
 import {alert} from './actions/alert'
 
-const initialState = {}
+const initialState = {
+  message: 'Soon, will be here a fantastic Tetris ...'
+}
 
 const store = createStore(
   reducer,
@@ -23,4 +25,4 @@ ReactDom.render((
   </Provider>
 ), document.getElementById('tetris'))
 
-store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
+// store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
