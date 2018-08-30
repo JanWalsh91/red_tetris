@@ -10,19 +10,22 @@ import App from './containers/app/app'
 import {alert} from './actions/client'
 
 const initialState = {
-  message: 'Soon, will be here a fantastic Tetris ...'
+	message: 'Soon, will be here a fantastic Tetris ...',
+	socket: {}
 }
 
 const store = createStore(
-  reducer,
-  initialState,
-  applyMiddleware(thunk, createLogger())
+	reducer,
+	initialState,
+	applyMiddleware(thunk, createLogger())
 )
 
 ReactDom.render((
-  <Provider store={store}>
-    <App/>
-  </Provider>
+	<Provider store={store}>
+		<App/>
+	</Provider>
 ), document.getElementById('tetris'))
+
+export default store
 
 // store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
