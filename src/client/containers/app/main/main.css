@@ -1,0 +1,6 @@
+.main {
+	/* background-color: blue; */
+	/* width: 95%; */
+	display: flex;
+	flex-direction: column;
+}

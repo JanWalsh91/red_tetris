@@ -1,5 +1,9 @@
 import fs  from 'fs'
 import debug from 'debug'
+import Server from './classes/Server'
+import Player from './classes/Player'
+
+const server = new Server();
 
 const logerror = debug('tetris:error')
 , loginfo = debug('tetris:info')
@@ -30,6 +34,20 @@ const initApp = (app, params, cb) => {
 const initEngine = io => {
 	io.on('connection', function(socket) {
 		loginfo("Socket connected: " + socket.id)
+		let serverInfo = server.onOpenConnection();
+		console.log("server info: ");
+		console.dir(serverInfo);
+		socket.emit('serverInfo', serverInfo);
+
+		socket.on('selectGame', (action) => {
+			let p = new Player(action.playerName, socket.id);
+			server.onSelectGame(p, action.hostID);
+
+
+			let serverInfo = server.onOpenConnection();
+			socket.emit('serverInfo', serverInfo);
+		})
+
 		socket.on('action', (action) => {
 
 			console.log(action);

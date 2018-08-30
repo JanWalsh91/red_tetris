@@ -7,3 +7,13 @@ export const alert = (message) => {
 		message
 	}
 }
+
+export const UPDATE_HOST_LIST = 'UPDATE_HOST_LIST'
+
+export const updateHostList = ( hostList ) => {
+	console.log("updateHostList");
+	return {
+		type: UPDATE_HOST_LIST,
+		hostList: hostList
+	}
+}

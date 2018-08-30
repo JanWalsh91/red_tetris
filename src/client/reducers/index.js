@@ -1,4 +1,4 @@
-import { ALERT_POP } from '../actions/client'
+import { ALERT_POP, UPDATE_HOST_LIST } from '../actions/client'
 import { PING_SERVER } from '../actions/server'
 
 import socket from '../socket'
@@ -27,11 +27,31 @@ const pingServer = (state, action) => {
 	};
 }
 
+const updateHostList = (state, action) => {
+	console.log("updateHostList reducer");
+
+	return {
+		...state,
+		hostList: action.hostList
+	};
+}
+
+// const selectGame = (state, action) => {
+// 	console.log("selectGame");
+//
+// 	return {
+//
+// 	}
+// }
+
 const reducer = (state = {} , action) => {
+	console.log("reducer action type: ", action.type);
 	switch(action.type) {
 		case ALERT_POP: return alertPop(state, action);
 		case PING_SERVER: return pingServer(state, action);
-		default: return state;
+		case UPDATE_HOST_LIST: return updateHostList(state, action);
+		// case SELECT_GAME: return selectGame(state, action);
+		default: console.log('default'); return state;
 	}
 }
 
