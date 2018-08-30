@@ -3,7 +3,7 @@ class Game {
 
 	constructor(player) {
 		this.host = player;
-		this.id = ++Game.gameCount;
+		this.id = Game.gameCount++;
 		this.isPlaying = false;
 		this.players = [player];
 	}

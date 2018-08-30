@@ -12,7 +12,7 @@ const hostList = ( props ) => {
 		console.log("selectGame: ", hostID);
 
 		socket.emit('selectGame', {
-			hostID: hostID - 1,
+			hostID: hostID,
 			playerName: 'playerName'
 		});
 
