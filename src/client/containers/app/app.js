@@ -13,9 +13,7 @@ const App = ({message, onClick}) => {
 		<div className={styles.app}>
 			<HeaderBar></HeaderBar>
 			<Main></Main>
-			<span>{message}</span>
-			<span>Test</span>
-			<Button onClick={() => onClick()}></Button>
+			<br/>
 		</div>
 	)
 }
@@ -26,10 +24,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-const mapDispatchToProps = dispatch => {
-	return {
-		onClick: () => {dispatch(pingServer())}
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, null)(App)
