@@ -1,9 +1,10 @@
 class Game {
 	static gameCount = 0;
+	static maxPlayers = 4;
 
 	constructor(player) {
-		this.host = player;
 		this.id = Game.gameCount++;
+		this.host = player;
 		this.isPlaying = false;
 		this.players = [player];
 	}

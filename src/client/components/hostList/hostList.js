@@ -15,7 +15,6 @@ const hostList = ( props ) => {
 			hostID: hostID,
 			playerName: 'playerName'
 		});
-
 	}
 
 	if (props.hostList) {
@@ -27,7 +26,7 @@ const hostList = ( props ) => {
 	return (
 		<div className={styles.hostList}>
 			{content}
-			<input type='button'/>
+			<input onClick={() => selectGame()} type='button'/>
 		</div>
 	)
 }

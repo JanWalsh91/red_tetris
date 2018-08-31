@@ -33,19 +33,35 @@ const initApp = (app, params, cb) => {
 
 const initEngine = io => {
 	io.on('connection', function(socket) {
+
+		socket.join('lobby');
+
 		loginfo("Socket connected: " + socket.id)
-		let serverInfo = server.onOpenConnection();
+		let serverInfo = server.getJoinableGames();
 		console.log("server info: ");
 		console.dir(serverInfo);
-		socket.emit('serverInfo', serverInfo);
+		// socket.emit('serverInfo', serverInfo);
+		io.to('lobby').emit('serverInfo', serverInfo);
 
 		socket.on('selectGame', (action) => {
+
+
+
 			let p = new Player(action.playerName, socket.id);
-			server.onSelectGame(p, action.hostID);
 
+			// server.printGames();
 
-			let serverInfo = server.onOpenConnection();
-			socket.emit('serverInfo', serverInfo);
+			// console.log(action.hostID);
+			if (action.hostID != undefined)
+				server.onSelectGame(p, action.hostID);
+			else
+				server.onCreateNewGame(p);
+
+			let serverInfo = server.getJoinableGames();
+			io.to('lobby').emit('serverInfo', serverInfo);
+			// socket.emit('serverInfo', serverInfo);
+
+			// server.printGames();
 		})
 
 		socket.on('action', (action) => {
@@ -58,7 +74,26 @@ const initEngine = io => {
 				socket.emit('action', {type: 'pong'})
 			}
 		})
+
+		socket.on('disconnect', function() {
+			console.log(socket.id);
+			let x = {}
+			server.games.find( g => {
+				let player = g.players.find( p => p.socketID === socket.id );
+				if (player !== undefined) {
+					x = {player, g};
+					return true;
+				}
+			})
+			console.log(x);
+			if (x.player !== undefined) {
+				server.removePlayerFromGame(x.player, x.g);
+				let serverInfo = server.getJoinableGames();
+				io.to('lobby').emit('serverInfo', serverInfo);
+			}
+		})
 	})
+
 }
 
 export function create(params) {
