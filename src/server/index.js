@@ -54,25 +54,30 @@ const initEngine = io => {
 
 		socket.on(ActionNames.JOIN_GAME, (action) => {
 			console.log(ActionNames.JOIN_GAME, action);
-			let p = new Player(action.playerName, socket.id);
+			// TODO: move player from lobby list to game's player list
 
+			let p = server.pendingPlayers.get(socket.id);
+
+			console.log("got player: ", p);
 			// server.printGames();
 
-			// console.log(action.hostID);
-			if (action.hostID != undefined)
-				server.onJoinGame(p, action.hostID);
-			else
-				server.onCreateNewGame(p);
-
+			// TODO: handle errors
+			server.onJoinGame(p, action);
+			server.pendingPlayers.delete(socket.id);
 			let serverInfo = server.getJoinableGames();
 			// console.log("joinableGames: ", serverInfo);
 			io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
-
 			// server.printGames();
 		})
 
-		socket.on('action', (action) => {
+		socket.on(ActionNames.CREATE_GAME, () => {
+			console.log(ActionNames.CREATE_GAME);
+			// TODO: get player from lobby list
+			// let p = ;
+			// server.onCreateNewGame(p);
+		})
 
+		socket.on('action', (action) => {
 			console.log(action);
 			console.log(action.type);
 

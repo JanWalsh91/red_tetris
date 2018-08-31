@@ -122,6 +122,7 @@ class Server {
 	}
 
 	onCreateNewGame(player) {
+		// remove player from other games
 		this.games.forEach( game => this.removePlayerFromGame(player, game) );
 		this.games.push( new Game (player) );
 	}

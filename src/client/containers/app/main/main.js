@@ -41,7 +41,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
 	return {
 		onUpdatePlayerName: playerName => dispatch(updatePlayerName(playerName)),
-		onSelectGame: hostID => dispatch(updateSelectedGame(hostID))
+		onSelectGame: hostID => dispatch(updateSelectedGame(hostID)),
+		onUpdateGameJoined: gameJoined => dispatch(onUpdateGameJoined(gameJoined))
 	}
 }
 

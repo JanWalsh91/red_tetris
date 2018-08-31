@@ -8,21 +8,17 @@ import * as ActionNames from '../../../server/serverActions'
 
 const hostList = ( props ) => {
 
-	let content = <div></div>
+	let content = null;
 
 	const joinGame = () => {
 		console.log("joinGame");
-
-		// socket.emit(ActionNames.JOIN_GAME, {
-		// 	hostID: hostID
-		// });
-
 		socket.emit(ActionNames.JOIN_GAME, props.gameSelected);
+		// TODO: udpate gameJoined
+		
 	}
 
 	const createGame = () => {
 		console.log("createGame");
-
 		socket.emit(ActionNames.CREATE_GAME);
 	}
 
