@@ -59,7 +59,7 @@ const updatePlayerName = (state, action) => {
 const updateSelectedGame = (state, action) => {
 	return {
 		...state,
-		gameSelected: action.hostID
+		gameSelected: action.hostID == state.gameSelected ? null : action.hostID
 	}
 }
 
