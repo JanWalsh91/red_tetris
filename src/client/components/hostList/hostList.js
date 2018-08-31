@@ -4,29 +4,43 @@ import Host from './host/host'
 
 import socket from '../../socket'
 
+import * as ActionNames from '../../../server/serverActions'
+
 const hostList = ( props ) => {
 
 	let content = <div></div>
 
-	const selectGame = (hostID) => {
-		console.log("selectGame: ", hostID);
+	const joinGame = () => {
+		console.log("joinGame");
 
-		socket.emit('selectGame', {
-			hostID: hostID,
-			playerName: 'playerName'
-		});
+		// socket.emit(ActionNames.JOIN_GAME, {
+		// 	hostID: hostID
+		// });
+
+		socket.emit(ActionNames.JOIN_GAME, props.gameSelected);
+	}
+
+	const createGame = () => {
+		console.log("createGame");
+
+		socket.emit(ActionNames.CREATE_GAME);
 	}
 
 	if (props.hostList) {
 		content = props.hostList.map( host => {
-			return <Host key={host.id} host={host} selectGame={() => selectGame(host.id)}/>;
+			return <Host
+				key={host.id}
+				host={host}
+				selectGame={() => props.onSelectGame(host.id)}
+				isSelected={host.id == props.gameSelected}
+			/>;
 		});
 	}
 
 	return (
 		<div className={styles.hostList}>
 			{content}
-			<input onClick={() => selectGame()} type='button'/>
+			<input onClick={() => props.gameSelected != null ? joinGame({/* create new game*/}) : createGame()} type='button'/>
 		</div>
 	)
 }

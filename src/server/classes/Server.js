@@ -6,6 +6,7 @@ class Server {
 	// games[0].getPlayers
 	constructor() {
 		this.games = []
+		this.pendingPlayers = new Map();
 
 		this.games.push(
 			new Game(
@@ -29,6 +30,7 @@ class Server {
 	// on open connection
 		// save the uuid
 		// get nb rooms (states)
+
 
 	getJoinableGames() {
 		console.log("getJoinableGames");
@@ -89,8 +91,8 @@ class Server {
 		return a;
 	}
 
-	onSelectGame(player, gameID) {
-		console.log("onSelectGame");
+	onJoinGame(player, gameID) {
+		console.log("onJoinGame");
 		// console.dir(this.games)
 		console.log("GameID: ", gameID);
 		// if (!gameId) {

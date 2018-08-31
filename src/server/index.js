@@ -3,6 +3,8 @@ import debug from 'debug'
 import Server from './classes/Server'
 import Player from './classes/Player'
 
+import * as ActionNames from './serverActions'
+
 const server = new Server();
 
 const logerror = debug('tetris:error')
@@ -32,34 +34,39 @@ const initApp = (app, params, cb) => {
 }
 
 const initEngine = io => {
-	io.on('connection', function(socket) {
-
-		socket.join('lobby');
-
+	io.on(ActionNames.CONNECTION, function(socket) {
+		console.log(ActionNames.CONNECTION);
 		loginfo("Socket connected: " + socket.id)
 		let serverInfo = server.getJoinableGames();
 		console.log("server info: ");
 		console.dir(serverInfo);
 		// socket.emit('serverInfo', serverInfo);
-		io.to('lobby').emit('serverInfo', serverInfo);
 
-		socket.on('selectGame', (action) => {
+		// io.to('lobby').emit('serverInfo', serverInfo);
 
+		socket.on(ActionNames.NEW_PLAYER, (playerName) => {
+			console.log("Adding", playerName, "to lobby");
+			let player = new Player(playerName, socket.id);
+			server.pendingPlayers.set(socket.id, player);
+			socket.join('lobby');
+			io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
+		})
 
-
+		socket.on(ActionNames.JOIN_GAME, (action) => {
+			console.log(ActionNames.JOIN_GAME, action);
 			let p = new Player(action.playerName, socket.id);
 
 			// server.printGames();
 
 			// console.log(action.hostID);
 			if (action.hostID != undefined)
-				server.onSelectGame(p, action.hostID);
+				server.onJoinGame(p, action.hostID);
 			else
 				server.onCreateNewGame(p);
 
 			let serverInfo = server.getJoinableGames();
-			io.to('lobby').emit('serverInfo', serverInfo);
-			// socket.emit('serverInfo', serverInfo);
+			// console.log("joinableGames: ", serverInfo);
+			io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
 
 			// server.printGames();
 		})
@@ -75,8 +82,8 @@ const initEngine = io => {
 			}
 		})
 
-		socket.on('disconnect', function() {
-			console.log(socket.id);
+		socket.on(ActionNames.DISCONNECT, function() {
+			console.log(ActionNames.DISCONNECT, socket.id);
 			let x = {}
 			server.games.find( g => {
 				let player = g.players.find( p => p.socketID === socket.id );
@@ -89,7 +96,7 @@ const initEngine = io => {
 			if (x.player !== undefined) {
 				server.removePlayerFromGame(x.player, x.g);
 				let serverInfo = server.getJoinableGames();
-				io.to('lobby').emit('serverInfo', serverInfo);
+				io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
 			}
 		})
 	})

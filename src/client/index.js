@@ -12,7 +12,10 @@ import {alert} from './actions/client'
 const initialState = {
 	message: 'Soon, will be here a fantastic Tetris ...',
 	socket: {},
-	hostList: []
+	hostList: [],
+	playerName: 'toto',
+	gameSelected: null,
+	gameJoined: false
 }
 
 const store = createStore(

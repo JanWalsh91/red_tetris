@@ -1,7 +1,9 @@
-import { ALERT_POP, UPDATE_HOST_LIST } from '../actions/client'
+import { ALERT_POP, UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED } from '../actions/client'
 import { PING_SERVER } from '../actions/server'
 
 import socket from '../socket'
+
+import * as ActionNames from '../../server/serverActions'
 
 // import io from 'socket-io'
 
@@ -36,13 +38,37 @@ const updateHostList = (state, action) => {
 	};
 }
 
-// const selectGame = (state, action) => {
-// 	console.log("selectGame");
-//
-// 	return {
-//
-// 	}
-// }
+const updatePlayerName = (state, action) => {
+	let name = document.getElementById('playerInputName').value;
+	console.log("PlayerName: ", name);
+
+	if (name != undefined && name.length > 0) {
+		console.log("Emit new player");
+		socket.emit(ActionNames.NEW_PLAYER, name);
+	}
+	else {
+		//Error
+	}
+
+	return {
+		...state,
+		playerName: name
+	}
+}
+
+const updateSelectedGame = (state, action) => {
+	return {
+		...state,
+		gameSelected: action.hostID
+	}
+}
+
+const updateGameJoined = (state, action) => {
+	return {
+		...state,
+		gameJoined: action.gameJoined
+	}
+}
 
 const reducer = (state = {} , action) => {
 	console.log("reducer action type: ", action.type);
@@ -50,7 +76,9 @@ const reducer = (state = {} , action) => {
 		case ALERT_POP: return alertPop(state, action);
 		case PING_SERVER: return pingServer(state, action);
 		case UPDATE_HOST_LIST: return updateHostList(state, action);
-		// case SELECT_GAME: return selectGame(state, action);
+		case UPDATE_PLAYER_NAME: return updatePlayerName(state, action);
+		case UPDATE_SELECTED_GAME: return updateSelectedGame(state, action);
+		case UPDATE_GAME_JOINED: return updateGameJoined(state, action);
 		default: console.log('default'); return state;
 	}
 }

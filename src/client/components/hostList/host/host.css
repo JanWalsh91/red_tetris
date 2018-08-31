@@ -12,3 +12,7 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+
+.activeHost {
+	color: red;
+}
