@@ -13,9 +13,9 @@ const initialState = {
 	message: 'Soon, will be here a fantastic Tetris ...',
 	socket: {},
 	hostList: [],
-	playerName: 'toto',
-	gameSelected: null,
-	gameJoined: false
+	playerName: '',
+	gameSelected: null, // Null / #
+	gameJoined: false // True / False
 }
 
 const store = createStore(

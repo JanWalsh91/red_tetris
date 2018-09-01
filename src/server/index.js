@@ -67,6 +67,8 @@ const initEngine = io => {
 			let serverInfo = server.getJoinableGames();
 			// console.log("joinableGames: ", serverInfo);
 			io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
+
+			socket.emit(ActionNames.GAME_JOINED);
 			// server.printGames();
 		})
 
@@ -83,6 +85,8 @@ const initEngine = io => {
 			server.pendingPlayers.delete(socket.id);
 			let serverInfo = server.getJoinableGames();
 			io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
+
+			socket.emit(ActionNames.GAME_JOINED);
 		})
 
 		socket.on('action', (action) => {

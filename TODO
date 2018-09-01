@@ -38,6 +38,17 @@ DISCONNECT
 
 TODO:
 
+server return Structure:
+{
+	playerBoard,
+	[
+		{
+			playerName,
+			playerBoard
+		}
+	]
+}
+
 
 
 Structures:

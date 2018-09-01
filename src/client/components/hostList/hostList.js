@@ -14,7 +14,7 @@ const hostList = ( props ) => {
 		console.log("joinGame");
 		socket.emit(ActionNames.JOIN_GAME, props.gameSelected);
 		// TODO: udpate gameJoined
-		
+
 	}
 
 	const createGame = () => {
@@ -32,6 +32,8 @@ const hostList = ( props ) => {
 			/>;
 		});
 	}
+
+
 
 	return (
 		<div className={styles.hostList}>

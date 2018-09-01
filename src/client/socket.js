@@ -2,7 +2,7 @@ import io from 'socket.io-client'
 import params from '../../params'
 
 import store from './index'
-import {alert, updateHostList} from './actions/client'
+import {alert, updateHostList, updateGameJoined} from './actions/client'
 
 import * as ActionNames from '../server/serverActions'
 
@@ -29,6 +29,12 @@ socket.on(ActionNames.SERVER_INFO, (serverInfo) => {
 	store.dispatch(updateHostList(serverInfo));
 })
 
+socket.on(ActionNames.GAME_JOINED, () => {
+
+	store.dispatch(updateGameJoined(true))
+
+})
+
 module.exports = socket
 
-socket.emit(ActionNames.NEW_PLAYER, "toto");
+// socket.emit(ActionNames.NEW_PLAYER, "toto");

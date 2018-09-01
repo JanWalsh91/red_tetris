@@ -15,13 +15,23 @@ const Main = ( props ) => {
 		content = (<PlayerForm onUpdateName={ () => props.onUpdatePlayerName()}></PlayerForm>);
 	}
 	else {
-		content = (
-			<HostList
-				hostList={props.hostList}
-				gameSelected={props.gameSelected}
-				onSelectGame={props.onSelectGame}>
-			</HostList>
-		);
+
+		console.log("gameJoined: ", props.gameJoined);
+
+		if (props.gameJoined) {
+			content = (
+				<div>Game Board</div>
+			)
+		}
+		else {
+			content = (
+				<HostList
+					hostList={props.hostList}
+					gameSelected={props.gameSelected}
+					onSelectGame={props.onSelectGame}>
+				</HostList>
+			);
+		}
 	}
 	return (
 		<div className={styles.main}>
@@ -34,7 +44,8 @@ const mapStateToProps = (state) => {
 	return {
 		hostList: state.hostList,
 		playerName: state.playerName,
-		gameSelected: state.gameSelected
+		gameSelected: state.gameSelected,
+		gameJoined: state.gameJoined
 	}
 }
 

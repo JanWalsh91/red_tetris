@@ -39,6 +39,9 @@ export const updateSelectedGame = (hostID) => {
 export const UPDATE_GAME_JOINED = 'UPDATE_GAME_JOINED'
 
 export const updateGameJoined = (gameJoined) => {
+
+	console.log("updateGameJoined");
+
 	return {
 		type: UPDATE_GAME_JOINED,
 		gameJoined
