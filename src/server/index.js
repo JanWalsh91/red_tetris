@@ -73,8 +73,16 @@ const initEngine = io => {
 		socket.on(ActionNames.CREATE_GAME, () => {
 			console.log(ActionNames.CREATE_GAME);
 			// TODO: get player from lobby list
-			// let p = ;
-			// server.onCreateNewGame(p);
+			let p = server.pendingPlayers.get(socket.id);
+			// console.log(p);
+
+			// Create a new Game, the player is now the host
+			server.onCreateNewGame(p);
+
+			// Remove the player from the pendingPlayers map and send the new server info to the lobby
+			server.pendingPlayers.delete(socket.id);
+			let serverInfo = server.getJoinableGames();
+			io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
 		})
 
 		socket.on('action', (action) => {
