@@ -18,14 +18,14 @@ const initialState = {
 	gameJoined: false // True / False
 }
 
-// prod:
+// prod: (without Redux DevTools)
 // const store = createStore(
 // 	reducer,
 // 	initialState,
 // 	applyMiddleware(thunk, createLogger())
 // )
 
-// dev:
+// dev: (to make work with Redux DevTools)
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, initialState, composeEnhancers(
 	applyMiddleware(thunk, createLogger())
@@ -40,5 +40,3 @@ ReactDom.render((
 ), document.getElementById('tetris'))
 
 export default store
-
-// store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
