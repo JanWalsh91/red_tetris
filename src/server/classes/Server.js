@@ -105,7 +105,9 @@ class Server {
 		console.log("[Server.js] createNewGame");
 		// remove player from other games
 		this.games.forEach( game => this.removePlayerFromGame(player, game) );
-		this.games.push( new Game (player) );
+		let game = new Game(player);
+		this.games.push( game );
+		return game;
 	}
 
 	// on select game,

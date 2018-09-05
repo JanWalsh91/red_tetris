@@ -69,6 +69,8 @@ const initEngine = io => {
 			// TODO: handle errors
 			server.joinGame(player, gameID);
 			server.lobby.delete(socket.id);
+			socket.leave('lobby');
+			socket.join(gameID);
 			updateHostList();
 
 			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
@@ -82,10 +84,11 @@ const initEngine = io => {
 			// console.log(p);
 
 			// Create a new Game, the player is now the host
-			server.createNewGame(p);
+			let game = server.createNewGame(p);
 
 			// Remove the player from the lobby map and send the new server info to the lobby
 			server.lobby.delete(socket.id);
+			socket.join(game.id);
 			updateHostList();
 
 			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);

@@ -23,14 +23,11 @@ socket.on('action', (action) => {
 })
 
 socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
-	console.log("[socket.js] recieved by client:",  hostList);
-
-	// dispatch redux action
 	store.dispatch(updateHostList(hostList));
 })
 
-socket.on(ActionNames.UPDATE_GAME_JOINED, () => {
-	store.dispatch(updateGameJoined(true))
+socket.on(ActionNames.UPDATE_GAME_JOINED, (joined) => {
+	store.dispatch(updateGameJoined(joined))
 })
 
 module.exports = socket
