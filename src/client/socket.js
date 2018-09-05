@@ -29,10 +29,8 @@ socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
 	store.dispatch(updateHostList(hostList));
 })
 
-socket.on(ActionNames.GAME_JOINED, () => {
-
+socket.on(ActionNames.UPDATE_GAME_JOINED, () => {
 	store.dispatch(updateGameJoined(true))
-
 })
 
 module.exports = socket

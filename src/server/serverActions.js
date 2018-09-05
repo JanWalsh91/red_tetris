@@ -1,6 +1,6 @@
 // Client callbacks
 export const UPDATE_HOST_LIST = 'UPDATE_HOST_LIST'
-export const GAME_JOINED = 'GAME_JOINED'
+export const UPDATE_GAME_JOINED = 'UPDATE_GAME_JOINED'
 
 // Server callbacks
 export const CONNECTION = 'connection'

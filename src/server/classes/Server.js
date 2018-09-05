@@ -8,21 +8,7 @@ class Server {
 		this.games = []
 		this.lobby = new Map();
 
-		this.games.push(
-			new Game(
-				new Player('toetoe', 1)
-			)
-		)
-		this.games.push(
-			new Game(
-				new Player('barf', 2)
-			)
-		)
-		this.games.push(
-			new Game(
-				new Player('foofoo', 3)
-			)
-		)
+		// this.games.push( new Game( new Player('toetoe', 1) ) );
 	}
 
 	// Events Methods
@@ -33,7 +19,7 @@ class Server {
 
 
 	getJoinableGames() {
-		console.log("getJoinableGames");
+		console.log("[Server.js] getJoinableGames");
 		let joinableGames = [];
 
 		this.games.forEach( game => {
@@ -47,6 +33,7 @@ class Server {
 	}
 
 	removePlayerFromGame(player, game) {
+		console.log("[Server.js] removePlayerFromGame");
 		// console.log("removePlayerFromGame");
 		// console.dir(game);
 		// console.dir(player);
@@ -91,17 +78,10 @@ class Server {
 		return a;
 	}
 
-	onJoinGame(player, gameID) {
-		console.log("onJoinGame");
+	joinGame(player, gameID) {
+		console.log("[Server.js] joinGame");
 		// console.dir(this.games)
 		console.log("GameID: ", gameID);
-		// if (!gameId) {
-			// create new game with player as host
-			// let game = new Game(player.id)
-		// } else {
-			// add player to game
-			// this.games[gameID].players.push(player);
-		// }
 
 		let g = this.getGameByID(gameID);
 
@@ -121,7 +101,8 @@ class Server {
 		// console.log("Number of player in the Game", gameID,": ", this.games[gameID].players.length);
 	}
 
-	onCreateNewGame(player) {
+	createNewGame(player) {
+		console.log("[Server.js] createNewGame");
 		// remove player from other games
 		this.games.forEach( game => this.removePlayerFromGame(player, game) );
 		this.games.push( new Game (player) );

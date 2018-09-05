@@ -46,6 +46,9 @@ const initEngine = io => {
 		loginfo("Socket connected: " + socket.id)
 		// updateHostList();
 
+		/*
+		*	Emitted when client updates name in GUI
+		*/
 		socket.on(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, (playerName) => {
 			console.log("[server/index.js] ", "Adding", playerName, "to lobby");
 			let player = new Player(playerName, socket.id);
@@ -54,21 +57,21 @@ const initEngine = io => {
 			updateHostList();
 		})
 
-		socket.on(ActionNames.JOIN_GAME, (action) => {
-			console.log("[server/index.js] ", ActionNames.JOIN_GAME, action);
+		socket.on(ActionNames.JOIN_GAME, (gameID) => {
+			console.log("[server/index.js] ", ActionNames.JOIN_GAME, gameID);
 			// TODO: move player from lobby list to game's player list
 
-			let p = server.lobby.get(socket.id);
+			let player = server.lobby.get(socket.id);
 
-			console.log("got player: ", p);
+			console.log("got player: ", player);
 			// server.printGames();
 
 			// TODO: handle errors
-			server.onJoinGame(p, action);
+			server.joinGame(player, gameID);
 			server.lobby.delete(socket.id);
 			updateHostList();
 
-			socket.emit(ActionNames.GAME_JOINED);
+			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
 			// server.printGames();
 		})
 
@@ -79,23 +82,13 @@ const initEngine = io => {
 			// console.log(p);
 
 			// Create a new Game, the player is now the host
-			server.onCreateNewGame(p);
+			server.createNewGame(p);
 
 			// Remove the player from the lobby map and send the new server info to the lobby
 			server.lobby.delete(socket.id);
 			updateHostList();
 
-			socket.emit(ActionNames.GAME_JOINED);
-		})
-
-		socket.on('action', (action) => {
-			console.log(action);
-			console.log(action.type);
-
-			if (action.type === 'server/ping') {
-				console.log("responding");
-				socket.emit('action', {type: 'pong'})
-			}
+			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
 		})
 
 		socket.on(ActionNames.DISCONNECT, function() {
@@ -113,6 +106,16 @@ const initEngine = io => {
 				server.removePlayerFromGame(x.player, x.g);
 				let serverInfo = server.getJoinableGames();
 				io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, serverInfo);
+			}
+		})
+
+		socket.on('action', (action) => {
+			console.log(action);
+			console.log(action.type);
+
+			if (action.type === 'server/ping') {
+				console.log("responding");
+				socket.emit('action', {type: 'pong'})
 			}
 		})
 	})
