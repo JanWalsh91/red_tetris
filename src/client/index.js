@@ -18,11 +18,20 @@ const initialState = {
 	gameJoined: false // True / False
 }
 
-const store = createStore(
-	reducer,
-	initialState,
+// prod:
+// const store = createStore(
+// 	reducer,
+// 	initialState,
+// 	applyMiddleware(thunk, createLogger())
+// )
+
+// dev:
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, initialState, composeEnhancers(
 	applyMiddleware(thunk, createLogger())
-)
+))
+
+
 
 ReactDom.render((
 	<Provider store={store}>
