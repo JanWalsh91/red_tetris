@@ -6,7 +6,7 @@ class Server {
 	// games[0].getPlayers
 	constructor() {
 		this.games = []
-		this.pendingPlayers = new Map();
+		this.lobby = new Map();
 
 		this.games.push(
 			new Game(

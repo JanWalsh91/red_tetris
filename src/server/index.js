@@ -34,57 +34,56 @@ const initApp = (app, params, cb) => {
 }
 
 const initEngine = io => {
+	/*
+	*	Emits an updated list of available games to all sockets joined to 'lobby'
+	*/
+	const updateHostList = () => {
+		io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, server.getJoinableGames());
+	}
+
 	io.on(ActionNames.CONNECTION, function(socket) {
-		console.log(ActionNames.CONNECTION);
+		console.log("[server/index.js] ", ActionNames.CONNECTION);
 		loginfo("Socket connected: " + socket.id)
-		let serverInfo = server.getJoinableGames();
-		console.log("server info: ");
-		console.dir(serverInfo);
-		// socket.emit('serverInfo', serverInfo);
+		// updateHostList();
 
-		// io.to('lobby').emit('serverInfo', serverInfo);
-
-		socket.on(ActionNames.NEW_PLAYER, (playerName) => {
-			console.log("Adding", playerName, "to lobby");
+		socket.on(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, (playerName) => {
+			console.log("[server/index.js] ", "Adding", playerName, "to lobby");
 			let player = new Player(playerName, socket.id);
-			server.pendingPlayers.set(socket.id, player);
+			server.lobby.set(socket.id, player);
 			socket.join('lobby');
-			io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
+			updateHostList();
 		})
 
 		socket.on(ActionNames.JOIN_GAME, (action) => {
-			console.log(ActionNames.JOIN_GAME, action);
+			console.log("[server/index.js] ", ActionNames.JOIN_GAME, action);
 			// TODO: move player from lobby list to game's player list
 
-			let p = server.pendingPlayers.get(socket.id);
+			let p = server.lobby.get(socket.id);
 
 			console.log("got player: ", p);
 			// server.printGames();
 
 			// TODO: handle errors
 			server.onJoinGame(p, action);
-			server.pendingPlayers.delete(socket.id);
-			let serverInfo = server.getJoinableGames();
-			// console.log("joinableGames: ", serverInfo);
-			io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
+			server.lobby.delete(socket.id);
+			updateHostList();
 
 			socket.emit(ActionNames.GAME_JOINED);
 			// server.printGames();
 		})
 
 		socket.on(ActionNames.CREATE_GAME, () => {
-			console.log(ActionNames.CREATE_GAME);
+			console.log("[server/index.js] ", ActionNames.CREATE_GAME);
 			// TODO: get player from lobby list
-			let p = server.pendingPlayers.get(socket.id);
+			let p = server.lobby.get(socket.id);
 			// console.log(p);
 
 			// Create a new Game, the player is now the host
 			server.onCreateNewGame(p);
 
-			// Remove the player from the pendingPlayers map and send the new server info to the lobby
-			server.pendingPlayers.delete(socket.id);
-			let serverInfo = server.getJoinableGames();
-			io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
+			// Remove the player from the lobby map and send the new server info to the lobby
+			server.lobby.delete(socket.id);
+			updateHostList();
 
 			socket.emit(ActionNames.GAME_JOINED);
 		})
@@ -100,7 +99,7 @@ const initEngine = io => {
 		})
 
 		socket.on(ActionNames.DISCONNECT, function() {
-			console.log(ActionNames.DISCONNECT, socket.id);
+			console.log("[server/index.js] ", ActionNames.DISCONNECT, socket.id);
 			let x = {}
 			server.games.find( g => {
 				let player = g.players.find( p => p.socketID === socket.id );
@@ -113,7 +112,7 @@ const initEngine = io => {
 			if (x.player !== undefined) {
 				server.removePlayerFromGame(x.player, x.g);
 				let serverInfo = server.getJoinableGames();
-				io.to('lobby').emit(ActionNames.SERVER_INFO, serverInfo);
+				io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, serverInfo);
 			}
 		})
 	})

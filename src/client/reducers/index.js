@@ -44,7 +44,7 @@ const updatePlayerName = (state, action) => {
 
 	if (name != undefined && name.length > 0) {
 		console.log("Emit new player");
-		socket.emit(ActionNames.NEW_PLAYER, name);
+		socket.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, name);
 	}
 	else {
 		//Error

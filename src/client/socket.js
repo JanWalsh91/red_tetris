@@ -22,11 +22,11 @@ socket.on('action', (action) => {
 	}
 })
 
-socket.on(ActionNames.SERVER_INFO, (serverInfo) => {
-	console.log("recieved by client:",  serverInfo);
+socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
+	console.log("[socket.js] recieved by client:",  hostList);
 
 	// dispatch redux action
-	store.dispatch(updateHostList(serverInfo));
+	store.dispatch(updateHostList(hostList));
 })
 
 socket.on(ActionNames.GAME_JOINED, () => {
@@ -37,4 +37,4 @@ socket.on(ActionNames.GAME_JOINED, () => {
 
 module.exports = socket
 
-// socket.emit(ActionNames.NEW_PLAYER, "toto");
+// socket.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, "toto");
