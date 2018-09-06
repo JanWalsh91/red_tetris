@@ -3,6 +3,12 @@
 *	All pieces are represented in a 4x4 list of colors
 *	Each piece has 4 possible orientations
 *	Collision is checked for each non-null value against board values and positions.
+* 	Piece:
+*		type: int						// type of piece
+*		orientation: int				// 0-3
+*		cells: [[0x0, ... ], ... ]		// cells describing piece shape and color
+*		coords: {x, y}
+*
 */
 
 class Piece {
@@ -12,11 +18,11 @@ class Piece {
 	*	rolls again.
 	*/
 	static generateRandomPiece(lastPieceType) {
-		let newType = Math.floor(Math.random() * (Piece.shapeTypesCount));
+		let newType = Math.floor(Math.random() * (Piece.typeCount));
 		if (newType === lastPieceType) {
-			newType = Math.floor(Math.random() * (Piece.shapeTypesCount));
+			newType = Math.floor(Math.random() * (Piece.typeCount));
 		}
-		return new Piece(newType);
+		return new Piece({type: newType});
 	}
 
 	/*
@@ -28,40 +34,75 @@ class Piece {
 		for (let i = 0; i < num; i++) {
 			let lastPieceType = null;
 			if (pieces.length > 0)
-				lastPieceType = pieces[pieces.length - 1].shapeType;
+				lastPieceType = pieces[pieces.length - 1].type;
 			pieces.push( Piece.generateRandomPiece(lastPieceType) );
 		}
 		return pieces;
 	}
 
-	constructor(shapeType) {
-		if (shapeType < 0 || shapeType >= Piece.shapeTypesCount)
-			return null;
-		this.shapeType = shapeType;
-		this.orientation = 0;
-		this.shape = Piece.shapeTypes[this.shapeType][this.orientation];
-		this.coords = {x: 3, y: 0};
+	/*
+	*	param is either an instance of Piece or an Integer between 0 and 7
+	*/
+	constructor( params ) {
+		if (params instanceof Piece) {
+			// Copy constructor
+			console.log("[Piece.js] Piece constructor COPY");
+			console.log("OLD: ", params);
+			params = {
+				type: params.type,
+				orientation: params.orientation,
+				coords: { ...params.coords }
+			};
+		}
+		// Constructor with params
+		console.log("[Piece.js] Piece constructor PARAMS");
+		let defaultParams = {
+			type: 0,
+			orientation: 0,
+			coords: {x: 3, y: 0}
+		};
+		params = {...defaultParams, ...params, coords: {...(params.coords ? params.coords : defaultParams.coords)}};
 
+	 	if (params.type < 0 || params.type >= Piece.typeCount) {
+			console.log("[Piece.js] invalid piece parameters");
+			return null;
+		}
+		this.type = params.type;
+		this.orientation = params.orientation;
+		this.cells = Piece.types[this.type][this.orientation];
+		this.coords = params.coords;
 	}
 
-	// TODO: update to tryToRotate() which takes board information
+	/*
+	*	Tetris rotation rules:
+	*	- attempt to place rotated piece without changing coords.
+	*	- if rotated piece cannot be placed because of pieces on board or edge
+	*		board, try to placed the rotated piece left, right then up by one
+	*		coord.
+	*	- if cannot be placed, do nothing.
+	*/
+
 	rotate() {
 		this.orientation = (this.orientation + 1) % 4;
-		console.log("new orientation: ", this.orientation);
-		this.shape = Piece.shapeTypes[this.shapeType][this.orientation];
+		console.log("[Piece.js] new orientation: ", this.orientation);
+		this.cells = Piece.types[this.type][this.orientation];
 	}
 
-	// TODO: update to tryToUdpateCoords() which takes board information
-	udpateCoords( vector ) {
-		if (!vector || !vector.x || !vector.y || !Number.isInteger(vector.x) || !Number.isInteger(vector.y))
+	move( vector = {x: 0, y : 1} ) {
+		console.log("[Piece.js] move. vector: ", vector);
+		if (!Number.isInteger(vector.x) || !Number.isInteger(vector.y)){
+			console.log("   vector invalid");
 			return ;
+		}
 		this.coords.x += vector.x;
 		this.coords.y += vector.y;
+		console.log("piece moved: ", this.coords);
 	}
 }
 
-Piece.shapeTypesCount = 7;
-Piece.shapeTypes = [
+// Welcome to static class variables in Javascript:
+Piece.typeCount = 7;
+Piece.types = [
 	// cyan line
 	[
 		[
@@ -77,10 +118,10 @@ Piece.shapeTypes = [
 			[0x0,		0x0,		0xff00ff,	0x0],
 		],
 		[
-			[0x0,		0x0,		0xff00ff,	0x0],
-			[0x0,		0x0,		0xff00ff,	0x0],
+			[0x0,		0x0,		0x0,		0x0],
+			[0x0,		0x0,		0x0,		0x0],
 			[0xff00ff,	0xff00ff,	0xff00ff,	0xff00ff],
-			[0x0,		0x0,		0xff00ff,	0x0],
+			[0x0,		0x0,		0x0,		0x0],
 		],
 		[
 			[0x0,		0xff00ff,	0x0,		0x0],
@@ -265,10 +306,11 @@ Piece.shapeTypes = [
 // console.log("piece: ", piece);
 // piece.rotate();
 // console.log("piece: ", piece);
-// piece.rotate();
+// piece.move();
 // console.log("piece: ", piece);
-// piece.rotate();
-// console.log("piece: ", piece);
+
+// let p = new Piece(1);
+// console.log("p: ", p);
 
 module.exports = {
 	Piece: Piece
