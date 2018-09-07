@@ -1,6 +1,8 @@
 import Piece from './Piece'
 import Board from './Board'
 
+import * as ActionNames from '../serverActions' 
+
 class Game {
 	static gameCount = 0;
 	static maxPlayers = 4;
@@ -41,7 +43,7 @@ class Game {
 				if (board.piecesCopiedCount - this.piecesList.length < 5) {
 					// add more pieces to big pieceList
 
-					this.piecesList.push(Piece.generateRandomPieces(Game.newPiecesCount));
+					this.piecesList.push(...Piece.generateRandomPieces(Game.newPiecesCount));
 				}
 				console.log("board.piecesCopiedCount:", board.piecesCopiedCount);
 				console.log("this.piecesList.length:", this.piecesList.length);
@@ -60,12 +62,21 @@ class Game {
 		});
 	}
 
-	startGame() {
-		//?
+	start () {
+		console.log("[Game.js] start");
+		this.players.forEach( player => {
+			player.board.setNextActivePiece();
+			setInterval(() => {
+				player.board.moveDown();
+				player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+			}, 1000);
+			player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+		});
+
 	}
 
 	addPieces() {
-		console.log("[Game.js] addPieces");
+		console.log("[Game.js] addPieces (generateRandomPieces)");
 		this.piecesList.push(...Piece.generateRandomPieces(Game.newPiecesCount));
 	}
 

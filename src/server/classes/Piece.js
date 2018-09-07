@@ -47,7 +47,6 @@ class Piece {
 		if (params instanceof Piece) {
 			// Copy constructor
 			console.log("[Piece.js] Piece constructor COPY");
-			console.log("OLD: ", params);
 			params = {
 				type: params.type,
 				orientation: params.orientation,

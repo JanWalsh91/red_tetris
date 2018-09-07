@@ -2,6 +2,7 @@
 export const UPDATE_HOST_LIST = 'UPDATE_HOST_LIST'
 export const UPDATE_GAME_JOINED = 'UPDATE_GAME_JOINED'
 export const SEND_GAME_ACTION = 'SEND_GAME_ACTION'
+export const START_GAME = 'START_GAME'
 
 // Server callbacks
 export const CONNECTION = 'connection'

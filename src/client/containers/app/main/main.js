@@ -4,10 +4,11 @@ import styles from './main.css'
 import PlayerForm from '../../../components/playerForm/playerForm'
 import HostList from '../../../components/hostList/hostList'
 import Board from '../../../components/board/board'
+import Button from '../../../components/button/button'
 import socket from '../../../socket'
 import {updatePlayerName, updateSelectedGame} from '../../../actions/client'
 
-// import * as ActionNames from '../../../../server/serverActions'
+import * as ActionNames from '../../../../server/serverActions'
 
 const Main = ( props ) => {
 
@@ -15,6 +16,9 @@ const Main = ( props ) => {
 		console.log("==============:",  event);
 	}
 
+	const startGame = () => {
+		socket.emit(ActionNames.START_GAME);
+	}
 
 	let content;
 
@@ -27,7 +31,10 @@ const Main = ( props ) => {
 
 		if (props.gameJoined) {
 			content = (
-				<Board gameState={props.gameState}/>
+				<div>
+					<Board gameState={props.gameState}/>
+					<Button onClick={startGame}/>
+				</div>
 			)
 		}
 		else {

@@ -59,6 +59,19 @@ const initEngine = io => {
 
 	}
 
+	const getPlayerAndGame = (socketID) => {
+		console.log("[index.js] getPlayerAndGame");
+		let data = [];
+		server.games.find( game => {
+			let player = game.players.find( p => p.socketID === socketID );
+			if (player !== undefined) {
+				data = [player, game];
+				return true;
+			}
+		});
+		// console.log("\tdata: ", data);
+		return data;
+	}
 
 	io.on(ActionNames.CONNECTION, function(socket) {
 		console.log("[server/index.js] ", ActionNames.CONNECTION);
@@ -71,7 +84,7 @@ const initEngine = io => {
 		*/
 		socket.on(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, (playerName) => {
 			console.log("[server/index.js] ", "Adding", playerName, "to lobby");
-			let player = new Player(playerName, socket.id);
+			let player = new Player(playerName, socket.id, socket);
 			server.lobby.set(socket.id, player);
 			socket.join('lobby');
 			updateHostList();
@@ -111,25 +124,46 @@ const initEngine = io => {
 			socket.join(game.id);
 			updateHostList();
 
-			player.board.setNextActivePiece();
-
 			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
 			updateGameState(player);
 		})
 
-		socket.on(ActionNames.SEND_GAME_ACTION, (action) => {
-			if (action == "left") {
-				let data = {}
-				server.games.find( game => {
-					let player = game.players.find( p => p.socketID === socket.id );
-					if (player !== undefined) {
-						data = {player, game};
-						return true;
-					}
-				})
+		socket.on(ActionNames.START_GAME, () => {
+			console.log("[index.js] START_GAME");
+			let player, game;
+			[player, game] = getPlayerAndGame(socket.id);
 
-				data.player.board.moveLeft();
-				updateGameState(player);
+			game.start();
+			// TODO: start for all players
+
+			// updateGameState(player);
+
+		})
+
+		socket.on(ActionNames.SEND_GAME_ACTION, (action) => {
+			console.log("[index.js] SEND_GAME_ACTION: ", action);
+			let player, game;
+			[player, game] = getPlayerAndGame(socket.id);
+
+			switch (action) {
+				case "left":
+					player.board.moveLeft();
+					updateGameState(player);
+					break;
+				case "right":
+					player.board.moveRight();
+					updateGameState(player);
+					break;
+				case "down":
+					player.board.moveDown();
+					updateGameState(player);
+					break;
+				case "rotate":
+					player.board.rotate();
+					updateGameState(player);
+					break;
+				default:
+					break ;
 			}
 		})
 

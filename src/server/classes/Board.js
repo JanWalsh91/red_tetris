@@ -75,7 +75,7 @@ class Board {
 		if (!piece) {console.log("\tno piece!"); return ;}
 
 		piece.rotate();
-		console.log("\trotated piece: ", piece);
+		console.log("\trotated piece to: ", piece.coords);
 		return this.pieceIsPlaceable(piece);
 	}
 
@@ -88,6 +88,7 @@ class Board {
 		if (!vector || vector.x == undefined || vector.y == undefined) {console.log("\tinvalid vector!"); return piece;}
 
 		piece.move(vector);
+		console.log("\tmoved piece to: ", piece.coords);
 		return this.pieceIsPlaceable(piece);
 	}
 
@@ -173,11 +174,11 @@ class Board {
 		}
 		if (!canPlace) {
 			console.log("\tmove up 1")
-			canPlace = this.tryToMovePiece(rotatedPiece, {x: -2, y: 1});
+			canPlace = this.tryToMovePiece(rotatedPiece, {x: -2, y: -1});
 		}
 		if (!canPlace) {
 			console.log("\tmove up 2")
-			canPlace = this.tryToMovePiece(rotatedPiece, {x: 0, y: 1});
+			canPlace = this.tryToMovePiece(rotatedPiece, {x: 0, y: -1});
 		}
 		if (canPlace) {
 			console.log("\t\t=D")
