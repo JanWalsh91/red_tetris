@@ -1,5 +1,5 @@
 .main {
-	/* background-color: blue; */
+	/* border: blue 1px solid; */
 	/* width: 95%; */
 	display: flex;
 	flex-direction: column;

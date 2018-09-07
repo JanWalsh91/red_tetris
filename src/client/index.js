@@ -31,8 +31,6 @@ const store = createStore(reducer, initialState, composeEnhancers(
 	applyMiddleware(thunk, createLogger())
 ))
 
-
-
 ReactDom.render((
 	<Provider store={store}>
 		<App/>

@@ -7,6 +7,35 @@
 }
 
 .cell {
-	width: 5vw;
+	width: 5vh;
 	height: 5vh;
+	border: solid 1px #dadada;
+}
+
+.line {
+	background: cyan;
+}
+
+.l1 {
+	background: blue;
+}
+
+.l2 {
+	background: orange;
+}
+
+.square {
+	background: yellow;
+}
+
+.squiggle1 {
+	background: green;
+}
+
+.t {
+	background: purple;
+}
+
+.squiggle2 {
+	background: red;
 }

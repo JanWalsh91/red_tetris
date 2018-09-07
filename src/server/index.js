@@ -111,8 +111,26 @@ const initEngine = io => {
 			socket.join(game.id);
 			updateHostList();
 
+			player.board.setNextActivePiece();
+
 			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
 			updateGameState(player);
+		})
+
+		socket.on(ActionNames.SEND_GAME_ACTION, (action) => {
+			if (action == "left") {
+				let data = {}
+				server.games.find( game => {
+					let player = game.players.find( p => p.socketID === socket.id );
+					if (player !== undefined) {
+						data = {player, game};
+						return true;
+					}
+				})
+
+				data.player.board.moveLeft();
+				updateGameState(player);
+			}
 		})
 
 		socket.on(ActionNames.DISCONNECT, function() {

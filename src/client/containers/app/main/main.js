@@ -10,6 +10,12 @@ import {updatePlayerName, updateSelectedGame} from '../../../actions/client'
 // import * as ActionNames from '../../../../server/serverActions'
 
 const Main = ( props ) => {
+
+	const test = (event) => {
+		console.log("==============:",  event);
+	}
+
+
 	let content;
 
 	if (props.playerName === undefined || props.playerName.length == 0) {
@@ -21,9 +27,7 @@ const Main = ( props ) => {
 
 		if (props.gameJoined) {
 			content = (
-				<div>
-					<Board gameState={props.gameState}/>
-				</div>
+				<Board gameState={props.gameState}/>
 			)
 		}
 		else {

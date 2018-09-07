@@ -11,7 +11,7 @@ class Game {
 		this.host = player;
 		this.isPlaying = false;
 		this.players = [player];
-		this.pieceList = [];
+		this.piecesList = [];
 	}
 
 	getInfo() {
@@ -24,19 +24,27 @@ class Game {
 
 	init() {
 		// add pieces
+		console.log("[Game.js] init");
 		this.addPieces();
 		// create board for each player
 		this.players.forEach( player => this.initPlayerBoard(player) );
 	}
 
 	initPlayerBoard( player ) {
+		console.log("[Game.js] initPlayerBoard");
 		player.board = new Board({
 			gameCallback: (board) => {
+				console.log("[Game.js] initPlayerBoard callback");
 				// check if need to add more pieces to big pieceList
+				console.log("board.piecesCopiedCount:", board.piecesCopiedCount);
+				console.log("this.piecesList.length:", this.piecesList.length);
 				if (board.piecesCopiedCount - this.piecesList.length < 5) {
 					// add more pieces to big pieceList
-					this.piecesList.push(Pieces.generateRandomPieces(Game.newPiecesCount));
+
+					this.piecesList.push(Piece.generateRandomPieces(Game.newPiecesCount));
 				}
+				console.log("board.piecesCopiedCount:", board.piecesCopiedCount);
+				console.log("this.piecesList.length:", this.piecesList.length);
 
 				// check if need to copy pieces to board piecesList
 				if (board.piecesList.length < 5) {
@@ -57,7 +65,8 @@ class Game {
 	}
 
 	addPieces() {
-		this.pieceList.push(Piece.generateRandomPieces(Game.newPiecesCount));
+		console.log("[Game.js] addPieces");
+		this.piecesList.push(...Piece.generateRandomPieces(Game.newPiecesCount));
 	}
 
 }

@@ -36,6 +36,7 @@ class Board {
 		}
 		this.activePiece = null;
 		this.piecesList = params.piecesList;
+		this.piecesCopiedCount = params.piecesCopiedCount;
 		this.gameCallback = params.gameCallback;
 	}
 
@@ -46,7 +47,9 @@ class Board {
 		console.log("[Board.js] addPieces");
 		if (!pieces || pieces.constructor !== Array || !(pieces[0] instanceof Piece))
 			return ;
-		this.piecesList.push(pieces);
+		console.log(pieces);
+		this.piecesList.push(...pieces);
+		console.log(this.piecesList);
 	}
 
 	/*
@@ -54,12 +57,10 @@ class Board {
 	*/
 	setNextActivePiece() {
 		console.log("[Board.js] setNextActivePiece");
+		this.gameCallback(this);
 		this.activePiece = this.piecesList.shift();
 		if (!this.activePiece) {
 			console.log("[Board.js] Error: no next piece available");
-		}
-		else {
-			this.gameCallback(this);
 		}
 	}
 
@@ -218,10 +219,13 @@ class Board {
 	// TODO: move down shortcut
 
 	getCells() {
+		console.log("[Board.js] getCells <3");
 		let cells = JSON.parse(JSON.stringify(this.cells));
 		if (!this.activePiece) return cells;
+		console.log(this.activePiece);
 		for (let y = 0; y < 4; y++) {
 			for (let x = 0; x < 4; x++) {
+
 				if (this.activePiece.cells[y][x] != 0x0) {
 					cells[this.activePiece.coords.y + y][this.activePiece.coords.x + x] = this.activePiece.cells[y][x];
 				}
