@@ -77,7 +77,7 @@ class Piece {
 	*	Tetris rotation rules:
 	*	- attempt to place rotated piece without changing coords.
 	*	- if rotated piece cannot be placed because of pieces on board or edge
-	*		board, try to placed the rotated piece left, right then up by one
+	*		board, try to placed the rotated piece left, right then up by two
 	*		coord.
 	*	- if cannot be placed, do nothing.
 	*/
@@ -312,9 +312,9 @@ Piece.types = [
 // let p = new Piece(1);
 // console.log("p: ", p);
 
-module.exports = {
-	Piece: Piece
-}
+// module.exports = {
+// 	Piece: Piece
+// }
 
 
-// export default Piece;
+export default Piece;

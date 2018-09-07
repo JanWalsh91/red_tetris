@@ -1,0 +1,12 @@
+.Board {
+	border: red solid 1px
+}
+
+.row {
+	display: flex;
+}
+
+.cell {
+	width: 5vw;
+	height: 5vh;
+}

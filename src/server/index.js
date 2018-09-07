@@ -41,10 +41,30 @@ const initEngine = io => {
 		io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, server.getJoinableGames());
 	}
 
+	/*
+	*	For a player, send its gameState to him
+	*/
+	const updateGameState = (player) => {
+		console.log("[index.js] updateGameState");
+		// get socket of player
+		let socket = server.sockets.get(player.socketID);
+		socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+	}
+
+	/*
+	*	For a player, sends its shadowGameState to all players in that game
+	*/
+	// TODO:
+	const updateShadowGameState = () => {
+
+	}
+
+
 	io.on(ActionNames.CONNECTION, function(socket) {
 		console.log("[server/index.js] ", ActionNames.CONNECTION);
 		loginfo("Socket connected: " + socket.id)
 		// updateHostList();
+		server.sockets.set(socket.id, socket);
 
 		/*
 		*	Emitted when client updates name in GUI
@@ -79,12 +99,12 @@ const initEngine = io => {
 
 		socket.on(ActionNames.CREATE_GAME, () => {
 			console.log("[server/index.js] ", ActionNames.CREATE_GAME);
+			let player = server.lobby.get(socket.id);
 			// TODO: get player from lobby list
-			let p = server.lobby.get(socket.id);
 			// console.log(p);
 
 			// Create a new Game, the player is now the host
-			let game = server.createNewGame(p);
+			let game = server.createNewGame(player);
 
 			// Remove the player from the lobby map and send the new server info to the lobby
 			server.lobby.delete(socket.id);
@@ -92,6 +112,7 @@ const initEngine = io => {
 			updateHostList();
 
 			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
+			updateGameState(player);
 		})
 
 		socket.on(ActionNames.DISCONNECT, function() {

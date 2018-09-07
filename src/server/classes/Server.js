@@ -7,7 +7,7 @@ class Server {
 	constructor() {
 		this.games = []
 		this.lobby = new Map();
-
+		this.sockets = new Map();
 		// this.games.push( new Game( new Player('toetoe', 1) ) );
 	}
 
@@ -69,13 +69,13 @@ class Server {
 		// console.log(gameID);
 		// console.dir(this.games);
 
-		let g = this.getGameByID(gameID);
+		let game = this.getGameByID(gameID);
 
-		let a = false;
-		if (g)
-			a = g.players.map((player) => player.socketID).includes(player.socketID);
+		let isInGame = false;
+		if (game)
+			isInGame = game.players.map((player) => player.socketID).includes(player.socketID);
 		// console.log("playerIsInGame: ", a);
-		return a;
+		return isInGame;
 	}
 
 	joinGame(player, gameID) {
@@ -107,6 +107,7 @@ class Server {
 		this.games.forEach( game => this.removePlayerFromGame(player, game) );
 		let game = new Game(player);
 		this.games.push( game );
+		game.init();
 		return game;
 	}
 

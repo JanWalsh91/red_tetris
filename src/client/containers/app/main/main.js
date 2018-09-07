@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import styles from './main.css'
 import PlayerForm from '../../../components/playerForm/playerForm'
 import HostList from '../../../components/hostList/hostList'
+import Board from '../../../components/board/board'
 import socket from '../../../socket'
 import {updatePlayerName, updateSelectedGame} from '../../../actions/client'
 
@@ -20,7 +21,9 @@ const Main = ( props ) => {
 
 		if (props.gameJoined) {
 			content = (
-				<div>Game Board</div>
+				<div>
+					<Board gameState={props.gameState}/>
+				</div>
 			)
 		}
 		else {
@@ -45,7 +48,8 @@ const mapStateToProps = (state) => {
 		hostList: state.hostList,
 		playerName: state.playerName,
 		gameSelected: state.gameSelected,
-		gameJoined: state.gameJoined
+		gameJoined: state.gameJoined,
+		gameState: state.gameState
 	}
 }
 

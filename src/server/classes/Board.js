@@ -1,7 +1,7 @@
-// import Piece from './Piece'
+import Piece from './Piece'
 
 // for testing:
-var Piece = require('./Piece').Piece;
+// var Piece = require('./Piece').Piece;
 
 /*
 *	Board:
@@ -219,8 +219,9 @@ class Board {
 
 	getCells() {
 		let cells = JSON.parse(JSON.stringify(this.cells));
+		if (!this.activePiece) return cells;
 		for (let y = 0; y < 4; y++) {
-			for (let x = 0; x < 4; x++){
+			for (let x = 0; x < 4; x++) {
 				if (this.activePiece.cells[y][x] != 0x0) {
 					cells[this.activePiece.coords.y + y][this.activePiece.coords.x + x] = this.activePiece.cells[y][x];
 				}
@@ -228,31 +229,46 @@ class Board {
 		}
 		return cells;
 	}
+
+
+	getShadowCells() {
+		let shadowCells = JSON.parse(JSON.stringify(this.cells));
+		for (let y = 0; y < 4; y++) {
+			for (let x = 0; x < 4; x++){
+				if (this.activePiece.cells[y][x] != 0x0) {
+					for (let z = this.activePiece.coords.y + y; z < this.board.size.y; z++) {
+						shadowCells[z][this.activePiece.coords.x + x] = 0xdadada;
+					}
+				}
+			}
+		}
+		return shadowCells;
+	}
 }
 
 // for testing
-let board = new Board(
-	{
-		size: {x: 10, y: 20},
-		piecesList: [new Piece(0), new Piece(0), new Piece(0)]
-	}
-);
+// let board = new Board(
+// 	{
+// 		size: {x: 10, y: 20},
+// 		piecesList: [new Piece(0), new Piece(0), new Piece(0)]
+// 	}
+// );
 
-board.setNextActivePiece();
+// board.setNextActivePiece();
 
 // board.printCells();
 
 // board.moveRight();
 // board.moveRight();
 // board.freezePiece();
-board.setNextActivePiece();
+// board.setNextActivePiece();
 
 // board.rotate();
 // board.freezePiece();
 
 // board.printCells();
 
-console.log(board.getCells());
+// console.log(board.getCells());
 //
 // board.tryToMovePiece({x: -4, y: 0});
 // board.freezePiece();
@@ -264,4 +280,4 @@ console.log(board.getCells());
 
 
 
-// export default Board;
+export default Board;

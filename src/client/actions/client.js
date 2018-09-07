@@ -47,3 +47,15 @@ export const updateGameJoined = (gameJoined) => {
 		gameJoined
 	}
 }
+
+export const UPDATE_GAME_STATE = 'UPDATE_GAME_STATE'
+
+export const updateGameState = (cells) => {
+
+	console.log("updateGameState");
+
+	return {
+		type: UPDATE_GAME_STATE,
+		cells
+	}
+}

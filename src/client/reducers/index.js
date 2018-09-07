@@ -1,4 +1,4 @@
-import { ALERT_POP, UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED } from '../actions/client'
+import { ALERT_POP, UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE } from '../actions/client'
 import { PING_SERVER } from '../actions/server'
 
 import socket from '../socket'
@@ -70,6 +70,13 @@ const updateGameJoined = (state, action) => {
 	}
 }
 
+const updateGameState = (state, action) => {
+	return {
+		...state,
+		gameState: action.cells
+	}
+}
+
 const reducer = (state = {} , action) => {
 	console.log("reducer action type: ", action.type);
 	switch(action.type) {
@@ -79,6 +86,7 @@ const reducer = (state = {} , action) => {
 		case UPDATE_PLAYER_NAME: return updatePlayerName(state, action);
 		case UPDATE_SELECTED_GAME: return updateSelectedGame(state, action);
 		case UPDATE_GAME_JOINED: return updateGameJoined(state, action);
+		case UPDATE_GAME_STATE: return updateGameState(state, action);
 		default: console.log('default'); return state;
 	}
 }
