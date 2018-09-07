@@ -1,7 +1,7 @@
 import Piece from './Piece'
 import Board from './Board'
 
-import * as ActionNames from '../serverActions' 
+import * as ActionNames from '../serverActions'
 
 class Game {
 	static gameCount = 0;
@@ -64,15 +64,23 @@ class Game {
 
 	start () {
 		console.log("[Game.js] start");
+		if (this.isPlaying) {
+			console.log("Espece d'enfoiré, arrête ca!");
+			return ;
+		}
 		this.players.forEach( player => {
 			player.board.setNextActivePiece();
 			setInterval(() => {
-				player.board.moveDown();
+				let moved = player.board.moveDown();
+				if (!moved) {
+					player.board.freezePiece();
+					player.board.setNextActivePiece();
+				}
 				player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
 			}, 1000);
 			player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
 		});
-
+		this.isPlaying = true;
 	}
 
 	addPieces() {

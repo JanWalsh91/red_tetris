@@ -184,6 +184,7 @@ class Board {
 			console.log("\t\t=D")
 			this.activePiece = rotatedPiece;
 		}
+		return canPlace;
 	}
 
 	moveLeft() {
@@ -194,6 +195,7 @@ class Board {
 		if (canMove) {
 			this.activePiece = movedPiece;
 		}
+		return canMove;
 	}
 
 	moveRight() {
@@ -204,6 +206,7 @@ class Board {
 		if (canMove) {
 			this.activePiece = movedPiece;
 		}
+		return canMove;
 	}
 
 	moveDown() {
@@ -214,6 +217,7 @@ class Board {
 		if (canMove) {
 			this.activePiece = movedPiece;
 		}
+		return canMove;
 		// if move down cannot be done, freezePiece and setNextActivePiece ?
 	}
 
