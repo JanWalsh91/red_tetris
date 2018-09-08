@@ -72,7 +72,7 @@ class Game {
 		this.players.forEach( player => {
 			player.board.setNextActivePiece();
 			player.interval = setInterval(() => {
-				console.log("Interval player", player.socketID);
+				// console.log("Interval player", player.socketID);
 				let moved = player.board.moveDown();
 				if (!moved) {
 					player.board.freezePiece();

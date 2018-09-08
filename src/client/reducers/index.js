@@ -81,9 +81,16 @@ const updateShadowState = (state, action) => {
 	console.log("updateShadowState");
 	console.log(state);
 	console.log(action);
+
+	if (state.shadowState == undefined) {
+		state.shadowState = new Map();
+	}
+
+	let newShadowState = state.shadowState;
+	newShadowState.set(action.shadowCellsData.id, action.shadowCellsData);
 	return {
 		...state,
-		shadowState: action.shadowCellsData
+		shadowState: newShadowState
 	}
 }
 

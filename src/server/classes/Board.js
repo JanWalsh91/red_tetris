@@ -102,7 +102,7 @@ class Board {
 		if (!vector || vector.x == undefined || vector.y == undefined) {console.log("\tinvalid vector!"); return piece;}
 
 		piece.move(vector);
-		console.log("\tmoved piece to: ", piece.coords);
+		// console.log("\tmoved piece to: ", piece.coords);
 		return this.pieceIsPlaceable(piece);
 	}
 
@@ -237,39 +237,20 @@ class Board {
 		// if move down cannot be done, freezePiece and setNextActivePiece ?
 	}
 
-	moveDown() {
-		if (!this.activePiece) return ;
-
-		let movedPiece = new Piece(this.activePiece);
-		let canMove = this.tryToMovePiece(movedPiece, {x: 0, y: 1});
-		if (canMove) {
-			this.activePiece = movedPiece;
-		} else {
-			// console.log("Cannot move down");
-		}
-		return canMove;
-		// if move down cannot be done, freezePiece and setNextActivePiece ?
-	}
-
 	downShortcut() {
 		if (!this.activePiece) return ;
 
-		console.log("downShortcut");
-
-
 		let canMove = false;
-		for (let y = this.size.y; y > 0; y--) {
+		for (let y = 0; y < this.size.y; y++) {
 			let movedPiece = new Piece(this.activePiece);
-			console.log("Try to move piece ", {x: 0, y});
 			canMove = this.tryToMovePiece(movedPiece, {x: 0, y});
-			if (canMove) {
-				console.log("can move");
+			if (!canMove && y > 0) {
+				movedPiece = new Piece(this.activePiece);
+				canMove = this.tryToMovePiece(movedPiece, {x: 0, y: y - 1});
 				this.activePiece = movedPiece;
 				this.freezePiece();
 				this.setNextActivePiece();
 				break;
-			} else {
-				console.log("Cannot move down");
 			}
 		}
 
@@ -286,6 +267,7 @@ class Board {
 				}
 			}
 			if (isFullLine) {
+				console.log("IsFullLine: ", y);
 				for (let z = y; z > 1; z--) {
 					this.cells[z] = this.cells[z - 1];
 				}

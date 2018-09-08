@@ -11,31 +11,41 @@ const shadowBoard = ( props ) => {
 	let shadowCellClasses = [];
 	shadowCellClasses.push(styles.shadowCell);
 
+	let contentArray = [];
 	if (props.shadowState) {
-		content = props.shadowState.board.map( row => {
-			let line = row.map( cell => {
 
-				// console.log(cell);
+		props.shadowState.forEach((shadowBoard) => {
+			console.log(shadowBoard);
 
-				let classes = [...shadowCellClasses];
-				classes.push(styles[cell]);
-				classes = classes.join(' ');
+			contentArray.push(
+				shadowBoard.board.map( row => {
+					let line = row.map( cell => {
 
-				return <div className={classes}></div>;
-			});
-			line = <div className={styles.row}>{line}</div>
-			return line;
+						// console.log(cell);
+
+						let classes = [...shadowCellClasses];
+						classes.push(styles[cell]);
+						classes = classes.join(' ');
+
+						return <div className={classes}></div>;
+					});
+					line = <div className={styles.row}>{line}</div>
+					return line;
+				}),
+				<div>{shadowBoard.name}</div>
+			);
+
+			// Help, concatenate those variables ><
 		})
 
-		// Help, concatenate those variables ><
-		info = (
-			<div>{props.shadowState.name}</div>
-		)
+
+
+
 	}
 
 	return (
 		<div className={styles.shadowBoard}>
-			{content}
+			{contentArray}
 			{info}
 		</div>
 	);
