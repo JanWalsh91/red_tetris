@@ -12,10 +12,6 @@ import * as ActionNames from '../../../../server/serverActions'
 
 const Main = ( props ) => {
 
-	const test = (event) => {
-		console.log("==============:",  event);
-	}
-
 	const startGame = () => {
 		socket.emit(ActionNames.START_GAME);
 	}

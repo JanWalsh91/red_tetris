@@ -4,6 +4,7 @@ class Player {
 		this.socketID = socketID;
 		this.socket = socket;
 		this.board = null;
+		this.interval = null;
 	}
 }
 

@@ -13,12 +13,20 @@ import * as ActionNames from '../../../server/serverActions'
 
 const App = (props) => {
 
-	const keyboardEvent = (event) => {
+	let canMove = true;
 
+	const keyboardEvent = (event) => {
+		if (!canMove) return ;
+		canMove = false;
+		setTimeout(function() { canMove = true; }, 100);
 		console.log(event.keyCode);
 		if (props.gameJoined) {
-			console.log("props.gameJoined");
+			// console.log("props.gameJoined");
+			event.preventDefault();
 			switch (event.keyCode) {
+				case 32:
+					socket.emit(ActionNames.SEND_GAME_ACTION, "downShortcut");
+					break;
 				case 37:
 					socket.emit(ActionNames.SEND_GAME_ACTION, "left");
 					break;

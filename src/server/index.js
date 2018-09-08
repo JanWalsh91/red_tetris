@@ -45,7 +45,7 @@ const initEngine = io => {
 	*	For a player, send its gameState to him
 	*/
 	const updateGameState = (player) => {
-		console.log("[index.js] updateGameState");
+		// console.log("[index.js] updateGameState");
 		// get socket of player
 		let socket = server.sockets.get(player.socketID);
 		socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
@@ -60,7 +60,7 @@ const initEngine = io => {
 	}
 
 	const getPlayerAndGame = (socketID) => {
-		console.log("[index.js] getPlayerAndGame");
+		// console.log("[index.js] getPlayerAndGame");
 		let data = [];
 		server.games.find( game => {
 			let player = game.players.find( p => p.socketID === socketID );
@@ -91,12 +91,12 @@ const initEngine = io => {
 		})
 
 		socket.on(ActionNames.JOIN_GAME, (gameID) => {
-			console.log("[server/index.js] ", ActionNames.JOIN_GAME, gameID);
+			// console.log("[server/index.js] ", ActionNames.JOIN_GAME, gameID);
 			// TODO: move player from lobby list to game's player list
 
 			let player = server.lobby.get(socket.id);
 
-			console.log("got player: ", player);
+			// console.log("got player: ", player);
 			// server.printGames();
 
 			// TODO: handle errors
@@ -107,11 +107,25 @@ const initEngine = io => {
 			updateHostList();
 
 			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
+
+			let game = server.games.filter((game) => {
+				return game.id == game.id;
+			});
+
+			if (game.length != 1) {
+				// TODO: error
+			} else {
+				game = game[0];
+			}
+
+			game.initPlayerBoard(player);
+			socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+
 			// server.printGames();
 		})
 
 		socket.on(ActionNames.CREATE_GAME, () => {
-			console.log("[server/index.js] ", ActionNames.CREATE_GAME);
+			// console.log("[server/index.js] ", ActionNames.CREATE_GAME);
 			let player = server.lobby.get(socket.id);
 			// TODO: get player from lobby list
 			// console.log(p);
@@ -129,7 +143,7 @@ const initEngine = io => {
 		})
 
 		socket.on(ActionNames.START_GAME, () => {
-			console.log("[index.js] START_GAME");
+			// console.log("[index.js] START_GAME");
 			let player, game;
 			[player, game] = getPlayerAndGame(socket.id);
 
@@ -141,11 +155,15 @@ const initEngine = io => {
 		})
 
 		socket.on(ActionNames.SEND_GAME_ACTION, (action) => {
-			console.log("[index.js] SEND_GAME_ACTION: ", action);
+			// console.log("[index.js] SEND_GAME_ACTION: ", action);
 			let player, game;
 			[player, game] = getPlayerAndGame(socket.id);
 
 			switch (action) {
+				case "downShortcut":
+					player.board.downShortcut();
+					updateGameState(player);
+					break;
 				case "left":
 					player.board.moveLeft();
 					updateGameState(player);

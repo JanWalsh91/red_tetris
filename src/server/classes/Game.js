@@ -36,17 +36,18 @@ class Game {
 		console.log("[Game.js] initPlayerBoard");
 		player.board = new Board({
 			gameCallback: (board) => {
-				console.log("[Game.js] initPlayerBoard callback");
+				// console.log("[Game.js] initPlayerBoard callback");
+
 				// check if need to add more pieces to big pieceList
-				console.log("board.piecesCopiedCount:", board.piecesCopiedCount);
-				console.log("this.piecesList.length:", this.piecesList.length);
+				// console.log("board.piecesCopiedCount:", board.piecesCopiedCount);
+				// console.log("this.piecesList.length:", this.piecesList.length);
 				if (board.piecesCopiedCount - this.piecesList.length < 5) {
 					// add more pieces to big pieceList
 
 					this.piecesList.push(...Piece.generateRandomPieces(Game.newPiecesCount));
 				}
-				console.log("board.piecesCopiedCount:", board.piecesCopiedCount);
-				console.log("this.piecesList.length:", this.piecesList.length);
+				// console.log("board.piecesCopiedCount:", board.piecesCopiedCount);
+				// console.log("this.piecesList.length:", this.piecesList.length);
 
 				// check if need to copy pieces to board piecesList
 				if (board.piecesList.length < 5) {
@@ -70,13 +71,17 @@ class Game {
 		}
 		this.players.forEach( player => {
 			player.board.setNextActivePiece();
-			setInterval(() => {
+			player.interval = setInterval(() => {
 				let moved = player.board.moveDown();
 				if (!moved) {
 					player.board.freezePiece();
+					player.board.removeFullLine();
 					player.board.setNextActivePiece();
 				}
 				player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+				if (player.board.gameOver) {
+					clearInterval(player.interval);
+				}
 			}, 1000);
 			player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
 		});

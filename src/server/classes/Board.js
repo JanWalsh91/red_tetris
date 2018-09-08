@@ -10,6 +10,7 @@ import Piece from './Piece'
 *		activePiece: Piece or null
 *		piecesList: [Piece ...] or null
 *		currentPieceIndex: 0
+*		gameOver: false
 */
 class Board {
 	/*
@@ -26,6 +27,7 @@ class Board {
 			size: {x: 10, y : 20},
 			piecesList: [],
 			piecesCopiedCount: 0,
+			gameOver: false,
 			gameCallback: () => {console.log("no callback set");}
 		}
 		params = {...defaultParams, ...params};
@@ -37,6 +39,7 @@ class Board {
 		this.activePiece = null;
 		this.piecesList = params.piecesList;
 		this.piecesCopiedCount = params.piecesCopiedCount;
+		this.gameOver = params.gameOver;
 		this.gameCallback = params.gameCallback;
 	}
 
@@ -47,18 +50,24 @@ class Board {
 		console.log("[Board.js] addPieces");
 		if (!pieces || pieces.constructor !== Array || !(pieces[0] instanceof Piece))
 			return ;
-		console.log(pieces);
+		// console.log(pieces);
 		this.piecesList.push(...pieces);
-		console.log(this.piecesList);
+		// console.log(this.piecesList);
 	}
 
 	/*
 	*	Sets the next piece from piecesList as the activePiece
 	*/
 	setNextActivePiece() {
-		console.log("[Board.js] setNextActivePiece");
+		// console.log("[Board.js] setNextActivePiece");
 		this.gameCallback(this);
 		this.activePiece = this.piecesList.shift();
+
+		let isPlaceable = this.pieceIsPlaceable(this.activePiece);
+		if (!isPlaceable) {
+			this.gameOver = true;
+			this.fillRed();
+		}
 		if (!this.activePiece) {
 			console.log("[Board.js] Error: no next piece available");
 		}
@@ -71,7 +80,7 @@ class Board {
 	*	Does not rotate on failure.
 	*/
 	tryToRotatePiece( piece ) {
-		console.log("[Board.js] tryToRotatePiece");
+		// console.log("[Board.js] tryToRotatePiece");
 		if (!piece) {console.log("\tno piece!"); return ;}
 
 		piece.rotate();
@@ -83,7 +92,7 @@ class Board {
 	*	Tries to move a piece or the activePiece. Returns piece (moved or not).
 	*/
 	tryToMovePiece( piece, vector ) {
-		console.log("[Board.js] tryToMovePiece, vector: ", vector);
+		// console.log("[Board.js] tryToMovePiece, vector: ", vector);
 		if (!piece) {console.log("\tno piece!"); return ;}
 		if (!vector || vector.x == undefined || vector.y == undefined) {console.log("\tinvalid vector!"); return piece;}
 
@@ -96,19 +105,19 @@ class Board {
 	*	Checks if the piece or activePiece can exist on this board
 	*/
 	pieceIsPlaceable( piece ) {
-		console.log("[Board.js] pieceIsPlaceable");
+		// console.log("[Board.js] pieceIsPlaceable");
 		if (!piece) return false;
 		for (let y = 0; y < 4; y++) {
 			for (let x = 0; x < 4; x++) {
 				if (piece.cells[y][x] != 0x0) {
 					// if non-null piece cell outside of board
 					if (piece.coords.x + x >= this.size.x || piece.coords.x + x < 0 || piece.coords.y + y >= this.size.y || piece.coords.y + y < 0) {
-						console.log("[Board.js] Piece out of board bounds. coords: ", {x: piece.coords.x + x, y: piece.coords.y + y});
+						// console.log("[Board.js] Piece out of board bounds. coords: ", {x: piece.coords.x + x, y: piece.coords.y + y});
 						return false;
 					}
 					// if non-null piece cell on a non-null board cell
 					else if (this.cells[piece.coords.y + y][piece.coords.x + x] != 0x0 && piece.cells[y][x] != 0x0) {
-						console.log("[Board.js] Piece overlapping at ", {x: piece.coords.x + x, y: piece.coords.y + y}, ", piece: ", piece.cells[y][x], "board: ", this.cells[piece.coords.y + y][piece.coords.x + x]);
+						// console.log("[Board.js] Piece overlapping at ", {x: piece.coords.x + x, y: piece.coords.y + y}, ", piece: ", piece.cells[y][x], "board: ", this.cells[piece.coords.y + y][piece.coords.x + x]);
 						return false;
 					}
 				}
@@ -216,18 +225,74 @@ class Board {
 		let canMove = this.tryToMovePiece(movedPiece, {x: 0, y: 1});
 		if (canMove) {
 			this.activePiece = movedPiece;
+		} else {
+			// console.log("Cannot move down");
 		}
 		return canMove;
 		// if move down cannot be done, freezePiece and setNextActivePiece ?
 	}
 
-	// TODO: move down shortcut
+	moveDown() {
+		if (!this.activePiece) return ;
+
+		let movedPiece = new Piece(this.activePiece);
+		let canMove = this.tryToMovePiece(movedPiece, {x: 0, y: 1});
+		if (canMove) {
+			this.activePiece = movedPiece;
+		} else {
+			// console.log("Cannot move down");
+		}
+		return canMove;
+		// if move down cannot be done, freezePiece and setNextActivePiece ?
+	}
+
+	downShortcut() {
+		if (!this.activePiece) return ;
+
+		console.log("downShortcut");
+
+
+		let canMove = false;
+		for (let y = this.size.y; y > 0; y--) {
+			let movedPiece = new Piece(this.activePiece);
+			console.log("Try to move piece ", {x: 0, y});
+			canMove = this.tryToMovePiece(movedPiece, {x: 0, y});
+			if (canMove) {
+				console.log("can move");
+				this.activePiece = movedPiece;
+				this.freezePiece();
+				this.setNextActivePiece();
+				break;
+			} else {
+				console.log("Cannot move down");
+			}
+		}
+
+		return canMove;
+	}
+
+
+	removeFullLine() {
+		for (let y = 0; y < this.size.y; y++) {
+			let isFullLine = true;
+			for (let x = 0; x < this.size.x; x++) {
+				if (this.cells[y][x] == 0x0) {
+					isFullLine = false;
+				}
+			}
+			if (isFullLine) {
+				for (let z = y; z > 1; z--) {
+					this.cells[z] = this.cells[z - 1];
+				}
+			}
+		}
+	}
 
 	getCells() {
-		console.log("[Board.js] getCells <3");
+		// console.log("[Board.js] getCells <3");
 		let cells = JSON.parse(JSON.stringify(this.cells));
 		if (!this.activePiece) return cells;
-		console.log(this.activePiece);
+		// console.log(this.activePiece);
 		for (let y = 0; y < 4; y++) {
 			for (let x = 0; x < 4; x++) {
 
@@ -238,7 +303,6 @@ class Board {
 		}
 		return cells;
 	}
-
 
 	getShadowCells() {
 		let shadowCells = JSON.parse(JSON.stringify(this.cells));
@@ -252,6 +316,16 @@ class Board {
 			}
 		}
 		return shadowCells;
+	}
+
+	fillRed() {
+		for (let y = 0; y < this.size.y; y++) {
+			for (let x = 0; x < this.size.x; x++) {
+				if (this.cells[y][x] == 0x0) {
+					this.cells[y][x] = "gameOver";
+				}
+			}
+		}
 	}
 }
 

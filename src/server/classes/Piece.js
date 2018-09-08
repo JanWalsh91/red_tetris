@@ -46,7 +46,7 @@ class Piece {
 	constructor( params ) {
 		if (params instanceof Piece) {
 			// Copy constructor
-			console.log("[Piece.js] Piece constructor COPY");
+			// console.log("[Piece.js] Piece constructor COPY");
 			params = {
 				type: params.type,
 				orientation: params.orientation,
@@ -54,7 +54,7 @@ class Piece {
 			};
 		}
 		// Constructor with params
-		console.log("[Piece.js] Piece constructor PARAMS");
+		// console.log("[Piece.js] Piece constructor PARAMS");
 		let defaultParams = {
 			type: 0,
 			orientation: 0,
@@ -88,14 +88,14 @@ class Piece {
 	}
 
 	move( vector = {x: 0, y : 1} ) {
-		console.log("[Piece.js] move. vector: ", vector);
+		// console.log("[Piece.js] move. vector: ", vector);
 		if (!Number.isInteger(vector.x) || !Number.isInteger(vector.y)){
 			console.log("   vector invalid");
 			return ;
 		}
 		this.coords.x += vector.x;
 		this.coords.y += vector.y;
-		console.log("piece moved: ", this.coords);
+		// console.log("piece moved: ", this.coords);
 	}
 }
 
