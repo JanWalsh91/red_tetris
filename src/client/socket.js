@@ -2,7 +2,7 @@ import io from 'socket.io-client'
 import params from '../../params'
 
 import store from './index'
-import {alert, updateHostList, updateGameJoined, updateGameState} from './actions/client'
+import {alert, updateHostList, updateGameJoined, updateGameState, updateShadowState} from './actions/client'
 
 import * as ActionNames from '../server/serverActions'
 
@@ -33,6 +33,12 @@ socket.on(ActionNames.UPDATE_GAME_JOINED, (joined) => {
 socket.on(ActionNames.UPDATE_GAME_STATE, (cells) => {
 	console.log("[socket.js] UPDATE_GAME_STATE: ", cells);
 	store.dispatch(updateGameState(cells))
+})
+
+socket.on(ActionNames.UPDATE_SHADOW_STATE, (shadowCellsData) => {
+	console.log("SHADOW CELLS ==============================================");
+	console.log(shadowCellsData);
+	store.dispatch(updateShadowState(shadowCellsData))
 })
 
 module.exports = socket

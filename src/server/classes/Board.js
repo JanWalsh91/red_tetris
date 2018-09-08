@@ -11,6 +11,7 @@ import Piece from './Piece'
 *		piecesList: [Piece ...] or null
 *		currentPieceIndex: 0
 *		gameOver: false
+*		needToBroadcast: false
 */
 class Board {
 	/*
@@ -28,6 +29,7 @@ class Board {
 			piecesList: [],
 			piecesCopiedCount: 0,
 			gameOver: false,
+			needToBroadcast: false,
 			gameCallback: () => {console.log("no callback set");}
 		}
 		params = {...defaultParams, ...params};
@@ -40,6 +42,7 @@ class Board {
 		this.piecesList = params.piecesList;
 		this.piecesCopiedCount = params.piecesCopiedCount;
 		this.gameOver = params.gameOver;
+		this.needToBroadcast = params.needToBroadcast;
 		this.gameCallback = params.gameCallback;
 	}
 
@@ -67,6 +70,8 @@ class Board {
 		if (!isPlaceable) {
 			this.gameOver = true;
 			this.fillRed();
+		} else {
+			this.needToBroadcast = true;
 		}
 		if (!this.activePiece) {
 			console.log("[Board.js] Error: no next piece available");
@@ -305,18 +310,35 @@ class Board {
 	}
 
 	getShadowCells() {
+		// console.log("[Board.js] getCells <3");
 		let shadowCells = JSON.parse(JSON.stringify(this.cells));
-		for (let y = 0; y < 4; y++) {
-			for (let x = 0; x < 4; x++){
-				if (this.activePiece.cells[y][x] != 0x0) {
-					for (let z = this.activePiece.coords.y + y; z < this.board.size.y; z++) {
-						shadowCells[z][this.activePiece.coords.x + x] = 0xdadada;
+		for (let y = 0; y < this.size.y; y++) {
+			for (let x = 0; x < this.size.x; x++) {
+				if (this.cells[y][x] != 0x0) {
+					for (let z = y; z < this.size.y; z++) {
+						shadowCells[z][x] = "gameOver";
 					}
 				}
 			}
 		}
 		return shadowCells;
 	}
+
+	// getShadowCells() {
+	// 	// console.log("[Board.js] getShadowCells <3");
+	// 	let shadowCells = JSON.parse(JSON.stringify(this.cells));
+	// 	if (!this.activePiece) return shadowCells;
+	// 	for (let y = 0; y < 4; y++) {
+	// 		for (let x = 0; x < 4; x++){
+	// 			if (this.activePiece.cells[y][x] != 0x0) {
+	// 				for (let z = this.activePiece.coords.y + y; z < this.board.size.y; z++) {
+	// 					shadowCells[z][this.activePiece.coords.x + x] = 0xdadada;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	return shadowCells;
+	// }
 
 	fillRed() {
 		for (let y = 0; y < this.size.y; y++) {

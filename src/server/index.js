@@ -48,7 +48,28 @@ const initEngine = io => {
 		// console.log("[index.js] updateGameState");
 		// get socket of player
 		let socket = server.sockets.get(player.socketID);
+
 		socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+
+		if (player.board.needToBroadcast) {
+			player.board.needToBroadcast = false;
+
+			let game = null;
+			server.games.find( tmpGame => {
+				let tmpPlayer = tmpGame.players.find( p => p.socketID === player.socketID );
+				if (tmpPlayer !== undefined) {
+					game = tmpGame;
+					return true;
+				}
+			});
+
+			let shadowCellData = {
+				id: player.socketID,
+				name: player.name,
+				board: player.board.getShadowCells()
+			}
+			io.to(game.id).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);
+		}
 	}
 
 	/*
@@ -147,11 +168,9 @@ const initEngine = io => {
 			let player, game;
 			[player, game] = getPlayerAndGame(socket.id);
 
-			game.start();
-			// TODO: start for all players
-
-			// updateGameState(player);
-
+			if (game.host.socketID == socket.id) {
+				game.start();
+			}
 		})
 
 		socket.on(ActionNames.SEND_GAME_ACTION, (action) => {
@@ -198,6 +217,7 @@ const initEngine = io => {
 			console.log(x);
 			if (x.player !== undefined) {
 				server.removePlayerFromGame(x.player, x.g);
+				x.player.stopGame();
 				let serverInfo = server.getJoinableGames();
 				io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, serverInfo);
 			}

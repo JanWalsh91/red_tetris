@@ -1,0 +1,16 @@
+.fullCell {
+	background: grey;
+}
+
+.shadowCell {
+	width: 5px;
+	height: 5px;
+}
+
+.row {
+	display: flex;
+}
+
+.gameOver {
+	background: grey;
+}

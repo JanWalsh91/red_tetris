@@ -6,6 +6,15 @@ class Player {
 		this.board = null;
 		this.interval = null;
 	}
+
+
+
+	stopGame() {
+		clearInterval(this.interval);
+	}
+
 }
+
+
 
 export default Player

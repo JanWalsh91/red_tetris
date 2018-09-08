@@ -4,3 +4,8 @@
 	display: flex;
 	flex-direction: column;
 }
+
+.gameArea {
+	display: flex;
+	flex-direction: row;
+}

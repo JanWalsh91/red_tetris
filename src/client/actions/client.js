@@ -59,3 +59,15 @@ export const updateGameState = (cells) => {
 		cells
 	}
 }
+
+export const UPDATE_SHADOW_STATE = 'UPDATE_SHADOW_STATE'
+
+export const updateShadowState = (shadowCellsData) => {
+
+	console.log("updateShadowState");
+
+	return {
+		type: UPDATE_SHADOW_STATE,
+		shadowCellsData
+	}
+}

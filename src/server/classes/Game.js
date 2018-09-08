@@ -72,6 +72,7 @@ class Game {
 		this.players.forEach( player => {
 			player.board.setNextActivePiece();
 			player.interval = setInterval(() => {
+				console.log("Interval player", player.socketID);
 				let moved = player.board.moveDown();
 				if (!moved) {
 					player.board.freezePiece();
@@ -80,7 +81,7 @@ class Game {
 				}
 				player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
 				if (player.board.gameOver) {
-					clearInterval(player.interval);
+					player.stopGame();
 				}
 			}, 1000);
 			player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());

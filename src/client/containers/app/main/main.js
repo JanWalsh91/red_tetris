@@ -4,6 +4,7 @@ import styles from './main.css'
 import PlayerForm from '../../../components/playerForm/playerForm'
 import HostList from '../../../components/hostList/hostList'
 import Board from '../../../components/board/board'
+import ShadowBoard from '../../../components/shadowBoard/shadowBoard'
 import Button from '../../../components/button/button'
 import socket from '../../../socket'
 import {updatePlayerName, updateSelectedGame} from '../../../actions/client'
@@ -18,6 +19,9 @@ const Main = ( props ) => {
 
 	let content;
 
+	console.log("======== PROPS ============ ");
+	console.log(props);
+
 	if (props.playerName === undefined || props.playerName.length == 0) {
 		content = (<PlayerForm onUpdateName={ () => props.onUpdatePlayerName()}></PlayerForm>);
 	}
@@ -27,9 +31,14 @@ const Main = ( props ) => {
 
 		if (props.gameJoined) {
 			content = (
-				<div>
-					<Board gameState={props.gameState}/>
-					<Button onClick={startGame} value="Start Game"/>
+				<div className={styles.gameArea}>
+					<div className={styles.shadowBoard}>
+						<ShadowBoard shadowState={props.shadowState}/>
+					</div>
+					<div>
+						<Board gameState={props.gameState}/>
+						<Button onClick={startGame} value="Start Game"/>
+					</div>
 				</div>
 			)
 		}
@@ -56,7 +65,8 @@ const mapStateToProps = (state) => {
 		playerName: state.playerName,
 		gameSelected: state.gameSelected,
 		gameJoined: state.gameJoined,
-		gameState: state.gameState
+		gameState: state.gameState,
+		shadowState: state.shadowState
 	}
 }
 
