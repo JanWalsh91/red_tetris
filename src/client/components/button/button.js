@@ -5,9 +5,7 @@ const button = ( props ) => {
 	// socket.emit('server/ping', null);
 
 	return (
-		<button
-			onClick={props.onClick}>
-		</button>
+		<button onClick={props.onClick}>{props.value}</button>
 	);
 }
 

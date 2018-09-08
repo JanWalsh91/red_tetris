@@ -9,12 +9,9 @@ const board = ( props ) => {
 	let cellClasses = [];
 	cellClasses.push(styles.cell);
 
-	// TODO: pass board isze info
+	// TODO: pass board size info
 	if (props.gameState) {
-		console.log("found game state");
 		content = props.gameState.map( row => {
-			console.log("row: ", row);
-
 
 			let line = row.map( cell => {
 				let classes = [...cellClasses];

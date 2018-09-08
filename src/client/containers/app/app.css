@@ -1,7 +1,35 @@
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+
 .app {
-	border: red solid 1px;
+	width: 100%;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+* {
+	font-family: 'Roboto', sans-serif;
+}
+
+input[type="text"] {
+	font-size: 0.8rem;
+	height: 1rem;
+	padding: 10px;
+	border: grey solid;
+	border-width: 1px;
+	border-radius: 0rem;
+	text-align: center;
+	outline: 0;
+	background: #F5F5F5;
+	color: rgba(0,0,0,.87);
+	font-weight: bold;
 }

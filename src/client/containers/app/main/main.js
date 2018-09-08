@@ -29,7 +29,7 @@ const Main = ( props ) => {
 			content = (
 				<div>
 					<Board gameState={props.gameState}/>
-					<Button onClick={startGame}/>
+					<Button onClick={startGame} value="Start Game"/>
 				</div>
 			)
 		}

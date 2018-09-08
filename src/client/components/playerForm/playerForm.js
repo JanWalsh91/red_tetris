@@ -8,7 +8,7 @@ const PlayerForm = ( props ) => {
 		<div className={styles.playerForm}>
 			<input type="text" id="playerInputName" />
 			<br/>
-			<input value="FUN" type="button" onClick={props.onUpdateName} />
+			<input value="Play" type="button" onClick={props.onUpdateName} />
 		</div>
 	)
 }
