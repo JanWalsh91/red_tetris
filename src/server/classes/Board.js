@@ -146,6 +146,7 @@ class Board {
 				}
 			}
 		}
+		this.needToBroadcast = true;
 	}
 
 	printCells() {
@@ -250,6 +251,7 @@ class Board {
 				this.activePiece = movedPiece;
 				this.freezePiece();
 				this.setNextActivePiece();
+				this.removeFullLine();
 				break;
 			}
 		}
@@ -267,7 +269,6 @@ class Board {
 				}
 			}
 			if (isFullLine) {
-				console.log("IsFullLine: ", y);
 				for (let z = y; z > 1; z--) {
 					this.cells[z] = this.cells[z - 1];
 				}

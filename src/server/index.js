@@ -34,12 +34,8 @@ const initApp = (app, params, cb) => {
 }
 
 const initEngine = io => {
-	/*
-	*	Emits an updated list of available games to all sockets joined to 'lobby'
-	*/
-	const updateHostList = () => {
-		io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, server.getJoinableGames());
-	}
+
+	Server.io = io;
 
 	/*
 	*	For a player, send its gameState to him
@@ -49,7 +45,7 @@ const initEngine = io => {
 		// get socket of player
 		let socket = server.sockets.get(player.socketID);
 
-		socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+		Server.updateGameState(player);
 
 		if (player.board.needToBroadcast) {
 			player.board.needToBroadcast = false;
@@ -63,12 +59,7 @@ const initEngine = io => {
 				}
 			});
 
-			let shadowCellData = {
-				id: player.socketID,
-				name: player.name,
-				board: player.board.getShadowCells()
-			}
-			io.to(game.id).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);
+			Server.updateShadowBoard(game.id, player);
 		}
 	}
 
@@ -108,7 +99,7 @@ const initEngine = io => {
 			let player = new Player(playerName, socket.id, socket);
 			server.lobby.set(socket.id, player);
 			socket.join('lobby');
-			updateHostList();
+			Server.updateHostList(server.getJoinableGames());
 		})
 
 		socket.on(ActionNames.JOIN_GAME, (gameID) => {
@@ -125,7 +116,7 @@ const initEngine = io => {
 			server.lobby.delete(socket.id);
 			socket.leave('lobby');
 			socket.join(gameID);
-			updateHostList();
+			Server.updateHostList(server.getJoinableGames());
 
 			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
 
@@ -140,7 +131,7 @@ const initEngine = io => {
 			}
 
 			game.initPlayerBoard(player);
-			socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+			Server.updateGameState(player);
 
 			// server.printGames();
 		})
@@ -157,7 +148,7 @@ const initEngine = io => {
 			// Remove the player from the lobby map and send the new server info to the lobby
 			server.lobby.delete(socket.id);
 			socket.join(game.id);
-			updateHostList();
+			Server.updateHostList(server.getJoinableGames());
 
 			socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
 			updateGameState(player);

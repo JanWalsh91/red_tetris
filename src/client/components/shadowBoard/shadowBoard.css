@@ -2,6 +2,10 @@
 	background: grey;
 }
 
+.ShadowBoard:first-child {
+	border: 1px solid grey;
+}
+
 .shadowCell {
 	width: 5px;
 	height: 5px;

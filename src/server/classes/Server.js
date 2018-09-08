@@ -1,7 +1,11 @@
 import Game from './Game'
 import Player from './Player'
 
+import * as ActionNames from './../serverActions'
+
 class Server {
+
+	static io = null;
 
 	// games[0].getPlayers
 	constructor() {
@@ -17,6 +21,31 @@ class Server {
 		// save the uuid
 		// get nb rooms (states)
 
+	/*
+	*	Emits an updated list of available games to all sockets joined to 'lobby'
+	*/
+	static updateHostList(joinableGames) {
+		Server.io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, joinableGames);
+	}
+
+	/*
+	*	For a player, send its gameState to him
+	*/
+	static updateGameState(player) {
+		player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+	}
+
+	/*
+	*	Emits the shadowBoard of a player to the whole room
+	*/
+	static updateShadowBoard(gameID, player) {
+		let shadowCellData = {
+			id: player.socketID,
+			name: player.name,
+			board: player.board.getShadowCells()
+		}
+		Server.io.to(gameID).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);
+	}
 
 	getJoinableGames() {
 		console.log("[Server.js] getJoinableGames");

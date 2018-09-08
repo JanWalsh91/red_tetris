@@ -44,9 +44,10 @@ const shadowBoard = ( props ) => {
 	}
 
 	return (
-		<div className={styles.shadowBoard}>
-			{contentArray}
-			{info}
+		<div>
+			<div className={styles.ShadowBoard}>
+				{contentArray}
+			</div>
 		</div>
 	);
 }

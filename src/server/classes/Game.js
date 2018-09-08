@@ -1,5 +1,6 @@
 import Piece from './Piece'
 import Board from './Board'
+import Server from './Server'
 
 import * as ActionNames from '../serverActions'
 
@@ -34,6 +35,7 @@ class Game {
 
 	initPlayerBoard( player ) {
 		console.log("[Game.js] initPlayerBoard");
+
 		player.board = new Board({
 			gameCallback: (board) => {
 				// console.log("[Game.js] initPlayerBoard callback");
@@ -78,6 +80,9 @@ class Game {
 					player.board.freezePiece();
 					player.board.removeFullLine();
 					player.board.setNextActivePiece();
+
+					Server.updateShadowBoard(this.id, player);
+					// io.to(this.id).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);
 				}
 				player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
 				if (player.board.gameOver) {
