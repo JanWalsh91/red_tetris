@@ -83,7 +83,7 @@ class Piece {
 
 	rotate() {
 		this.orientation = (this.orientation + 1) % 4;
-		console.log("[Piece.js] new orientation: ", this.orientation);
+		// console.log("[Piece.js] new orientation: ", this.orientation);
 		this.cells = Piece.types[this.type][this.orientation];
 	}
 

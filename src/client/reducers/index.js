@@ -77,16 +77,36 @@ const updateGameState = (state, action) => {
 	}
 }
 
+// const updateShadowState = (state, action) => {
+// 	console.log("updateShadowState");
+// 	console.log(state);
+// 	console.log(action);
+//
+// 	if (state.shadowState == undefined) {
+// 		state.shadowState = new Map();
+// 	}
+//
+// 	let newShadowState = state.shadowState;
+// 	newShadowState.set(action.shadowCellsData.id, action.shadowCellsData);
+// 	return {
+// 		...state,
+// 		shadowState: newShadowState
+// 	}
+// }
+
 const updateShadowState = (state, action) => {
 	console.log("updateShadowState");
 	console.log(state);
 	console.log(action);
 
+	let newShadowState = undefined;
+
 	if (state.shadowState == undefined) {
-		state.shadowState = new Map();
+		newShadowState = new Map();
+	} else {
+		newShadowState = new Map(state.shadowState);
 	}
 
-	let newShadowState = state.shadowState;
 	newShadowState.set(action.shadowCellsData.id, action.shadowCellsData);
 	return {
 		...state,

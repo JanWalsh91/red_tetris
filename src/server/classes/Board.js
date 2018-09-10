@@ -50,7 +50,7 @@ class Board {
 	*	Add pieces to piecesList
 	*/
 	addPieces( pieces ) {
-		console.log("[Board.js] addPieces");
+		// console.log("[Board.js] addPieces");
 		if (!pieces || pieces.constructor !== Array || !(pieces[0] instanceof Piece))
 			return ;
 		// console.log(pieces);
@@ -67,7 +67,12 @@ class Board {
 		this.activePiece = this.piecesList.shift();
 
 		let isPlaceable = this.pieceIsPlaceable(this.activePiece);
+		// console.log("[Board.js] isPlaceable: ", isPlaceable);
 		if (!isPlaceable) {
+			let movedPiece = new Piece(this.activePiece);
+			movedPiece.move({x: 0, y: -1});
+			// TODO: check if overlaps and move up again
+			this.activePiece = movedPiece;
 			this.gameOver = true;
 			this.fillRed();
 		} else {
@@ -89,7 +94,7 @@ class Board {
 		if (!piece) {console.log("\tno piece!"); return ;}
 
 		piece.rotate();
-		console.log("\trotated piece to: ", piece.coords);
+		// console.log("\trotated piece to: ", piece.coords);
 		return this.pieceIsPlaceable(piece);
 	}
 
@@ -136,7 +141,7 @@ class Board {
 	*		board (call when piece reaches floor)
 	*/
 	freezePiece( piece = this.activePiece ) {
-		console.log("[Board.js] freezePiece");
+		// console.log("[Board.js] freezePiece");
 		// if (!piece) piece = this.activePiece;
 		if (!piece) return ;
 		for (let y = 0; y < 4; y++) {
@@ -165,7 +170,7 @@ class Board {
 	// Change tryToMovePiece and tryToRotatePiece to not modify activePiece.
 	// Update piece passed as param, and return true or false if can be placed
 	rotate() {
-		console.log("[Board.js] rotate");
+		// console.log("[Board.js] rotate");
 		if (!this.activePiece) return ;
 
 		let rotatedPiece = new Piece(this.activePiece);
@@ -196,7 +201,7 @@ class Board {
 			canPlace = this.tryToMovePiece(rotatedPiece, {x: 0, y: -1});
 		}
 		if (canPlace) {
-			console.log("\t\t=D")
+			// console.log("\t\t=D")
 			this.activePiece = rotatedPiece;
 		}
 		return canPlace;
@@ -249,11 +254,12 @@ class Board {
 				movedPiece = new Piece(this.activePiece);
 				canMove = this.tryToMovePiece(movedPiece, {x: 0, y: y - 1});
 				this.activePiece = movedPiece;
-				this.freezePiece();
-				this.setNextActivePiece();
+				this.freezePiece(this.activePiece);
 				this.removeFullLine();
+				this.setNextActivePiece();
 				break;
 			}
+
 		}
 
 		return canMove;
@@ -261,6 +267,7 @@ class Board {
 
 
 	removeFullLine() {
+		if (this.gameOver) return;
 		for (let y = 0; y < this.size.y; y++) {
 			let isFullLine = true;
 			for (let x = 0; x < this.size.x; x++) {
@@ -269,8 +276,9 @@ class Board {
 				}
 			}
 			if (isFullLine) {
-				for (let z = y; z > 1; z--) {
-					this.cells[z] = this.cells[z - 1];
+				console.log("Is Full Line");
+				for (let z = y; z > 0; z--) {
+					this.cells[z] = this.cells[z - 1].slice();
 				}
 			}
 		}
@@ -284,8 +292,33 @@ class Board {
 		for (let y = 0; y < 4; y++) {
 			for (let x = 0; x < 4; x++) {
 
-				if (this.activePiece.cells[y][x] != 0x0) {
+				if (this.activePiece.coords.y + y >= 0 && this.activePiece.cells[y][x] != 0x0) {
 					cells[this.activePiece.coords.y + y][this.activePiece.coords.x + x] = this.activePiece.cells[y][x];
+				}
+			}
+		}
+		return cells;
+	}
+
+	// TODO: to remove
+	getBinaryCells() {
+		// console.log("[Board.js] getCells <3");
+		let cells = JSON.parse(JSON.stringify(this.cells));
+		if (!this.activePiece) return cells;
+		// console.log(this.activePiece);
+		for (let y = 0; y < 4; y++) {
+			for (let x = 0; x < 4; x++) {
+
+				if (this.activePiece.cells[y][x] != 0x0) {
+					cells[this.activePiece.coords.y + y][this.activePiece.coords.x + x] = 1;
+				}
+			}
+		}
+
+		for (let y = 0; y < this.size.y; y++) {
+			for (let x = 0; x < this.size.x; x++) {
+				if (this.cells[y][x] != 0x0) {
+					cells[y][x] = 1;
 				}
 			}
 		}

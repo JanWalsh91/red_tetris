@@ -77,7 +77,7 @@ class Game {
 				// console.log("Interval player", player.socketID);
 				let moved = player.board.moveDown();
 				if (!moved) {
-					player.board.freezePiece();
+					player.board.freezePiece(player.board.activePiece);
 					player.board.removeFullLine();
 					player.board.setNextActivePiece();
 

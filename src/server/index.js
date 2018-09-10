@@ -63,14 +63,6 @@ const initEngine = io => {
 		}
 	}
 
-	/*
-	*	For a player, sends its shadowGameState to all players in that game
-	*/
-	// TODO:
-	const updateShadowGameState = () => {
-
-	}
-
 	const getPlayerAndGame = (socketID) => {
 		// console.log("[index.js] getPlayerAndGame");
 		let data = [];
@@ -169,6 +161,8 @@ const initEngine = io => {
 			let player, game;
 			[player, game] = getPlayerAndGame(socket.id);
 
+			if (player.board.gameOver) return;
+
 			switch (action) {
 				case "downShortcut":
 					player.board.downShortcut();
@@ -205,7 +199,6 @@ const initEngine = io => {
 					return true;
 				}
 			})
-			console.log(x);
 			if (x.player !== undefined) {
 				server.removePlayerFromGame(x.player, x.g);
 				x.player.stopGame();
