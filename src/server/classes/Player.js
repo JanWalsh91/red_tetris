@@ -1,18 +1,14 @@
+import uuidv4 from 'uuid/v4'
+
 class Player {
-	constructor(name, socketID, socket) {
+
+
+	constructor(name, socketID) {
 		this.name = name;
 		this.socketID = socketID;
-		this.socket = socket;
+		this.uuid = uuidv4();
 		this.board = null;
-		this.interval = null;
 	}
-
-
-
-	stopGame() {
-		clearInterval(this.interval);
-	}
-
 }
 
 

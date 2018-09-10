@@ -71,3 +71,15 @@ export const updateShadowState = (shadowCellsData) => {
 		shadowCellsData
 	}
 }
+
+export const UPDATE_HOST_STATUS = 'UPDATE_HOST_STATUS'
+
+export const updateHostStatus = (isHost) => {
+
+	console.log("updateHostStatus");
+
+	return {
+		type: UPDATE_HOST_STATUS,
+		isHost
+	}
+}

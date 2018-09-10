@@ -5,157 +5,203 @@ import * as ActionNames from './../serverActions'
 
 class Server {
 
-	static io = null;
-
-	// games[0].getPlayers
-	constructor() {
+	constructor(io) {
 		this.games = []
-		this.lobby = new Map();
-		this.sockets = new Map();
-		// this.games.push( new Game( new Player('toetoe', 1) ) );
+		// this.lobby = new Map();
+		// this.sockets = new Map(); // { socket.id: game } (-> this.games)
+		this.games = new Map();
+		this.players = new Map();
+		this.io = io;
 	}
-
-	// Events Methods
-
-	// on open connection
-		// save the uuid
-		// get nb rooms (states)
 
 	/*
 	*	Emits an updated list of available games to all sockets joined to 'lobby'
 	*/
-	static updateHostList(joinableGames) {
-		Server.io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, joinableGames);
+	updateHostList() {
+		let joinableGames = new Map();
+		for (var [socketID, game] of this.games) {
+			if (game && !game.isPlaying && game.players.length < Game.maxPlayers) {
+				console.log("check");
+				joinableGames.set(game.id, game.getInfo());
+			}
+		}
+		this.io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, [...joinableGames.values()]);
 	}
 
 	/*
 	*	For a player, send its gameState to him
 	*/
-	static updateGameState(player) {
-		player.socket.emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+	updateGameState = (player) => {
+		// console.log("[index.js] updateGameState");
+		if (player.board.needToBroadcast) {
+			this.updateShadowBoard(player);
+			player.board.needToBroadcast = false;
+		}
+
+		this.io.to(player.socketID).emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+	}
+
+	updateHostStatus = (player) => {
+		console.log("udpateHostStatus");
+		let isHost = false;
+		if (player.socketID == this.games.get(player.socketID).host.socketID) {
+			isHost = true;
+		}
+		console.log("host ? ", isHost);
+		this.io.to(player.socketID).emit(ActionNames.UPDATE_HOST_STATUS, isHost);
 	}
 
 	/*
 	*	Emits the shadowBoard of a player to the whole room
 	*/
-	static updateShadowBoard(gameID, player) {
+	updateShadowBoard(player) {
+		let gameID = this.games.get(player.socketID).id;
 		let shadowCellData = {
-			id: player.socketID,
+			id: player.uuid,
 			name: player.name,
 			board: player.board.getShadowCells()
 		}
-		Server.io.to(gameID).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);
-	}
-
-	getJoinableGames() {
-		console.log("[Server.js] getJoinableGames");
-		let joinableGames = [];
-
-		this.games.forEach( game => {
-			// console.log("foreach: ");
-			// console.dir(game);
-			if (!game.isPlaying && game.players.length < Game.maxPlayers) {
-				joinableGames.push(game.getInfo())
-			}
-		});
-		return joinableGames;
-	}
-
-	removePlayerFromGame(player, game) {
-		console.log("[Server.js] removePlayerFromGame");
-		// console.log("removePlayerFromGame");
-		// console.dir(game);
-		// console.dir(player);
-		if (this.playerIsInGame(player, game.id)) {
-			// console.log("removing player from game");
-			game.players = game.players.filter( p => {
-				let a = (p.socketID != player.socketID)
-				if (a === false)
-					console.log("removing player ", player.socketID, " from game ", game.id);
-				return a;
-			});
-			// remove games if there are no players
-			// console.log("game.players.length: ", game.players.length);
-			if (game.players.length == 0) {
-				console.log("filtering out empty games");
-				this.games = this.games.filter( g => {
-					let a = (g.id != game.id);
-					if (a === false)
-						console.log("removing game: ", g.id);
-					return a;
-				} );
-				console.dir(this.games);
-			}
-			// reassign if host removed
-		}
+		this.io.to(gameID).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);
 	}
 
 	getGameByID(gameID) {
-		return this.games.find( g => g.id == gameID);
-	}
-
-	playerIsInGame(player, gameID) {
-		// console.log(gameID);
-		// console.dir(this.games);
-
-		let game = this.getGameByID(gameID);
-
-		let isInGame = false;
-		if (game)
-			isInGame = game.players.map((player) => player.socketID).includes(player.socketID);
-		// console.log("playerIsInGame: ", a);
-		return isInGame;
-	}
-
-	joinGame(player, gameID) {
-		console.log("[Server.js] joinGame");
-		// console.dir(this.games)
-		console.log("GameID: ", gameID);
-
-		let g = this.getGameByID(gameID);
-
-		if (!g) {
-			this.games.push(new Game(player));
-		} else {
-			if (!this.playerIsInGame(player, gameID)) {
-				// remove player from other games
-				// console.log
-				this.games.forEach( game => this.removePlayerFromGame(player, game) );
-				// console.log("Games after player removal: ", this.games);
-				// add player to selected game
-				g.players.push(player);
+		for (var [socketID, game] of this.games) {
+  			if (game.id == gameID) {
+				return game;
 			}
 		}
-
-		// console.log("Number of player in the Game", gameID,": ", this.games[gameID].players.length);
+		return null;
 	}
 
-	createNewGame(player) {
-		console.log("[Server.js] createNewGame");
-		// remove player from other games
-		this.games.forEach( game => this.removePlayerFromGame(player, game) );
+	// NEW functions
+
+	addNewPlayerToLobby(socket, playerName) {
+		this.players.set(socket.id, new Player(playerName, socket.id));
+		this.games.set(socket.id, null);
+		socket.join('lobby');
+		this.updateHostList();
+	}
+
+	joinGame(socket, gameID) {
+		let player = this.players.get(socket.id);
+		let game = this.getGameByID(gameID);
+		if (!game) return ;
+
+		game.players.push(player);
+
+		this.games.set(socket.id, game);
+		socket.leave('lobby');
+		socket.join(gameID);
+
+		this.updateHostList();
+		socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
+
+		game.initPlayerBoard(player);
+		this.updateGameState(player);
+	}
+
+	createGame(socket) {
+		let player = this.players.get(socket.id);
+
 		let game = new Game(player);
-		this.games.push( game );
+		this.games.set(socket.id, game);
 		game.init();
-		return game;
+
+		socket.leave('lobby');
+		socket.join(game.id);
+		this.updateHostList();
+
+		socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
+		game.initPlayerBoard(player);
+		this.updateGameState(player);
+		this.updateHostStatus(player);
 	}
 
-	// on select game,
-		// add to game / create new game
-		// update player info
+	startGame(socket) {
 
-	// on update game
-		// update game info
-		//
+		let player = this.players.get(socket.id);
+		let game = this.games.get(socket.id);
 
+		if (game.host.socketID !== socket.id) return ;
 
+		game.start();
+
+		game.players.forEach( player => {
+			player.board.setNextActivePiece();
+			this.io.to(player.socketID).emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+		});
+
+		game.interval = setInterval(() => {
+			game.players.forEach( player => {
+				if (player.board.gameOver) return ;
+				if (!player.board.moveDown()) {
+					player.board.freezePiece(player.board.activePiece);
+					player.board.removeFullLine();
+					player.board.setNextActivePiece();
+
+					this.updateShadowBoard(player);
+				}
+				this.io.to(player.socketID).emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+				this.updateGameState(player);
+			});
+
+			if (game.players.every(player => player.board.gameOver)) {
+				clearInterval(game.interval);
+			}
+
+		}, 1000);
+		this.updateHostList();
+	}
+
+	playerAction(socket, action) {
+		let player = this.players.get(socket.id);
+		if (player.board.gameOver) return;
+		let game = this.games.get(socket.id);
+
+		switch (action) {
+			case "downShortcut":
+				player.board.downShortcut();
+				this.updateGameState(player);
+				break;
+			case "left":
+				player.board.moveLeft();
+				this.updateGameState(player);
+				break;
+			case "right":
+				player.board.moveRight();
+				this.updateGameState(player);
+				break;
+			case "down":
+				player.board.moveDown();
+				this.updateGameState(player);
+				break;
+			case "rotate":
+				player.board.rotate();
+				this.updateGameState(player);
+				break;
+			default: break;
+		}
+	}
+
+	playerDisconnect(socket) {
+		let game = this.games.get(socket.id);
+
+		this.players.delete(socket.id);
+		this.games.delete(socket.id);
+
+		if (!game) return ;
+		game.players = game.players.filter( player => player.socketID != socket.id);
+
+		if (game.players.length == 0) {
+			game.isPlaying = false;
+			this.updateHostList();
+			clearInterval(game.interval);
+			return ;
+		}
+		if (game.host.socketID == socket.id) {
+			game.host = game.players[0];
+		}
+	}
 }
 
 export default Server
-
-// class Player {
-
-	// socket id
-
-// }
-//

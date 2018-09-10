@@ -29,6 +29,14 @@ const Main = ( props ) => {
 
 		console.log("gameJoined: ", props.gameJoined);
 
+		let button = null;
+
+		console.log("isHost: ", props.isHost );
+
+		if (props.isHost) {
+			button = <Button onClick={startGame} value="Start Game"/>;
+		}
+
 		if (props.gameJoined) {
 			content = (
 				<div className={styles.gameArea}>
@@ -37,7 +45,7 @@ const Main = ( props ) => {
 					</div>
 					<div>
 						<Board gameState={props.gameState}/>
-						<Button onClick={startGame} value="Start Game"/>
+						 {button}
 					</div>
 				</div>
 			)
@@ -66,7 +74,8 @@ const mapStateToProps = (state) => {
 		gameSelected: state.gameSelected,
 		gameJoined: state.gameJoined,
 		gameState: state.gameState,
-		shadowState: state.shadowState
+		shadowState: state.shadowState,
+		isHost: state.isHost
 	}
 }
 

@@ -16,7 +16,8 @@ const initialState = {
 	hostList: [],
 	playerName: '',
 	gameSelected: null, // Null / #
-	gameJoined: false // True / False
+	gameJoined: false, // True / False
+	isHost: false
 }
 
 // prod: (without Redux DevTools)

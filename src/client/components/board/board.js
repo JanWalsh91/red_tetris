@@ -11,15 +11,15 @@ const board = ( props ) => {
 
 	// TODO: pass board size info
 	if (props.gameState) {
-		content = props.gameState.map( row => {
+		content = props.gameState.map( (row, rIndex) => {
 
-			let line = row.map( cell => {
+			let line = row.map( (cell, cIndex) => {
 				let classes = [...cellClasses];
 				classes.push(styles[cell]);
 				classes = classes.join(' ');
-				return <div className={classes}></div>;
+				return <div key={(rIndex + 1) * (cIndex + 1)} className={classes}></div>;
 			});
-			line = <div className={styles.row}>{line}</div>
+			line = <div key={rIndex} className={styles.row}>{line}</div>
 			return line;
 		})
 	}

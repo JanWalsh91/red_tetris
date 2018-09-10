@@ -1,4 +1,4 @@
-import { ALERT_POP, UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE } from '../actions/client'
+import { ALERT_POP, UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS } from '../actions/client'
 import { PING_SERVER } from '../actions/server'
 
 import socket from '../socket'
@@ -114,6 +114,14 @@ const updateShadowState = (state, action) => {
 	}
 }
 
+const updateHostStatus = (state, action) => {
+	console.log("reducer UPDATE_HOST_STATUS");
+	return {
+		...state,
+		isHost: action.isHost
+	}
+}
+
 const reducer = (state = {} , action) => {
 	console.log("reducer action type: ", action.type);
 	switch(action.type) {
@@ -125,6 +133,7 @@ const reducer = (state = {} , action) => {
 		case UPDATE_GAME_JOINED: return updateGameJoined(state, action);
 		case UPDATE_GAME_STATE: return updateGameState(state, action);
 		case UPDATE_SHADOW_STATE: return updateShadowState(state, action);
+		case UPDATE_HOST_STATUS: return updateHostStatus(state, action);
 		default: console.log('default'); return state;
 	}
 }

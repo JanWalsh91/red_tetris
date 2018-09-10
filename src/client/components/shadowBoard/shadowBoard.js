@@ -35,7 +35,6 @@ const shadowBoard = ( props ) => {
 				<div>{shadowBoard.name}</div>
 			);
 
-			// Help, concatenate those variables ><
 		})
 
 

@@ -141,12 +141,10 @@ class Board {
 	*		board (call when piece reaches floor)
 	*/
 	freezePiece( piece = this.activePiece ) {
-		// console.log("[Board.js] freezePiece");
-		// if (!piece) piece = this.activePiece;
 		if (!piece) return ;
 		for (let y = 0; y < 4; y++) {
 			for (let x = 0; x < 4; x++) {
-				if (piece.cells[y][x] != 0x0) {
+				if (piece.cells[y][x] != 0x0 && piece.coords.y >= 0) {
 					this.cells[piece.coords.y + y][piece.coords.x + x] = piece.cells[y][x];
 				}
 			}
