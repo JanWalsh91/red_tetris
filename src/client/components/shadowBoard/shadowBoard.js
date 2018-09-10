@@ -16,6 +16,8 @@ const shadowBoard = ( props ) => {
 
 		props.shadowState.forEach((shadowBoard) => {
 			console.log(shadowBoard);
+			
+			if (shadowBoard.id == props.playerUUID) return;
 
 			contentArray.push(
 				shadowBoard.board.map( row => {

@@ -41,7 +41,7 @@ const Main = ( props ) => {
 			content = (
 				<div className={styles.gameArea}>
 					<div className={styles.shadowBoard}>
-						<ShadowBoard shadowState={props.shadowState}/>
+						<ShadowBoard playerUUID={props.playerUUID} shadowState={props.shadowState}/>
 					</div>
 					<div>
 						<Board gameState={props.gameState}/>
@@ -75,7 +75,8 @@ const mapStateToProps = (state) => {
 		gameJoined: state.gameJoined,
 		gameState: state.gameState,
 		shadowState: state.shadowState,
-		isHost: state.isHost
+		isHost: state.isHost,
+		playerUUID: state.playerUUID
 	}
 }
 

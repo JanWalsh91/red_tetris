@@ -83,3 +83,13 @@ export const updateHostStatus = (isHost) => {
 		isHost
 	}
 }
+
+export const UPDATE_PLAYER_UUID = 'UPDATE_PLAYER_UUID'
+
+export const updatePlayerUUID = (playerUUID) => {
+
+	return {
+		type: UPDATE_PLAYER_UUID,
+		playerUUID
+	}
+}

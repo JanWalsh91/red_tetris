@@ -73,12 +73,17 @@ class Server {
 		return null;
 	}
 
+	udpatePlayerUUID(player) {
+		this.io.to(player.socketID).emit(ActionNames.UPDATE_PLAYER_UUID, player.uuid);
+	}
+
 	// NEW functions
 
 	addNewPlayerToLobby(socket, playerName) {
 		this.players.set(socket.id, new Player(playerName, socket.id));
 		this.games.set(socket.id, null);
 		socket.join('lobby');
+		this.udpatePlayerUUID(this.players.get(socket.id));
 		this.updateHostList();
 	}
 
