@@ -31,8 +31,10 @@ class Board {
 			gameOver: false,
 			needToBroadcast: false,
 			frozenLines: 0,
-			linesRemoved: false,
-			gameCallback: () => {console.log("no callback set");}
+			linesRemoved: 0,
+			getPiecesFromGame: () => {console.log("no callback set");},
+			updateScoreAndFrozenLinesInGame: () => {console.log("no callback set");}
+
 		}
 		params = {...defaultParams, ...params};
 		this.size = params.size;
@@ -45,7 +47,8 @@ class Board {
 		this.piecesCopiedCount = params.piecesCopiedCount;
 		this.gameOver = params.gameOver;
 		this.needToBroadcast = params.needToBroadcast;
-		this.gameCallback = params.gameCallback;
+		this.getPiecesFromGame = params.getPiecesFromGame;
+		this.updateScoreAndFrozenLinesInGame = params.updateScoreAndFrozenLinesInGame;
 	}
 
 	/*
@@ -65,7 +68,7 @@ class Board {
 	*/
 	setNextActivePiece() {
 		// console.log("[Board.js] setNextActivePiece");
-		this.gameCallback(this);
+		this.getPiecesFromGame(this);
 		this.activePiece = this.piecesList.shift();
 
 		let isPlaceable = this.pieceIsPlaceable(this.activePiece);
@@ -265,9 +268,9 @@ class Board {
 		return canMove;
 	}
 
-
 	removeFullLine() {
 		if (this.gameOver) return;
+		let numLinesRemoved = 0;
 		for (let y = 0; y < this.size.y; y++) {
 			let isFullLine = true;
 			for (let x = 0; x < this.size.x; x++) {
@@ -277,11 +280,15 @@ class Board {
 			}
 			if (isFullLine) {
 				console.log("Is Full Line");
+				numLinesRemoved++;
 				for (let z = y; z > 0; z--) {
 					this.cells[z] = this.cells[z - 1].slice();
 				}
 				this.freezeLine = true;
 			}
+		}
+		if (numLinesRemoved > 0) {
+			this.updateScoreAndFrozenLinesInGame(numLinesRemoved);
 		}
 	}
 

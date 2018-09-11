@@ -147,18 +147,9 @@ class Server {
 			this.updateGameState(player);
 		});
 
-		game.interval = setInterval(() => {
+		game.ticFunction = () => {
 			game.players.forEach( player => {
 				if (player.board.gameOver) return ;
-
-				if (player.board.linesremoved) {
-					game.players.forEach( player => {
-						if (player.socketID != socket.id) {
-							player.board.frozenLines++;
-						}
-					});
-				}
-
 				if (!player.board.moveDown()) {
 					player.board.freezePiece(player.board.activePiece);
 					player.board.removeFullLine();
@@ -172,8 +163,9 @@ class Server {
 			if (game.players.every(player => player.board.gameOver)) {
 				clearInterval(game.interval);
 			}
+		};
 
-		}, 1000);
+		game.setGameTic();
 		this.updateHostList();
 	}
 

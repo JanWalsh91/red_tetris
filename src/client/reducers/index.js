@@ -50,18 +50,13 @@ const updateGameJoined = (state, action) => {
 const updateGameState = (state, action) => {
 	console.log("ubdex js updategamestate: ", action);
 
-	//TODO: ICI
-	let gameState = {
-		...action.gameState,
-		cells: action.gameState.cells
-	};
-
 	return {
 		...state,
-		gameState
+		gameState: action.gameState
 	}
 }
 
+// TODO: consider optimization
 const updateShadowState = (state, action) => {
 	let newShadowState = undefined;
 

@@ -8,6 +8,7 @@ class Player {
 		this.socketID = socketID;
 		this.uuid = uuidv4();
 		this.board = null;
+		this.score = 0;
 	}
 }
 

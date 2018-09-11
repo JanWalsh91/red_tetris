@@ -15,7 +15,14 @@ const initialState = {
 	playerName: '',
 	gameSelected: null, // Null / #
 	gameJoined: false, // True / False
-	isHost: false
+	isHost: false,
+	gameState: {
+		score: 0,
+		level: 0,
+		cells: undefined,
+		lines: 0,
+		nextPieces: undefined
+	}
 }
 
 // prod: (without Redux DevTools)
