@@ -83,3 +83,22 @@ export const updatePlayerUUID = (playerUUID) => {
 		playerUUID
 	}
 }
+
+export const UPDATE_ERROR = 'UPDATE_ERROR'
+
+export const updateError = (errorMessage) => {
+
+	return {
+		type: UPDATE_ERROR,
+		errorMessage
+	}
+}
+
+export const RESET_STATE = 'RESET_STATE'
+
+export const resetState = () => {
+
+	return {
+		type: RESET_STATE
+	}
+}

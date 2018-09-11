@@ -9,7 +9,7 @@ class Game {
 	static maxPlayers = 4;
 	static newPiecesCount = 10;
 
-	constructor( player ) {
+	constructor( player, gameID ) {
 		this.id = Game.gameCount++;
 		this.host = player;
 		this.isPlaying = false;
@@ -18,6 +18,11 @@ class Game {
 		this.level = 0; // determines piece speed and score
 		this.highestScore = 0;
 		this.interval = undefined;
+		if (gameID) {
+			this.id = gameID;
+		}
+
+		console.log("Creating Game with id #", this.id);
 	}
 
 	getInfo() {
@@ -56,7 +61,7 @@ class Game {
 				const multiplier = [40, 100, 300, 1200];
 				player.score += multiplier[linesRemoved - 1] * (this.level + 1);
 				console.log("player score: ", player.score);
-				// udpate game level
+				// update game level
 				this.updateGameLevel(player.score);
 
 				if (linesRemoved >= 2) {

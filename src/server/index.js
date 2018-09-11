@@ -9,12 +9,13 @@ import * as ActionNames from './serverActions'
 *	index.js handles socket io initialization and callbacks
 */
 
-const logerror = debug('tetris:error')
-, loginfo = debug('tetris:info')
+const logerror = debug('tetris:error'), loginfo = debug('tetris:info')
 
 const initApp = (app, params, cb) => {
+
 	const {host, port} = params
 	const handler = (req, res) => {
+
 		const file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../index.html'
 		fs.readFile(__dirname + file, (err, data) => {
 			if (err) {
@@ -40,7 +41,13 @@ const initEngine = io => {
 
 	io.on(ActionNames.CONNECTION, function(socket) {
 		console.log("[server/index.js] ", ActionNames.CONNECTION);
-		loginfo("Socket connected: " + socket.id)
+
+		// console.log(socket.request.headers);
+		// loginfo("Socket connected: " + socket.id)
+
+		socket.on(ActionNames.UPDATE_REQUEST_URL, (data) => {
+			server.onURLJoin(socket, data);
+		})
 
 		/*
 		*	Emitted when client updates name in GUI
@@ -76,7 +83,7 @@ const initEngine = io => {
 
 export function create(params) {
 	const promise = new Promise( (resolve, reject) => {
-		const app = require('http').createServer()
+		const app = require('http').createServer();
 		initApp(app, params, () => {
 			const io = require('socket.io')(app)
 			const stop = (cb) => {

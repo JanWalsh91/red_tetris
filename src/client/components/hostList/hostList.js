@@ -13,7 +13,7 @@ const hostList = ( props ) => {
 	const joinGame = () => {
 		console.log("joinGame");
 		socket.emit(ActionNames.JOIN_GAME, props.gameSelected);
-		// TODO: udpate gameJoined
+		// TODO: update gameJoined
 
 	}
 

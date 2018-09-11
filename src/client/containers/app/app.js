@@ -48,6 +48,13 @@ const App = (props) => {
 
 	}
 
+	if (props.errorMessage) {
+
+		return (
+			<span>ERROR : {props.errorMessage}</span>
+		)
+
+	}
 
 	return (
 		<div className={styles.app} tabIndex="0"  onKeyDown={keyboardEvent}>
@@ -60,7 +67,8 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
 	return {
-		gameJoined: state.gameJoined
+		gameJoined: state.gameJoined,
+		errorMessage: state.errorMessage
 
 	}
 }

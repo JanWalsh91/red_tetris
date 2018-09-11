@@ -53,7 +53,7 @@ class Server {
 	}
 
 	updateHostStatus = (player) => {
-		console.log("udpateHostStatus");
+		console.log("updateHostStatus");
 		let isHost = false;
 		if (player.socketID == this.games.get(player.socketID).host.socketID) {
 			isHost = true;
@@ -77,9 +77,7 @@ class Server {
 	}
 
 	getGameByID(gameID) {
-
-		console.log(this.games);
-
+		console.log("[getGameByID]: ", gameID);
 		for (var [socketID, game] of this.games) {
   			if (game && game.id == gameID) {
 				return game;
@@ -88,17 +86,52 @@ class Server {
 		return null;
 	}
 
-	udpatePlayerUUID(player) {
+	updatePlayerUUID(player) {
 		this.io.to(player.socketID).emit(ActionNames.UPDATE_PLAYER_UUID, player.uuid);
 	}
 
+	updatePlayerName(player) {
+		this.io.to(player.socketID).emit(ActionNames.UPDATE_PLAYER_NAME, player.name);
+	}
+
 	// NEW functions
+
+	onURLJoin(socket, data) {
+		console.log("[onURLJoin]");
+		if (this.games.get(socket.id)) {
+			this.playerDisconnect(socket);
+		}
+
+		this.players.set(socket.id, new Player(data.playerName, socket.id));
+
+		let game = this.getGameByID(data.gameID);
+		console.log("got: ", game);
+
+
+		if (game) {
+			console.log("gameID: ", game.id);
+		}
+
+
+		if (game && game.isPlaying) {
+			this.io.to(socket.id).emit(ActionNames.SEND_ERROR_STATUS, "Can't join a game in progress");
+		} else {
+			this.updatePlayerUUID(this.players.get(socket.id));
+			this.updatePlayerName(this.players.get(socket.id));
+			if (game) {
+				this.joinGame(socket, game.id);
+			} else {
+				this.createGame(socket, data.gameID);
+			}
+			this.io.to(socket.id).emit(ActionNames.SEND_ERROR_STATUS, null);
+		}
+	}
 
 	addNewPlayerToLobby(socket, playerName) {
 		this.players.set(socket.id, new Player(playerName, socket.id));
 		this.games.set(socket.id, null);
 		socket.join('lobby');
-		this.udpatePlayerUUID(this.players.get(socket.id));
+		this.updatePlayerUUID(this.players.get(socket.id));
 		this.updateHostList();
 	}
 
@@ -120,10 +153,10 @@ class Server {
 		this.updateGameState(player);
 	}
 
-	createGame(socket) {
+	createGame(socket, gameID) {
 		let player = this.players.get(socket.id);
 
-		let game = new Game(player);
+		let game = new Game(player, gameID ? gameID : this.getValidGameID());
 		this.games.set(socket.id, game);
 		game.init();
 
@@ -135,6 +168,12 @@ class Server {
 		game.initPlayerBoard(player);
 		this.updateGameState(player);
 		this.updateHostStatus(player);
+	}
+
+	getValidGameID() {
+		let i = 0;
+		while (this.getGameByID(i++));
+		return i;
 	}
 
 	startGame(socket) {
@@ -207,14 +246,17 @@ class Server {
 		let game = this.games.get(socket.id);
 		let player = this.players.get(socket.id);
 
-		if (player) {
+		if (player && game) {
 			this.updateShadowBoard(player, false);
 		}
+
+		socket.leave('lobby');
 
 		this.players.delete(socket.id);
 		this.games.delete(socket.id);
 
 		if (!game) return ;
+		socket.leave(game.id);
 		game.players = game.players.filter( player => player.socketID != socket.id);
 
 		if (game.players.length == 0) {

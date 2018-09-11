@@ -1,9 +1,8 @@
-import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID } from '../actions/client'
-
+import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID, UPDATE_ERROR, RESET_STATE } from '../actions/client'
 import socket from '../socket'
 
 import * as ActionNames from '../../server/serverActions'
-
+import initialState from '../initialState'
 // import io from 'socket-io'
 
 const updateHostList = (state, action) => {
@@ -16,6 +15,14 @@ const updateHostList = (state, action) => {
 }
 
 const updatePlayerName = (state, action) => {
+
+	if (action.playerName) {
+		return {
+			...state,
+			playerName: action.playerName
+		};
+	}
+
 	let name = document.getElementById('playerInputName').value;
 	console.log("PlayerName: ", name);
 
@@ -98,6 +105,40 @@ const updatePlayerUUID = (state, action) => {
 	}
 }
 
+const updateError = (state, action) => {
+
+	console.log("INITIAL ======= STATUE: ", initialState);
+
+	if (state.errorMessage == "500") {
+		let resetState = {
+			...initialState,
+			hostList: [...initialState.hostList],
+			gameState: {...initialState.gameState}
+		}
+
+		return {
+			...resetState,
+			errorMessage: action.errorMessage
+		}
+	}
+	return {
+		...state,
+		errorMessage: action.errorMessage
+
+	}
+}
+
+const resetState = (state, action) => {
+	let resetState = {
+		...initialState,
+		hostList: [...initialState.hostList],
+		gameState: {...initialState.gameState}
+	}
+	return {
+		...resetState
+	}
+}
+
 const reducer = (state = {} , action) => {
 	console.log("reducer action type: ", action.type);
 	switch(action.type) {
@@ -109,6 +150,8 @@ const reducer = (state = {} , action) => {
 		case UPDATE_SHADOW_STATE: return updateShadowState(state, action);
 		case UPDATE_HOST_STATUS: return updateHostStatus(state, action);
 		case UPDATE_PLAYER_UUID: return updatePlayerUUID(state, action);
+		case UPDATE_ERROR: return updateError(state, action);
+		case RESET_STATE: return resetState(state, action);
 		default: console.log('default'); return state;
 	}
 
