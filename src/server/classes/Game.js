@@ -58,15 +58,20 @@ class Game {
 				console.log("player score: ", player.score);
 				// udpate game level
 				this.updateGameLevel(player.score);
+
+				if (linesRemoved >= 2) {
+					this.players.forEach((p) => {
+						if (player.socketID != p.socketID) {
+							p.board.frozenLines++;
+						}
+					})
+				}
 			}
 		});
 	}
 
 	setGameTic() {
-		let ticTime = 333 / (this.level/3 + 1);
-		ticTime = 1000 / Math.log2(9 + 2);
-
-		console.log("tictime: ", ticTime);
+		let ticTime = 1000 / Math.log2(this.level + 2);
 
 		if (this.interval != undefined) {
 			clearInterval(this.interval);

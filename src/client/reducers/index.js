@@ -50,9 +50,14 @@ const updateGameJoined = (state, action) => {
 const updateGameState = (state, action) => {
 	console.log("ubdex js updategamestate: ", action);
 
+	let gameState = {
+		...state.gameState,
+		...action.gameState
+	};
+
 	return {
 		...state,
-		gameState: action.gameState
+		gameState: gameState
 	}
 }
 

@@ -1,5 +1,6 @@
-.Board {
-	border: red solid 1px
+.nextPieces {
+	display: flex;
+	flex-direction: column;
 }
 
 .row {
@@ -9,7 +10,8 @@
 .cell {
 	width: 20px;
 	height: 20px;
-	border: solid 1px #dadada;
+	/* border: solid 1px #dadada; */
+	background: #fafafa;
 }
 
 .line {
@@ -38,12 +40,4 @@
 
 .squiggle2 {
 	background: red;
-}
-
-.gameOver {
-	background: red;
-}
-
-.frozenLine {
-	background: lightgrey;
 }

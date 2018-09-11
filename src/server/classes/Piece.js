@@ -22,6 +22,7 @@ class Piece {
 		if (newType === lastPieceType) {
 			newType = Math.floor(Math.random() * (Piece.typeCount));
 		}
+		// let newType = 3;
 		return new Piece({type: newType});
 	}
 

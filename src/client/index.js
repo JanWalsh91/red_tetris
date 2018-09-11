@@ -20,8 +20,8 @@ const initialState = {
 		score: 0,
 		level: 0,
 		cells: undefined,
-		lines: 0,
-		nextPieces: undefined
+		nextPieces: undefined,
+		removedLines: 0
 	}
 }
 

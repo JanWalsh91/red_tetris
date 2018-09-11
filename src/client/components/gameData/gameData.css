@@ -1,0 +1,8 @@
+.GameData {
+	display: flex;
+	flex-direction: column;
+}
+
+.GameData > div {
+	padding: 10px;
+}

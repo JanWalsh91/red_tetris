@@ -5,6 +5,7 @@ import PlayerForm from '../../../components/playerForm/playerForm'
 import HostList from '../../../components/hostList/hostList'
 import Board from '../../../components/board/board'
 import ShadowBoard from '../../../components/shadowBoard/shadowBoard'
+import GameData from '../../../components/gameData/gameData'
 import Button from '../../../components/button/button'
 import socket from '../../../socket'
 import {updatePlayerName, updateSelectedGame} from '../../../actions/client'
@@ -37,6 +38,9 @@ const Main = ( props ) => {
 			button = <Button onClick={startGame} value="Start Game"/>;
 		}
 
+		console.log("MAIN=============");
+		console.log(props.gameState);
+
 		if (props.gameJoined) {
 			content = (
 				<div className={styles.gameArea}>
@@ -46,6 +50,9 @@ const Main = ( props ) => {
 					<div>
 						<Board gameState={props.gameState}/>
 						 {button}
+					</div>
+					<div>
+						<GameData gameData={props.gameState}/>
 					</div>
 				</div>
 			)

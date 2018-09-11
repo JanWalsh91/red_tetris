@@ -33,19 +33,23 @@ class Server {
 	*/
 	updateGameState = (player) => {
 		// console.log("[index.js] updateGameState");
-		if (player.board.needToBroadcast) {
-			this.updateShadowBoard(player);
-			player.board.needToBroadcast = false;
-		}
 		let gameState = {
 			cells: player.board.getCells(),
-			score: player.score,
-			level: this.games.get(player.socketID).level,
-			nextPieces: [],
-			lines: player.board.lines
 		};
+		if (player.board.needToBroadcast) {
+			this.updateShadowBoard(player);
+			gameState.score = player.score;
+			gameState.level = this.games.get(player.socketID).level;
+			gameState.nextPieces = this.getNextPieces(player);
+			gameState.removedLines = player.board.removedLines;
+			player.board.needToBroadcast = false;
+		}
 
 		this.io.to(player.socketID).emit(ActionNames.UPDATE_GAME_STATE, gameState);
+	}
+
+	getNextPieces (player) {
+		return player.board.piecesList.slice(0, 3);
 	}
 
 	updateHostStatus = (player) => {
@@ -138,7 +142,7 @@ class Server {
 		let player = this.players.get(socket.id);
 		let game = this.games.get(socket.id);
 
-		if (game.host.socketID !== socket.id) return ;
+		if (game.host.socketID !== socket.id || game.isPlaying) return ;
 
 		game.start();
 

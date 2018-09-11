@@ -31,7 +31,7 @@ class Board {
 			gameOver: false,
 			needToBroadcast: false,
 			frozenLines: 0,
-			linesRemoved: 0,
+			removedLines: 0,
 			getPiecesFromGame: () => {console.log("no callback set");},
 			updateScoreAndFrozenLinesInGame: () => {console.log("no callback set");}
 
@@ -47,6 +47,8 @@ class Board {
 		this.piecesCopiedCount = params.piecesCopiedCount;
 		this.gameOver = params.gameOver;
 		this.needToBroadcast = params.needToBroadcast;
+		this.frozenLines = params.frozenLines;
+		this.removedLines = params.removedLines;
 		this.getPiecesFromGame = params.getPiecesFromGame;
 		this.updateScoreAndFrozenLinesInGame = params.updateScoreAndFrozenLinesInGame;
 	}
@@ -126,7 +128,7 @@ class Board {
 			for (let x = 0; x < 4; x++) {
 				if (piece.cells[y][x] != 0x0) {
 					// if non-null piece cell outside of board
-					if (piece.coords.x + x >= this.size.x || piece.coords.x + x < 0 || piece.coords.y + y >= this.size.y || piece.coords.y + y < 0) {
+					if (piece.coords.x + x >= this.size.x || piece.coords.x + x < 0 || piece.coords.y + y >= this.size.y - this.frozenLines || piece.coords.y + y < 0) {
 						// console.log("[Board.js] Piece out of board bounds. coords: ", {x: piece.coords.x + x, y: piece.coords.y + y});
 						return false;
 					}
@@ -288,6 +290,7 @@ class Board {
 			}
 		}
 		if (numLinesRemoved > 0) {
+			this.removedLines += numLinesRemoved;
 			this.updateScoreAndFrozenLinesInGame(numLinesRemoved);
 		}
 	}
@@ -304,6 +307,10 @@ class Board {
 					cells[this.activePiece.coords.y + y][this.activePiece.coords.x + x] = this.activePiece.cells[y][x];
 				}
 			}
+		}
+
+		for (let y = 0; y < this.frozenLines; y++) {
+			cells[this.size.y - y - 1] = new Array(this.size.x).fill("frozenLine");
 		}
 		return cells;
 	}
