@@ -1,5 +1,4 @@
-import { ALERT_POP, UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID } from '../actions/client'
-import { PING_SERVER } from '../actions/server'
+import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID } from '../actions/client'
 
 import socket from '../socket'
 
@@ -7,25 +6,30 @@ import * as ActionNames from '../../server/serverActions'
 
 // import io from 'socket-io'
 
-const alertPop = (state, action) => {
-	console.log("ALERT_POP dispatched");
+const copyState = (state) => {
+	console.log("COPY STATE");
+	console.log(state.gameState);
+
+	let gameState = {};
+	if (state.gameState != undefined) {
+		gameState = {...state.gameState};
+
+		console.log("gameState:", gameState);
+
+		if (state.gameState.cells) {
+			gameState.cells = [...state.gameState.cells];
+		}
+	}
+
+	let hostList = [];
+	if (state.hostList) {
+		hostList = [...hostList];
+	}
+
 	return {
 		...state,
-		message: action.message
-	}
-}
-
-const pingServer = (state, action) => {
-	console.log("pingServer reducer");
-
-	socket.emit('action', {type: 'server/ping'});
-
-	return dispatch => {
-		setTimeout(() => {
-			// Yay! Can invoke sync or async actions with `dispatch`
-			console.log("Ici apres 5s");
-			dispatch(alertPop("Je"));
-		}, 1000);
+		hostList,
+		gameState
 	};
 }
 
@@ -71,34 +75,21 @@ const updateGameJoined = (state, action) => {
 }
 
 const updateGameState = (state, action) => {
+	console.log("ubdex js updategamestate: ", action);
+
+	//TODO: ICI
+	let gameState = {
+		...action.gameStated,
+		cells: action.gameState.cells
+	};
+
 	return {
-		...state,
-		gameState: action.cells
+		...copyState(state),
+		gameState
 	}
 }
 
-// const updateShadowState = (state, action) => {
-// 	console.log("updateShadowState");
-// 	console.log(state);
-// 	console.log(action);
-//
-// 	if (state.shadowState == undefined) {
-// 		state.shadowState = new Map();
-// 	}
-//
-// 	let newShadowState = state.shadowState;
-// 	newShadowState.set(action.shadowCellsData.id, action.shadowCellsData);
-// 	return {
-// 		...state,
-// 		shadowState: newShadowState
-// 	}
-// }
-
 const updateShadowState = (state, action) => {
-	console.log("updateShadowState");
-	console.log(state);
-	console.log(action);
-
 	let newShadowState = undefined;
 
 	if (state.shadowState == undefined) {
@@ -107,7 +98,11 @@ const updateShadowState = (state, action) => {
 		newShadowState = new Map(state.shadowState);
 	}
 
-	newShadowState.set(action.shadowCellsData.id, action.shadowCellsData);
+	if (action.shadowCellsData.update) {
+		newShadowState.set(action.shadowCellsData.id, action.shadowCellsData);
+	} else {
+		newShadowState.delete(action.shadowCellsData.id);
+	}
 	return {
 		...state,
 		shadowState: newShadowState
@@ -133,8 +128,6 @@ const updatePlayerUUID = (state, action) => {
 const reducer = (state = {} , action) => {
 	console.log("reducer action type: ", action.type);
 	switch(action.type) {
-		case ALERT_POP: return alertPop(state, action);
-		case PING_SERVER: return pingServer(state, action);
 		case UPDATE_HOST_LIST: return updateHostList(state, action);
 		case UPDATE_PLAYER_NAME: return updatePlayerName(state, action);
 		case UPDATE_SELECTED_GAME: return updateSelectedGame(state, action);

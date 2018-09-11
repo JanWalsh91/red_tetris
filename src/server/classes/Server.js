@@ -37,8 +37,15 @@ class Server {
 			this.updateShadowBoard(player);
 			player.board.needToBroadcast = false;
 		}
+		let gameState = {
+			cells: player.board.getCells(),
+			score: player.score,
+			level: this.games.get(player.socketID).level,
+			nextPieces: [],
+			lines: player.board.lines
+		};
 
-		this.io.to(player.socketID).emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+		this.io.to(player.socketID).emit(ActionNames.UPDATE_GAME_STATE, gameState);
 	}
 
 	updateHostStatus = (player) => {
@@ -54,19 +61,23 @@ class Server {
 	/*
 	*	Emits the shadowBoard of a player to the whole room
 	*/
-	updateShadowBoard(player) {
+	updateShadowBoard(player, update = true) {
 		let gameID = this.games.get(player.socketID).id;
 		let shadowCellData = {
 			id: player.uuid,
 			name: player.name,
-			board: player.board.getShadowCells()
+			board: player.board.getShadowCells(),
+			update
 		}
 		this.io.to(gameID).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);
 	}
 
 	getGameByID(gameID) {
+
+		console.log(this.games);
+
 		for (var [socketID, game] of this.games) {
-  			if (game.id == gameID) {
+  			if (game && game.id == gameID) {
 				return game;
 			}
 		}
@@ -139,6 +150,15 @@ class Server {
 		game.interval = setInterval(() => {
 			game.players.forEach( player => {
 				if (player.board.gameOver) return ;
+
+				if (player.board.linesremoved) {
+					game.players.forEach( player => {
+						if (player.socketID != socket.id) {
+							player.board.frozenLines++;
+						}
+					});
+				}
+
 				if (!player.board.moveDown()) {
 					player.board.freezePiece(player.board.activePiece);
 					player.board.removeFullLine();
@@ -190,6 +210,11 @@ class Server {
 
 	playerDisconnect(socket) {
 		let game = this.games.get(socket.id);
+		let player = this.players.get(socket.id);
+
+		if (player) {
+			this.updateShadowBoard(player, false);
+		}
 
 		this.players.delete(socket.id);
 		this.games.delete(socket.id);

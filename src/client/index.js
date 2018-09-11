@@ -11,8 +11,6 @@ import {alert} from './actions/client'
 
 
 const initialState = {
-	message: 'Soon, will be here a fantastic Tetris ...',
-	socket: {},
 	hostList: [],
 	playerName: '',
 	gameSelected: null, // Null / #

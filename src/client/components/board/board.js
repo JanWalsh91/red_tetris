@@ -11,7 +11,7 @@ const board = ( props ) => {
 
 	// TODO: pass board size info
 	if (props.gameState) {
-		content = props.gameState.map( (row, rIndex) => {
+		content = props.gameState.cells.map( (row, rIndex) => {
 
 			let line = row.map( (cell, cIndex) => {
 				let classes = [...cellClasses];

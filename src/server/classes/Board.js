@@ -30,6 +30,8 @@ class Board {
 			piecesCopiedCount: 0,
 			gameOver: false,
 			needToBroadcast: false,
+			frozenLines: 0,
+			linesRemoved: false,
 			gameCallback: () => {console.log("no callback set");}
 		}
 		params = {...defaultParams, ...params};
@@ -278,6 +280,7 @@ class Board {
 				for (let z = y; z > 0; z--) {
 					this.cells[z] = this.cells[z - 1].slice();
 				}
+				this.freezeLine = true;
 			}
 		}
 	}
