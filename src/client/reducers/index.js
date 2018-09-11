@@ -6,33 +6,6 @@ import * as ActionNames from '../../server/serverActions'
 
 // import io from 'socket-io'
 
-const copyState = (state) => {
-	console.log("COPY STATE");
-	console.log(state.gameState);
-
-	let gameState = {};
-	if (state.gameState != undefined) {
-		gameState = {...state.gameState};
-
-		console.log("gameState:", gameState);
-
-		if (state.gameState.cells) {
-			gameState.cells = [...state.gameState.cells];
-		}
-	}
-
-	let hostList = [];
-	if (state.hostList) {
-		hostList = [...hostList];
-	}
-
-	return {
-		...state,
-		hostList,
-		gameState
-	};
-}
-
 const updateHostList = (state, action) => {
 	console.log("updateHostList reducer");
 
@@ -79,12 +52,12 @@ const updateGameState = (state, action) => {
 
 	//TODO: ICI
 	let gameState = {
-		...action.gameStated,
+		...action.gameState,
 		cells: action.gameState.cells
 	};
 
 	return {
-		...copyState(state),
+		...state,
 		gameState
 	}
 }

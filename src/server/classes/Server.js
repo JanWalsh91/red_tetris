@@ -144,7 +144,7 @@ class Server {
 
 		game.players.forEach( player => {
 			player.board.setNextActivePiece();
-			this.io.to(player.socketID).emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
+			this.updateGameState(player);
 		});
 
 		game.interval = setInterval(() => {
@@ -166,7 +166,6 @@ class Server {
 
 					this.updateShadowBoard(player);
 				}
-				this.io.to(player.socketID).emit(ActionNames.UPDATE_GAME_STATE, player.board.getCells());
 				this.updateGameState(player);
 			});
 
