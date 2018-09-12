@@ -6,38 +6,3 @@
 .row {
 	display: flex;
 }
-
-.cell {
-	width: 20px;
-	height: 20px;
-	/* border: solid 1px #dadada; */
-	background: #fafafa;
-}
-
-.line {
-	background: cyan;
-}
-
-.l1 {
-	background: blue;
-}
-
-.l2 {
-	background: orange;
-}
-
-.square {
-	background: yellow;
-}
-
-.squiggle1 {
-	background: green;
-}
-
-.t {
-	background: purple;
-}
-
-.squiggle2 {
-	background: red;
-}

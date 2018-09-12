@@ -4,18 +4,39 @@
 }
 
 .playerForm input[type="button"] {
-	width: 50%;
+	width: 40%;
 	align-self: center;
-	border-radius: 2px;
-	border: 1px solid #FFFFFFFF;
-	background: #E0E0E0;
+	background: #C62828;
+	color: lightgrey;
+	border: 0;
 	padding: 5px;
+	margin: 20px;
 	font-size: 1rem;
-	outline: 0;
+	outline: 8px outset #EF5350;
+	outline-offset: 0px;
+	width: 10%;
 }
 
-.playerForm input[type="button"]:hover {
-	background: #BDBDBD;
-	border: solid 1px #9E9E9E;
+.playerForm input[type="button"]:active {
+	outline: 8px inset #EF5350;
+	background: #B71C1C;
+	color: #B0BEC5;
+}
+
+input[type="text"] {
+	font-size: 0.8rem;
+	height: 1rem;
+	padding: 10px;
+	border: grey solid;
+	border-width: 1px;
+	border-radius: 0rem;
+	text-align: center;
 	outline: 0;
+	background: #FFCDD2;
+	color: grey;
+	outline: 10px inset #E53935;
+	outline-offset: 0px;
+	font-weight: bold;
+	width: 20%;
+	margin: auto;
 }

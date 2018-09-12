@@ -12,23 +12,11 @@ const PlayerForm = ( props ) => {
 
 	return (
 		<div className={styles.playerForm}>
-			<input onKeyDown={keyboardEvent} type="text" id="playerInputName" />
+			<input onKeyDown={keyboardEvent} type="text" id="playerInputName" placeholder="Enter your username" />
 			<br/>
 			<input id="buttonPlayerInputName" value="Play" type="button" onClick={props.onUpdateName} />
 		</div>
 	)
 }
-
-const mapStateToProps = (state) => {
-	return {
-		// hostList: state.hostList
-	}
-}
-
-// const mapDispatchToProps = dispatch => {
-// 	return {
-// 		// onClick: () => {dispatch(pingServer())}
-// 	}
-// }
 
 export default PlayerForm

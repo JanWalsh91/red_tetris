@@ -56,7 +56,6 @@ const App = (props) => {
 		<div className={styles.app} tabIndex="0"  onKeyDown={keyboardEvent}>
 			<HeaderBar></HeaderBar>
 			<Main></Main>
-			<br/>
 		</div>
 	)
 }

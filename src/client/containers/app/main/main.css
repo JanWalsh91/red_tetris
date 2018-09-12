@@ -1,11 +1,28 @@
 .main {
 	/* border: blue 1px solid; */
-	/* width: 95%; */
+	width: 1000px;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	flex-grow: 2;
+	padding-bottom: 10rem;
 }
 
 .gameArea {
+	display: grid;
+	grid-template-columns: 30% 1fr 30%;
+}
+
+/* .gameArea:first-child, .gameArea:last-child {
+	flex-grow: 1;
+}
+*/
+.boardWrapper {
 	display: flex;
-	flex-direction: row;
+	justify-content: center;
+}
+
+.buttons {
+	display: flex;
+	justify-content: center;
 }

@@ -67,7 +67,7 @@ class Game {
 				if (linesRemoved >= 2) {
 					this.players.forEach((p) => {
 						if (player.socketID != p.socketID) {
-							p.board.frozenLines++;
+							p.board.frozenLines += linesRemoved - 1;
 						}
 					})
 				}

@@ -1,0 +1,10 @@
+#tetris {
+	height: 100%;
+	width: 100%;
+	background-color: #263238;
+}
+
+* {
+	font-family: 'Press Start 2P', cursive;
+	color: #C62828;
+}

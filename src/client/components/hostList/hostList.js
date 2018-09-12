@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './hostList.css'
 import Host from './host/host'
+import Button from '../button/button'
 
 import socket from '../../socket'
 
@@ -38,7 +39,7 @@ const hostList = ( props ) => {
 	return (
 		<div className={styles.hostList}>
 			{content}
-			<input onClick={() => props.gameSelected != null ? joinGame() : createGame()} type='button'
+			<Button onClick={() => props.gameSelected != null ? joinGame() : createGame()} type='button'
 				value={props.gameSelected != null ? "JOIN GAME #" + props.gameSelected : "CREATE GAME" }
 			/>
 		</div>

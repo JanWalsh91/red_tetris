@@ -1,49 +1,7 @@
 .Board {
-	border: red solid 1px
+	border: #C62828 solid 8px;
 }
 
 .row {
 	display: flex;
-}
-
-.cell {
-	width: 20px;
-	height: 20px;
-	border: solid 1px #dadada;
-}
-
-.line {
-	background: cyan;
-}
-
-.l1 {
-	background: blue;
-}
-
-.l2 {
-	background: orange;
-}
-
-.square {
-	background: yellow;
-}
-
-.squiggle1 {
-	background: green;
-}
-
-.t {
-	background: purple;
-}
-
-.squiggle2 {
-	background: red;
-}
-
-.gameOver {
-	background: red;
-}
-
-.frozenLine {
-	background: lightgrey;
 }

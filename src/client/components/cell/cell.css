@@ -1,0 +1,53 @@
+
+.cell {
+	width: 2rem;
+	height: 2rem;
+	/* border: solid 1px #dadada; */
+
+	outline-offset: -8px;
+}
+
+.line {
+	background: #00B8D4;
+	outline: 8px outset #00E5FF;
+}
+
+.l1 {
+	background: #2264D4;
+	outline: 8px outset #2979FF;
+}
+
+.l2 {
+	background: #D67A00;
+	outline: 8px outset #FF9100;
+}
+
+.square {
+	background: #D6C500;
+	outline: 8px outset #FFEA00;
+}
+
+.squiggle1 {
+	background: #00C465;
+	outline: 8px outset #00E676;
+}
+
+.t {
+	background: #A800C4;
+	outline: 8px outset #D500F9;
+}
+
+.squiggle2 {
+	background: #CC1236;
+	outline: 8px outset #FF1744;
+}
+
+.gameOver {
+	background: #757575;
+	outline: 8px outset #9E9E9E;
+}
+
+.frozenLine {
+	background: #3D3D3D;
+	outline: 8px outset #525252;
+}

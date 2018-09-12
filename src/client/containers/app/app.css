@@ -12,24 +12,6 @@ html, body {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
-}
-
-* {
-	font-family: 'Roboto', sans-serif;
-}
-
-input[type="text"] {
-	font-size: 0.8rem;
-	height: 1rem;
-	padding: 10px;
-	border: grey solid;
-	border-width: 1px;
-	border-radius: 0rem;
-	text-align: center;
-	outline: 0;
-	background: #F5F5F5;
-	color: rgba(0,0,0,.87);
-	font-weight: bold;
 }

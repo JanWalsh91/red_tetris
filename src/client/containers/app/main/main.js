@@ -37,7 +37,7 @@ const Main = ( props ) => {
 		}
 
 		let buttons = (
-			<div>
+			<div className={styles.buttons}>
 				{startButton}
 				<Button onClick={quitGame} value="Quit Game"/>
 			</div>
@@ -45,17 +45,19 @@ const Main = ( props ) => {
 
 		if (props.gameJoined) {
 			content = (
-				<div className={styles.gameArea}>
-					<div className={styles.shadowBoard}>
-						<ShadowBoard playerUUID={props.playerUUID} shadowState={props.shadowState}/>
+				<div>
+					<div className={styles.gameArea}>
+						<div className={styles.shadowBoard}>
+							<ShadowBoard playerUUID={props.playerUUID} shadowState={props.shadowState}/>
+						</div>
+						<div className={styles.boardWrapper}>
+							<Board gameState={props.gameState} isWinner={props.isWinner} isWinnerByScore={props.isWinnerByScore}/>
+						</div>
+						<div>
+							<GameData gameData={props.gameState}/>
+						</div>
 					</div>
-					<div>
-						<Board gameState={props.gameState} isWinner={props.isWinner} isWinnerByScore={props.isWinnerByScore}/>
-						 {buttons}
-					</div>
-					<div>
-						<GameData gameData={props.gameState}/>
-					</div>
+					{buttons}
 				</div>
 			)
 		}

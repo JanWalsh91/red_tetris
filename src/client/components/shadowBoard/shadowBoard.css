@@ -1,14 +1,15 @@
-.fullCell {
-	background: grey;
-}
-
-.ShadowBoard:first-child {
-	border: 1px solid grey;
+.shadowBoard {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	background: #212B30;
+	border: 3px solid #C62828;
+	margin-bottom: 5px;
 }
 
 .shadowCell {
-	width: 5px;
-	height: 5px;
+	width: 7px;
+	height: 7px;
 }
 
 .row {
@@ -16,5 +17,18 @@
 }
 
 .gameOver {
-	background: grey;
+	background: #C62828;
+}
+
+.info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	max-width: 50%;
+}
+
+.info .name {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }

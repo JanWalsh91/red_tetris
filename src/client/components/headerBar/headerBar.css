@@ -1,5 +1,6 @@
-.headerBar {
-	color: red;
-	height: 500px;
-	
+h1 {
+	/* border: 1px solid blue; */
+	padding-top: 10rem;
+	font-size: 5rem;
+	text-align: center;
 }

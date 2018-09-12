@@ -98,27 +98,35 @@ class Server {
 	// NEW functions
 
 	onURLJoin(socket, data) {
-		// console.log("[onURLJoin]");
+		// console.log("[Server.js] onURLJoin");
+
 		if (this.games.get(socket.id)) {
 			this.playerDisconnect(socket);
 		}
+		this.lock.acquire("K", done => {
+			// console.log("[Server.js] onURLJoin MUTEX");
+			// console.log(this.games);
+			// console.log(this.players);
 
-		this.players.set(socket.id, new Player(data.playerName, socket.id));
+			// console.log("\tcreate player: ", socket.id);
+			this.players.set(socket.id, new Player(data.playerName, socket.id));
 
-		let game = this.getGameByID(data.gameID);
+			let game = this.getGameByID(data.gameID);
 
-		if (game && game.isPlaying) {
-			this.io.to(socket.id).emit(ActionNames.SEND_ERROR_STATUS, "Can't join a game in progress");
-		} else {
-			this.updatePlayerUUID(this.players.get(socket.id));
-			this.updatePlayerName(this.players.get(socket.id));
-			if (game) {
-				this.joinGame(socket, game.id);
+			if (game && game.isPlaying) {
+				this.io.to(socket.id).emit(ActionNames.SEND_ERROR_STATUS, "Can't join a game in progress");
 			} else {
-				this.createGame(socket, data.gameID);
+				this.updatePlayerUUID(this.players.get(socket.id));
+				this.updatePlayerName(this.players.get(socket.id));
+				if (game) {
+					this.joinGame(socket, game.id);
+				} else {
+					this.createGame(socket, data.gameID);
+				}
+				this.io.to(socket.id).emit(ActionNames.SEND_ERROR_STATUS, null);
 			}
-			this.io.to(socket.id).emit(ActionNames.SEND_ERROR_STATUS, null);
-		}
+			done();
+		});
 	}
 
 	addNewPlayerToLobby(socket, playerName) {
@@ -155,8 +163,6 @@ class Server {
 
 	createGame(socket, gameID) {
 		let player = this.players.get(socket.id);
-
-
 
 		let game = new Game(player, gameID ? gameID : this.getValidGameID());
 		this.games.set(socket.id, game);
@@ -217,7 +223,7 @@ class Server {
 				}
 				return player.board.gameOver;
 			})) {
-				this.io.to(player.socketID).emit(ActionNames.IS_WINNER_BY_SCORE);
+				this.io.to(bestScorePlayer.socketID).emit(ActionNames.IS_WINNER_BY_SCORE);
 				clearInterval(game.interval);
 				this.writeBestScore(bestScorePlayer);
 			}
@@ -261,37 +267,47 @@ class Server {
 	}
 
 	playerDisconnect(socket) {
-		let game = this.games.get(socket.id);
-		let player = this.players.get(socket.id);
+		// console.log("[Server.js] playerDisconnect: ", socket.id);
+		// console.log("\tNumber of players: ", this.players.size);
+		this.lock.acquire("K", done => {
+			// console.log("[Server.js] playerDisconnect MUTEX");
+			let game = this.games.get(socket.id);
+			let player = this.players.get(socket.id);
 
-		if (player && game) {
-			this.updateShadowBoard(player, false);
-		}
+			if (player && game) {
+				this.updateShadowBoard(player, false);
+			}
 
-		socket.leave('lobby');
+			socket.leave('lobby');
 
-		this.players.delete(socket.id);
-		this.games.delete(socket.id);
+			// console.log("\tNumber of players: ", this.players.size);
+			this.players.delete(socket.id);
+			// console.log("\tremoved player: ", socket.id);
+			// console.log("\tNumber of players: ", this.players.size);
+			this.games.delete(socket.id);
 
-		if (!game) return ;
-		socket.leave(game.id);
-		game.players = game.players.filter( player => player.socketID != socket.id);
+			if (!game) { done(); return ;}
+			socket.leave(game.id);
+			game.players = game.players.filter( player => player.socketID != socket.id);
 
-		if (game.players.length == 0) {
-			game.isPlaying = false;
-			this.updateHostList();
-			clearInterval(game.interval);
-			return ;
-		}
-		if (game.host.socketID == socket.id) {
-			// console.log("[Server.js] NEW HOST");
-			game.host = game.players[0];
-			this.io.to(game.host.socketID).emit(ActionNames.UPDATE_HOST_STATUS, true);
-		}
+			if (game.players.length == 0) {
+				game.isPlaying = false;
+				this.updateHostList();
+				clearInterval(game.interval);
+				done();
+				return ;
+			}
+			if (game.host.socketID == socket.id) {
+				// console.log("[Server.js] NEW HOST");
+				game.host = game.players[0];
+				this.io.to(game.host.socketID).emit(ActionNames.UPDATE_HOST_STATUS, true);
+			}
+			done();
+		});
 	}
 
 	writeBestScore(player) {
-		this.lock.acquire("key", done => {
+		this.lock.acquire("writeHighScores", done => {
 
 			let filePath = __dirname + '/../../../bestScore';
 

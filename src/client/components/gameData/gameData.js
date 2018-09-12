@@ -16,8 +16,8 @@ const gameData = ( props ) => {
 			<div className={styles.GameData}>
 				<NextPieces pieces={props.gameData.nextPieces}/>
 				<div className={styles.score}>Score: {props.gameData.score}</div>
-				<div className={styles.level}>Level: {props.gameData.level}</div>
-				<div className={styles.removedLines}>Removed Lines: {props.gameData.removedLines}</div>
+				<div className={styles.level}>Level: {props.gameData.level + 1}</div>
+				<div className={styles.removedLines}>Lines: {props.gameData.removedLines}</div>
 			</div>
 		)
 	}
