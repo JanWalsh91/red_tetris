@@ -14,14 +14,14 @@ const shadowBoard = ( props ) => {
 	let contentArray = [];
 	if (props.shadowState) {
 
-		props.shadowState.forEach((shadowBoard) => {
+		props.shadowState.forEach((shadowBoard, sbIndex) => {
 			console.log(shadowBoard);
-			
+
 			if (shadowBoard.id == props.playerUUID) return;
 
 			contentArray.push(
-				shadowBoard.board.map( row => {
-					let line = row.map( cell => {
+				shadowBoard.board.map( (row, rIndex) => {
+					let line = row.map( (cell, cIndex) => {
 
 						// console.log(cell);
 
@@ -29,19 +29,14 @@ const shadowBoard = ( props ) => {
 						classes.push(styles[cell]);
 						classes = classes.join(' ');
 
-						return <div className={classes}></div>;
+						return <div key={(rIndex + 1) * (cIndex + 1)} className={classes}></div>;
 					});
-					line = <div className={styles.row}>{line}</div>
+					line = <div key={rIndex} className={styles.row}>{line}</div>
 					return line;
 				}),
-				<div>{shadowBoard.name}</div>
+				<div key={sbIndex}>{shadowBoard.name}</div>
 			);
-
 		})
-
-
-
-
 	}
 
 	return (

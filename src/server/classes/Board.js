@@ -33,7 +33,8 @@ class Board {
 			frozenLines: 0,
 			removedLines: 0,
 			getPiecesFromGame: () => {console.log("no callback set");},
-			updateScoreAndFrozenLinesInGame: () => {console.log("no callback set");}
+			updateScoreAndFrozenLinesInGame: () => {console.log("no callback set");},
+			checkForEndGame: () => {console.log("no callback set");}
 
 		}
 		params = {...defaultParams, ...params};
@@ -51,6 +52,7 @@ class Board {
 		this.removedLines = params.removedLines;
 		this.getPiecesFromGame = params.getPiecesFromGame;
 		this.updateScoreAndFrozenLinesInGame = params.updateScoreAndFrozenLinesInGame;
+		this.checkForEndGame = params.checkForEndGame;
 	}
 
 	/*
@@ -82,6 +84,7 @@ class Board {
 			this.activePiece = movedPiece;
 			this.gameOver = true;
 			this.fillRed();
+			this.checkForEndGame();
 		} else {
 			this.needToBroadcast = true;
 		}

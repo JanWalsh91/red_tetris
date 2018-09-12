@@ -1,4 +1,4 @@
-import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID, UPDATE_ERROR, RESET_STATE } from '../actions/client'
+import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID, UPDATE_ERROR, RESET_STATE, UPDATE_GAME_START, IS_WINNER, IS_WINNER_BY_SCORE} from '../actions/client'
 import socket from '../socket'
 
 import * as ActionNames from '../../server/serverActions'
@@ -48,9 +48,11 @@ const updateSelectedGame = (state, action) => {
 }
 
 const updateGameJoined = (state, action) => {
+	console.log("[reducers/index.js] updateGameJoined: ", action);
 	return {
 		...state,
-		gameJoined: action.gameJoined
+		gameJoined: action.gameJoined,
+		gameID: action.gameID
 	}
 }
 
@@ -106,9 +108,6 @@ const updatePlayerUUID = (state, action) => {
 }
 
 const updateError = (state, action) => {
-
-	console.log("INITIAL ======= STATUE: ", initialState);
-
 	if (state.errorMessage == "500") {
 		let resetState = {
 			...initialState,
@@ -129,13 +128,36 @@ const updateError = (state, action) => {
 }
 
 const resetState = (state, action) => {
+	console.log("[reducers.js] resetState: ", action);
 	let resetState = {
 		...initialState,
 		hostList: [...initialState.hostList],
-		gameState: {...initialState.gameState}
+		gameState: {...initialState.gameState},
+		...action.newState
 	}
 	return {
 		...resetState
+	}
+}
+
+const updateGameStart = state => {
+	return {
+		...state,
+		gameStart: true
+	}
+}
+
+const isWinner = state => {
+	return {
+		...state,
+		isWinner: true
+	}
+}
+
+const isWinnerByScore = state => {
+	return {
+		...state,
+		isWinnerByScore: true
 	}
 }
 
@@ -152,6 +174,9 @@ const reducer = (state = {} , action) => {
 		case UPDATE_PLAYER_UUID: return updatePlayerUUID(state, action);
 		case UPDATE_ERROR: return updateError(state, action);
 		case RESET_STATE: return resetState(state, action);
+		case UPDATE_GAME_START: return updateGameStart(state);
+		case IS_WINNER: return isWinner(state);
+		case IS_WINNER_BY_SCORE: return isWinnerByScore(state);
 		default: console.log('default'); return state;
 	}
 

@@ -2,7 +2,7 @@ import io from 'socket.io-client'
 import params from '../../params'
 
 import store from './index'
-import {updateHostList, updateGameJoined, updateGameState, updateShadowState, updateHostStatus, updatePlayerUUID, updateError, updatePlayerName, resetState} from './actions/client'
+import {updateHostList, updateGameJoined, updateGameState, updateShadowState, updateHostStatus, updatePlayerUUID, updateError, updatePlayerName, resetState, updateGameStart, isWinner, isWinnerByScore} from './actions/client'
 
 import * as ActionNames from '../server/serverActions'
 
@@ -12,8 +12,14 @@ socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
 	store.dispatch(updateHostList(hostList));
 })
 
-socket.on(ActionNames.UPDATE_GAME_JOINED, (joined) => {
-	store.dispatch(updateGameJoined(joined));
+socket.on(ActionNames.UPDATE_GAME_JOINED, (action) => {
+	// console.log("[socket.js] UPDATE_GAME_JOINED: ", action);
+	updateHash(store.getState().playerName, action.gameID);
+	store.dispatch(updateGameJoined(action));
+})
+
+socket.on(ActionNames.UPDATE_GAME_START, () => {
+	store.dispatch(updateGameStart());
 })
 
 socket.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
@@ -36,31 +42,47 @@ socket.on(ActionNames.UPDATE_PLAYER_NAME, (playerName) => {
 	store.dispatch(updatePlayerName(playerName));
 })
 
+socket.on(ActionNames.IS_WINNER, () => {
+	store.dispatch(isWinner());
+})
+
+socket.on(ActionNames.IS_WINNER_BY_SCORE, () => {
+	store.dispatch(isWinnerByScore());
+})
+
+
+
 socket.on("connect", () => {
 	readHash();
 	store.dispatch(updateError(null));
 })
 
 socket.on("disconnect", () => {
+	updateHash();
 	store.dispatch(updateError("500"));
 })
 
-setTimeout(() => {
-	console.log("store: ",  store);
-}, 9000);
-
 const readHash = () => {
+	// console.log("[socket.js] readHash");
 	let regexPlayerRoom = /#(\d+)\[(.+)\]/;
 	let url = window.location.hash;
 
 	let match = regexPlayerRoom.exec(url);
 	if (match) {
 		let gameID = match[1];
+		if (gameID == store.getState().gameID) return ;
 		let playerName = match[2];
-		console.log("playerName: ", playerName, "gameID: ", gameID);
 
 		store.dispatch(resetState());
 		socket.emit(ActionNames.UPDATE_REQUEST_URL, {gameID, playerName});
+	}
+}
+
+const updateHash = (playerName, gameID) => {
+	if (!playerName || !gameID) {
+		window.location.href = '/';
+	} else {
+		window.location.hash = `${gameID}[${playerName}]`;
 	}
 }
 

@@ -71,6 +71,12 @@ class Game {
 						}
 					})
 				}
+			},
+			checkForEndGame: () => {
+
+				if (this.players.every( p => p.board.gameOver)) {
+					player.isWinner = true;
+				}
 			}
 		});
 	}

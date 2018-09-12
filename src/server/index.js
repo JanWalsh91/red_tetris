@@ -45,6 +45,8 @@ const initEngine = io => {
 		// console.log(socket.request.headers);
 		// loginfo("Socket connected: " + socket.id)
 
+
+
 		socket.on(ActionNames.UPDATE_REQUEST_URL, (data) => {
 			server.onURLJoin(socket, data);
 		})
@@ -73,12 +75,16 @@ const initEngine = io => {
 			server.playerAction(socket, action);
 		})
 
-		socket.on(ActionNames.DISCONNECT, function() {
+		socket.on(ActionNames.DISCONNECT, () => {
 			server.playerDisconnect(socket);
 		})
 
+		socket.on(ActionNames.QUIT_GAME, () => {
+			let playerName = server.players.get(socket.id).name;
+			server.playerDisconnect(socket);
+			server.addNewPlayerToLobby(socket, playerName);
+		})
 	})
-
 }
 
 export function create(params) {

@@ -19,9 +19,7 @@ const App = (props) => {
 		if (!canMove) return ;
 		canMove = false;
 		setTimeout(function() { canMove = true; }, 100);
-		console.log(event.keyCode);
 		if (props.gameJoined) {
-			// console.log("props.gameJoined");
 			event.preventDefault();
 			switch (event.keyCode) {
 				case 32:
@@ -42,8 +40,6 @@ const App = (props) => {
 				default:
 					break ;
 			}
-		} else {
-			console.log("Let's not to be played");
 		}
 
 	}

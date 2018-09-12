@@ -23,10 +23,25 @@ const board = ( props ) => {
 			return line;
 		})
 	}
+	let winnerContent = null;
+	if (props.isWinner) {
+		 winnerContent = (
+			<div>YOU WIN</div>
+		)
+	}
+
+	let scoreWinnerContent = null;
+	if (props.isWinnerByScore) {
+		 scoreWinnerContent = (
+			<div>YOU WIN (SEXY SCORE)</div>
+		)
+	}
 
 	return (
 		<div className={styles.Board}>
 			{content}
+			{winnerContent}
+			{scoreWinnerContent}
 		</div>
 	);
 }

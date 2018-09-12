@@ -28,13 +28,14 @@ export const updateSelectedGame = (hostID) => {
 
 export const UPDATE_GAME_JOINED = 'UPDATE_GAME_JOINED'
 
-export const updateGameJoined = (gameJoined) => {
+export const updateGameJoined = (action) => {
 
-	console.log("updateGameJoined");
+	console.log("[client.js] updateGameJoined: ", action);
 
 	return {
 		type: UPDATE_GAME_JOINED,
-		gameJoined
+		gameJoined: action.gameJoined,
+		gameID: action.gameID
 	}
 }
 
@@ -96,9 +97,35 @@ export const updateError = (errorMessage) => {
 
 export const RESET_STATE = 'RESET_STATE'
 
-export const resetState = () => {
+export const resetState = (newState) => {
 
 	return {
-		type: RESET_STATE
+		type: RESET_STATE,
+		newState
+	}
+}
+
+export const UPDATE_GAME_START = 'UPDATE_GAME_START'
+
+export const updateGameStart = () => {
+	return {
+		type: UPDATE_GAME_START
+	}
+}
+
+export const IS_WINNER = 'IS_WINNER'
+
+export const isWinner = () => {
+
+	return {
+		type: IS_WINNER
+	}
+}
+
+export const IS_WINNER_BY_SCORE = 'IS_WINNER_BY_SCORE'
+
+export const isWinnerByScore = () => {
+	return {
+		type: IS_WINNER_BY_SCORE
 	}
 }

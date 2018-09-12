@@ -3,6 +3,7 @@ const initialState = {
 	playerName: '',
 	gameSelected: null, // Null / #
 	gameJoined: false, // True / False
+	gameID: null,
 	isHost: false,
 	gameState: {
 		score: 0,

@@ -1,17 +1,20 @@
 import Game from './Game'
 import Player from './Player'
+import AsyncLock from 'async-lock'
+import fs from 'fs'
 
 import * as ActionNames from './../serverActions'
 
 class Server {
 
 	constructor(io) {
-		this.games = []
+		// this.games = []
 		// this.lobby = new Map();
 		// this.sockets = new Map(); // { socket.id: game } (-> this.games)
 		this.games = new Map();
 		this.players = new Map();
 		this.io = io;
+		this.lock = new AsyncLock();
 	}
 
 	/*
@@ -21,7 +24,6 @@ class Server {
 		let joinableGames = new Map();
 		for (var [socketID, game] of this.games) {
 			if (game && !game.isPlaying && game.players.length < Game.maxPlayers) {
-				console.log("check");
 				joinableGames.set(game.id, game.getInfo());
 			}
 		}
@@ -53,12 +55,11 @@ class Server {
 	}
 
 	updateHostStatus = (player) => {
-		console.log("updateHostStatus");
+		// console.log("updateHostStatus");
 		let isHost = false;
 		if (player.socketID == this.games.get(player.socketID).host.socketID) {
 			isHost = true;
 		}
-		console.log("host ? ", isHost);
 		this.io.to(player.socketID).emit(ActionNames.UPDATE_HOST_STATUS, isHost);
 	}
 
@@ -77,7 +78,7 @@ class Server {
 	}
 
 	getGameByID(gameID) {
-		console.log("[getGameByID]: ", gameID);
+		// console.log("[getGameByID]: ", gameID);
 		for (var [socketID, game] of this.games) {
   			if (game && game.id == gameID) {
 				return game;
@@ -97,7 +98,7 @@ class Server {
 	// NEW functions
 
 	onURLJoin(socket, data) {
-		console.log("[onURLJoin]");
+		// console.log("[onURLJoin]");
 		if (this.games.get(socket.id)) {
 			this.playerDisconnect(socket);
 		}
@@ -105,13 +106,6 @@ class Server {
 		this.players.set(socket.id, new Player(data.playerName, socket.id));
 
 		let game = this.getGameByID(data.gameID);
-		console.log("got: ", game);
-
-
-		if (game) {
-			console.log("gameID: ", game.id);
-		}
-
 
 		if (game && game.isPlaying) {
 			this.io.to(socket.id).emit(ActionNames.SEND_ERROR_STATUS, "Can't join a game in progress");
@@ -147,14 +141,22 @@ class Server {
 		socket.join(gameID);
 
 		this.updateHostList();
-		socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
+		socket.emit(ActionNames.UPDATE_GAME_JOINED, {gameJoined: true, gameID: gameID});
 
 		game.initPlayerBoard(player);
 		this.updateGameState(player);
+
+		game.players.forEach( player => {
+			this.updateShadowBoard(player);
+		});
+
+
 	}
 
 	createGame(socket, gameID) {
 		let player = this.players.get(socket.id);
+
+
 
 		let game = new Game(player, gameID ? gameID : this.getValidGameID());
 		this.games.set(socket.id, game);
@@ -162,9 +164,11 @@ class Server {
 
 		socket.leave('lobby');
 		socket.join(game.id);
+
 		this.updateHostList();
 
-		socket.emit(ActionNames.UPDATE_GAME_JOINED, true);
+		// console.log("[server.js] createGame: ", {gameJoined: true, gameID: game.id});
+		socket.emit(ActionNames.UPDATE_GAME_JOINED, {gameJoined: true, gameID: game.id});
 		game.initPlayerBoard(player);
 		this.updateGameState(player);
 		this.updateHostStatus(player);
@@ -172,7 +176,7 @@ class Server {
 
 	getValidGameID() {
 		let i = 0;
-		while (this.getGameByID(i++));
+		while (this.getGameByID(++i));
 		return i;
 	}
 
@@ -203,13 +207,27 @@ class Server {
 				this.updateGameState(player);
 			});
 
-			if (game.players.every(player => player.board.gameOver)) {
+			let bestScorePlayer = null;
+			if (game.players.every(player => {
+				if (player.isWinner) {
+					this.io.to(player.socketID).emit(ActionNames.IS_WINNER);
+				}
+				if (bestScorePlayer == null || player.score > bestScorePlayer.score) {
+					bestScorePlayer = player;
+				}
+				return player.board.gameOver;
+			})) {
+				this.io.to(player.socketID).emit(ActionNames.IS_WINNER_BY_SCORE);
 				clearInterval(game.interval);
+				this.writeBestScore(bestScorePlayer);
 			}
+
 		};
 
 		game.setGameTic();
 		this.updateHostList();
+
+		socket.emit(ActionNames.UPDATE_GAME_START);
 	}
 
 	playerAction(socket, action) {
@@ -266,8 +284,37 @@ class Server {
 			return ;
 		}
 		if (game.host.socketID == socket.id) {
+			// console.log("[Server.js] NEW HOST");
 			game.host = game.players[0];
+			this.io.to(game.host.socketID).emit(ActionNames.UPDATE_HOST_STATUS, true);
 		}
+	}
+
+	writeBestScore(player) {
+		this.lock.acquire("key", done => {
+
+			let filePath = __dirname + '/../../../bestScore';
+
+			fs.readFile(filePath, (err, data) => {
+
+				let highScores = null;
+				try {
+					highScores = JSON.parse(data);
+				} catch (err) {
+					highScores = [];
+				}
+
+				highScores.push({playerName: player.name, score: player.score});
+				highScores.sort((a, b) => a.score < b.score)
+				highScores = highScores.slice(0, 9);
+
+				fs.writeFile(filePath, JSON.stringify(highScores), function (err) {
+					console.log(err);
+				});
+			})
+		    done();
+		})
+
 	}
 }
 

@@ -8,7 +8,7 @@ import ShadowBoard from '../../../components/shadowBoard/shadowBoard'
 import GameData from '../../../components/gameData/gameData'
 import Button from '../../../components/button/button'
 import socket from '../../../socket'
-import {updatePlayerName, updateSelectedGame} from '../../../actions/client'
+import {updatePlayerName, updateSelectedGame, resetState} from '../../../actions/client'
 
 import * as ActionNames from '../../../../server/serverActions'
 
@@ -17,29 +17,31 @@ const Main = ( props ) => {
 	const startGame = () => {
 		socket.emit(ActionNames.START_GAME);
 	}
+	const quitGame = () => {
+		socket.emit(ActionNames.QUIT_GAME);
+		props.resetState({playerName: props.playerName});
+		window.history.pushState(null, '', '/');
+	}
 
 	let content;
-
-	console.log("======== PROPS ============ ");
-	console.log(props);
 
 	if (props.playerName === undefined || props.playerName.length == 0) {
 		content = (<PlayerForm onUpdateName={ () => props.onUpdatePlayerName()}></PlayerForm>);
 	}
 	else {
-
-		console.log("gameJoined: ", props.gameJoined);
-
-		let button = null;
-
-		console.log("isHost: ", props.isHost );
-
+		let startButton = null;
 		if (props.isHost) {
-			button = <Button onClick={startGame} value="Start Game"/>;
+			if (!props.gameStart) {
+				startButton = <Button onClick={startGame} value="Start Game"/>;
+			}
 		}
 
-		console.log("MAIN=============");
-		console.log(props.gameState);
+		let buttons = (
+			<div>
+				{startButton}
+				<Button onClick={quitGame} value="Quit Game"/>
+			</div>
+		);
 
 		if (props.gameJoined) {
 			content = (
@@ -48,8 +50,8 @@ const Main = ( props ) => {
 						<ShadowBoard playerUUID={props.playerUUID} shadowState={props.shadowState}/>
 					</div>
 					<div>
-						<Board gameState={props.gameState}/>
-						 {button}
+						<Board gameState={props.gameState} isWinner={props.isWinner} isWinnerByScore={props.isWinnerByScore}/>
+						 {buttons}
 					</div>
 					<div>
 						<GameData gameData={props.gameState}/>
@@ -83,7 +85,10 @@ const mapStateToProps = (state) => {
 		gameState: state.gameState,
 		shadowState: state.shadowState,
 		isHost: state.isHost,
-		playerUUID: state.playerUUID
+		playerUUID: state.playerUUID,
+		gameStart: state.gameStart,
+		isWinner: state.isWinner,
+		isWinnerByScore: state.isWinnerByScore
 	}
 }
 
@@ -91,7 +96,8 @@ const mapDispatchToProps = dispatch => {
 	return {
 		onUpdatePlayerName: playerName => dispatch(updatePlayerName(playerName)),
 		onSelectGame: hostID => dispatch(updateSelectedGame(hostID)),
-		onUpdateGameJoined: gameJoined => dispatch(onUpdateGameJoined(gameJoined))
+		onUpdateGameJoined: gameJoined => dispatch(onUpdateGameJoined(gameJoined)),
+		resetState: action => dispatch(resetState(action))
 	}
 }
 
