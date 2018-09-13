@@ -75,6 +75,8 @@ class Board {
 		this.getPiecesFromGame(this);
 		this.activePiece = this.piecesList.shift();
 
+		if (!this.activePiece) return;
+
 		let isPlaceable = this.pieceIsPlaceable(this.activePiece);
 		// console.log("[Board.js] isPlaceable: ", isPlaceable);
 		if (!isPlaceable) {
@@ -88,9 +90,6 @@ class Board {
 		} else {
 			this.needToBroadcast = true;
 		}
-		if (!this.activePiece) {
-			console.log("[Board.js] Error: no next piece available");
-		}
 	}
 
 	/*
@@ -101,7 +100,7 @@ class Board {
 	*/
 	tryToRotatePiece( piece ) {
 		// console.log("[Board.js] tryToRotatePiece");
-		if (!piece) {console.log("\tno piece!"); return ;}
+		if (!piece) return ;
 
 		piece.rotate();
 		// console.log("\trotated piece to: ", piece.coords);
@@ -113,8 +112,8 @@ class Board {
 	*/
 	tryToMovePiece( piece, vector ) {
 		// console.log("[Board.js] tryToMovePiece, vector: ", vector);
-		if (!piece) {console.log("\tno piece!"); return ;}
-		if (!vector || vector.x == undefined || vector.y == undefined) {console.log("\tinvalid vector!"); return piece;}
+		if (!piece) return ;
+		if (!vector || vector.x == undefined || vector.y == undefined) return piece ;
 
 		piece.move(vector);
 		// console.log("\tmoved piece to: ", piece.coords);
@@ -162,17 +161,17 @@ class Board {
 		this.needToBroadcast = true;
 	}
 
-	printCells() {
-		// console.clear();
-		console.log("[Board.js] printCells");
-		for (let y = 0; y < this.size.y; y++) {
-			let line = "";
-			for (let x = 0; x < this.size.x; x++) {
-				line += (this.cells[y][x] ? "1" : "0") + " ";
-			}
-			console.log(line);
-		}
-	}
+	// printCells() {
+	// 	// console.clear();
+	// 	console.log("[Board.js] printCells");
+	// 	for (let y = 0; y < this.size.y; y++) {
+	// 		let line = "";
+	// 		for (let x = 0; x < this.size.x; x++) {
+	// 			line += (this.cells[y][x] ? "1" : "0") + " ";
+	// 		}
+	// 		console.log(line);
+	// 	}
+	// }
 
 	// TODO: create functions for actions requested by client. Modifies activePiece if possible
 	// Change tryToMovePiece and tryToRotatePiece to not modify activePiece.
@@ -184,34 +183,13 @@ class Board {
 		let rotatedPiece = new Piece(this.activePiece);
 		// rotate copy
 		let canPlace = this.tryToRotatePiece(rotatedPiece);
-		if (!canPlace) {
-			console.log("\tmove left 1");
-			canPlace = this.tryToMovePiece(rotatedPiece, {x: -1, y: 0});
-		}
-		if (!canPlace) {
-			console.log("\tmove left 2")
-			canPlace = this.tryToMovePiece(rotatedPiece, {x: -1, y: 0});
-		}
-		if (!canPlace) {
-			console.log("\tmove right 1")
-			canPlace = this.tryToMovePiece(rotatedPiece, {x: 3, y: 0});
-		}
-		if (!canPlace) {
-			console.log("\tmove right 2")
-			canPlace = this.tryToMovePiece(rotatedPiece, {x: 1, y: 0});
-		}
-		if (!canPlace) {
-			console.log("\tmove up 1")
-			canPlace = this.tryToMovePiece(rotatedPiece, {x: -2, y: -1});
-		}
-		if (!canPlace) {
-			console.log("\tmove up 2")
-			canPlace = this.tryToMovePiece(rotatedPiece, {x: 0, y: -1});
-		}
-		if (canPlace) {
-			// console.log("\t\t=D")
-			this.activePiece = rotatedPiece;
-		}
+		if (!canPlace) canPlace = this.tryToMovePiece(rotatedPiece, {x: -1, y: 0});
+		if (!canPlace) canPlace = this.tryToMovePiece(rotatedPiece, {x: -1, y: 0});
+		if (!canPlace) canPlace = this.tryToMovePiece(rotatedPiece, {x: 3, y: 0});
+		if (!canPlace) canPlace = this.tryToMovePiece(rotatedPiece, {x: 1, y: 0});
+		if (!canPlace) canPlace = this.tryToMovePiece(rotatedPiece, {x: -2, y: -1});
+		if (!canPlace) canPlace = this.tryToMovePiece(rotatedPiece, {x: 0, y: -1});
+		if (canPlace) this.activePiece = rotatedPiece;
 		return canPlace;
 	}
 
@@ -284,7 +262,6 @@ class Board {
 				}
 			}
 			if (isFullLine) {
-				console.log("Is Full Line");
 				numLinesRemoved++;
 				for (let z = y; z > 0; z--) {
 					this.cells[z] = this.cells[z - 1].slice();
@@ -319,29 +296,27 @@ class Board {
 	}
 
 	// TODO: to remove
-	getBinaryCells() {
-		// console.log("[Board.js] getCells <3");
-		let cells = JSON.parse(JSON.stringify(this.cells));
-		if (!this.activePiece) return cells;
-		// console.log(this.activePiece);
-		for (let y = 0; y < 4; y++) {
-			for (let x = 0; x < 4; x++) {
-
-				if (this.activePiece.cells[y][x] != 0x0) {
-					cells[this.activePiece.coords.y + y][this.activePiece.coords.x + x] = 1;
-				}
-			}
-		}
-
-		for (let y = 0; y < this.size.y; y++) {
-			for (let x = 0; x < this.size.x; x++) {
-				if (this.cells[y][x] != 0x0) {
-					cells[y][x] = 1;
-				}
-			}
-		}
-		return cells;
-	}
+	// getBinaryCells() {
+	// 	// console.log("[Board.js] getCells <3");
+	// 	let cells = JSON.parse(JSON.stringify(this.cells));
+	// 	if (!this.activePiece) return cells;
+	// 	// console.log(this.activePiece);
+	// 	for (let y = 0; y < 4; y++) {
+	// 		for (let x = 0; x < 4; x++) {
+	// 			if (this.activePiece.cells[y][x] != 0x0) {
+	// 				cells[this.activePiece.coords.y + y][this.activePiece.coords.x + x] = 1;
+	// 			}
+	// 		}
+	// 	}
+	// 	for (let y = 0; y < this.size.y; y++) {
+	// 		for (let x = 0; x < this.size.x; x++) {
+	// 			if (this.cells[y][x] != 0x0) {
+	// 				cells[y][x] = 1;
+	// 			}
+	// 		}
+	// 	}
+	// 	return cells;
+	// }
 
 	getShadowCells() {
 		// console.log("[Board.js] getCells <3");
@@ -358,22 +333,6 @@ class Board {
 		return shadowCells;
 	}
 
-	// getShadowCells() {
-	// 	// console.log("[Board.js] getShadowCells <3");
-	// 	let shadowCells = JSON.parse(JSON.stringify(this.cells));
-	// 	if (!this.activePiece) return shadowCells;
-	// 	for (let y = 0; y < 4; y++) {
-	// 		for (let x = 0; x < 4; x++){
-	// 			if (this.activePiece.cells[y][x] != 0x0) {
-	// 				for (let z = this.activePiece.coords.y + y; z < this.board.size.y; z++) {
-	// 					shadowCells[z][this.activePiece.coords.x + x] = 0xdadada;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	return shadowCells;
-	// }
-
 	fillRed() {
 		for (let y = 0; y < this.size.y; y++) {
 			for (let x = 0; x < this.size.x; x++) {
@@ -384,39 +343,5 @@ class Board {
 		}
 	}
 }
-
-// for testing
-// let board = new Board(
-// 	{
-// 		size: {x: 10, y: 20},
-// 		piecesList: [new Piece(0), new Piece(0), new Piece(0)]
-// 	}
-// );
-
-// board.setNextActivePiece();
-
-// board.printCells();
-
-// board.moveRight();
-// board.moveRight();
-// board.freezePiece();
-// board.setNextActivePiece();
-
-// board.rotate();
-// board.freezePiece();
-
-// board.printCells();
-
-// console.log(board.getCells());
-//
-// board.tryToMovePiece({x: -4, y: 0});
-// board.freezePiece();
-// board.setNextActivePiece();
-//
-// board.printCells();
-
-
-
-
 
 export default Board;

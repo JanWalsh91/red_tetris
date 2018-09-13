@@ -1,7 +1,6 @@
 import Piece from './Piece'
 import Board from './Board'
 import Server from './Server'
-
 import * as ActionNames from '../serverActions'
 
 class Game {
@@ -21,8 +20,6 @@ class Game {
 		if (gameID) {
 			this.id = gameID;
 		}
-
-		console.log("Creating Game with id #", this.id);
 	}
 
 	getInfo() {
@@ -42,17 +39,15 @@ class Game {
 	initPlayerBoard( player ) {
 		console.log("[Game.js] initPlayerBoard");
 
+		if (!player) return ;
+
 		player.board = new Board({
 			getPiecesFromGame: (board) => {
 				if (board.piecesCopiedCount - this.piecesList.length < 5) {
 					this.piecesList.push(...Piece.generateRandomPieces(Game.newPiecesCount));
 				}
 				if (board.piecesList.length < 5) {
-					board.addPieces(
-						this.piecesList.slice(board.piecesCopiedCount, board.piecesCopiedCount + 5).map( piece => {
-							return new Piece(piece);
-						})
-					);
+					board.addPieces(this.piecesList.slice(board.piecesCopiedCount, board.piecesCopiedCount + 5).map( piece => new Piece(piece) ));
 					board.piecesCopiedCount += 5;
 				}
 			},
@@ -60,7 +55,6 @@ class Game {
 				// update player score
 				const multiplier = [40, 100, 300, 1200];
 				player.score += multiplier[linesRemoved - 1] * (this.level + 1);
-				console.log("player score: ", player.score);
 				// update game level
 				this.updateGameLevel(player.score);
 
@@ -73,7 +67,6 @@ class Game {
 				}
 			},
 			checkForEndGame: () => {
-
 				if (this.players.every( p => p.board.gameOver)) {
 					player.isWinner = true;
 				}
@@ -98,7 +91,6 @@ class Game {
 			if (this.highestScore > thresholds[this.level] && this.level < thresholds.length - 1) {
 				while (this.highestScore > thresholds[this.level] && this.level < thresholds.length - 1) {
 					this.level++;
-					console.log("level: ", this.level);
 				}
 				this.setGameTic();
 			}
@@ -106,11 +98,6 @@ class Game {
 	}
 
 	start () {
-		console.log("[Game.js] start");
-		if (this.isPlaying) {
-			console.log("Espece d'enfoiré, arrête ca!");
-			return ;
-		}
 		this.isPlaying = true;
 	}
 

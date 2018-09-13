@@ -61,7 +61,7 @@ class Piece {
 			orientation: 0,
 			coords: {x: 3, y: 0}
 		};
-		params = {...defaultParams, ...params, coords: {...(params.coords ? params.coords : defaultParams.coords)}};
+		params = {...defaultParams, ...params, coords: {...(params && params.coords ? params.coords : defaultParams.coords)}};
 
 	 	if (params.type < 0 || params.type >= Piece.typeCount) {
 			console.log("[Piece.js] invalid piece parameters");

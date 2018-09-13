@@ -8,9 +8,6 @@ import * as ActionNames from './../serverActions'
 class Server {
 
 	constructor(io) {
-		// this.games = []
-		// this.lobby = new Map();
-		// this.sockets = new Map(); // { socket.id: game } (-> this.games)
 		this.games = new Map();
 		this.players = new Map();
 		this.io = io;
