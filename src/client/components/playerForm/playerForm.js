@@ -6,7 +6,7 @@ const PlayerForm = ( props ) => {
 
 	const keyboardEvent = (event) => {
 		if (event.keyCode == 13) {
-			document.getElementById('buttonPlayerInputName').click();
+			props.onUpdateName();
 		}
 	}
 
