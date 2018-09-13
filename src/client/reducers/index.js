@@ -3,7 +3,6 @@ import socket from '../socket'
 
 import * as ActionNames from '../../server/serverActions'
 import initialState from '../initialState'
-// import io from 'socket-io'
 
 const updateHostList = (state, action) => {
 	console.log("updateHostList reducer");
@@ -15,6 +14,8 @@ const updateHostList = (state, action) => {
 }
 
 const updatePlayerName = (state, action) => {
+
+	console.log("SOCKET", socket);
 
 	if (action.playerName) {
 		return {
@@ -179,7 +180,6 @@ const reducer = (state = {} , action) => {
 		case IS_WINNER_BY_SCORE: return isWinnerByScore(state);
 		default: console.log('default'); return state;
 	}
-
 }
 
 export default reducer

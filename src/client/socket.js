@@ -1,12 +1,15 @@
 import io from 'socket.io-client'
 import params from '../../params'
 
-import store from './index'
+import store from './store'
 import {updateHostList, updateGameJoined, updateGameState, updateShadowState, updateHostStatus, updatePlayerUUID, updateError, updatePlayerName, resetState, updateGameStart, isWinner, isWinnerByScore} from './actions/client'
 
 import * as ActionNames from '../server/serverActions'
 
 const socket = io.connect(params.server.getUrl())
+
+
+console.log("SOCKETJS, STORE: ", store);
 
 socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
 	store.dispatch(updateHostList(hostList));
@@ -95,4 +98,4 @@ socket.on(ActionNames.SEND_ERROR_STATUS, (errorMessage) => {
 
 window.onhashchange = readHash;
 
-module.exports = socket;
+export default socket
