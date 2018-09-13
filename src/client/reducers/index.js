@@ -1,5 +1,5 @@
 import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID, UPDATE_ERROR, RESET_STATE, UPDATE_GAME_START, IS_WINNER, IS_WINNER_BY_SCORE} from '../actions/client'
-import socket from '../socket'
+// import socket from '../socket'
 
 import * as ActionNames from '../../server/serverActions'
 import initialState from '../initialState'
@@ -15,7 +15,7 @@ const updateHostList = (state, action) => {
 
 const updatePlayerName = (state, action) => {
 
-	console.log("SOCKET", socket);
+	// console.log("SOCKET", socket);
 
 	if (action.playerName) {
 		return {
@@ -24,21 +24,21 @@ const updatePlayerName = (state, action) => {
 		};
 	}
 
-	let name = document.getElementById('playerInputName').value;
-	console.log("PlayerName: ", name);
-
-	if (name != undefined && name.length > 0) {
-		console.log("Emit new player");
-		socket.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, name);
-	}
-	else {
-		//Error
-	}
-
-	return {
-		...state,
-		playerName: name
-	}
+	// let name = document.getElementById('playerInputName').value;
+	// console.log("PlayerName: ", name);
+	//
+	// if (name != undefined && name.length > 0) {
+	// 	console.log("Emit new player");
+	// 	socket.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, name);
+	// }
+	// else {
+	// 	//Error
+	// }
+	//
+	// return {
+	// 	...state,
+	// 	playerName: name
+	// }
 }
 
 const updateSelectedGame = (state, action) => {

@@ -22,11 +22,25 @@ const Main = ( props ) => {
 		props.resetState({playerName: props.playerName});
 		window.history.pushState(null, '', '/');
 	}
+	const updateName = () => {
+		let name = document.getElementById('playerInputName').value;
+		console.log("PlayerName: ", name);
+
+		if (name != undefined && name.length > 0) {
+			console.log("Emit new player");
+			socket.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, name);
+			props.onUpdatePlayerName(name);
+		}
+		else {
+			// erorr
+			// display message
+		}
+	}
 
 	let content;
 
 	if (props.playerName === undefined || props.playerName.length == 0) {
-		content = (<PlayerForm onUpdateName={ () => props.onUpdatePlayerName()}></PlayerForm>);
+		content = (<PlayerForm onUpdateName={updateName}></PlayerForm>);
 	}
 	else {
 		let startButton = null;

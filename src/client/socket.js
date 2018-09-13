@@ -9,8 +9,6 @@ import * as ActionNames from '../server/serverActions'
 const socket = io.connect(params.server.getUrl())
 
 
-console.log("SOCKETJS, STORE: ", store);
-
 socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
 	store.dispatch(updateHostList(hostList));
 })
@@ -92,8 +90,6 @@ const updateHash = (playerName, gameID) => {
 socket.on(ActionNames.SEND_ERROR_STATUS, (errorMessage) => {
 	store.dispatch(updateError(errorMessage));
 })
-
-
 
 
 window.onhashchange = readHash;
