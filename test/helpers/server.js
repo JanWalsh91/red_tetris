@@ -2,6 +2,12 @@ import * as server from '../../src/server/index'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
+// enzyme
+
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-15';
+configure({ adapter: new Adapter() });
+
 export const startServer = (params, cb) => {
 	server.create(params)
 	.then( server => cb(null, server) )

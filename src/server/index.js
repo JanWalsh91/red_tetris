@@ -36,9 +36,10 @@ const initApp = (app, params, cb) => {
 	})
 }
 
-const initEngine = io => {
-	const server = new Server(io);
+export const server = new Server();
 
+const initEngine = io => {
+	server.io = io;
 	io.on(ActionNames.CONNECTION, function(socket) {
 		console.log("[server/index.js] ", ActionNames.CONNECTION);
 
@@ -76,6 +77,7 @@ const initEngine = io => {
 		})
 
 		socket.on(ActionNames.DISCONNECT, () => {
+			console.log("[Server/index.js] DISCONNECT");
 			server.playerDisconnect(socket);
 		})
 

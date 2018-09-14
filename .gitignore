@@ -5,3 +5,5 @@ log
 tmp
 build
 node_modules
+params.js
+coverage

@@ -24,6 +24,7 @@ class Server {
 				joinableGames.set(game.id, game.getInfo());
 			}
 		}
+		console.log("emitting update host list form server: ", [...joinableGames.values()]);
 		this.io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, [...joinableGames.values()]);
 	}
 
@@ -57,7 +58,8 @@ class Server {
 		if (player.socketID == this.games.get(player.socketID).host.socketID) {
 			isHost = true;
 		}
-		this.io.to(player.socketID).emit(ActionNames.UPDATE_HOST_STATUS, isHost);
+		// this.io.to(player.socketID).emit(ActionNames.UPDATE_HOST_STATUS, isHost);
+		this.io.to(this.games.get(player.socketID).id).emit(ActionNames.UPDATE_HOST_STATUS, isHost);
 	}
 
 	/*
@@ -154,8 +156,6 @@ class Server {
 		game.players.forEach( player => {
 			this.updateShadowBoard(player);
 		});
-
-
 	}
 
 	createGame(socket, gameID) {
@@ -230,7 +230,7 @@ class Server {
 		game.setGameTic();
 		this.updateHostList();
 
-		socket.emit(ActionNames.UPDATE_GAME_START);
+		this.io.to(game.id).emit(ActionNames.UPDATE_GAME_START);
 	}
 
 	playerAction(socket, action) {
@@ -295,7 +295,6 @@ class Server {
 				return ;
 			}
 			if (game.host.socketID == socket.id) {
-				// console.log("[Server.js] NEW HOST");
 				game.host = game.players[0];
 				this.io.to(game.host.socketID).emit(ActionNames.UPDATE_HOST_STATUS, true);
 			}

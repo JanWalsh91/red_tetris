@@ -7,7 +7,6 @@
 //
 // chai.should()
 //
-//
 // describe('Fake server test', function(){
 // 	let tetrisServer
 // 	before(cb => startServer( params.server, function(err, server) {

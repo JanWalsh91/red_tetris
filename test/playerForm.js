@@ -1,15 +1,66 @@
-import chai from "chai"
+// jsdom because mocha
+import {JSDOM} from 'jsdom'
+const jsdom = new JSDOM('<!doctype html><html><body></body></html>');
+const {window} = jsdom;
+global.window = window;
+global.document = window.document;
+
+import chai from 'chai'
+import {expect} from 'chai'
 import React from 'react'
 import equalJSX from 'chai-equal-jsx'
-import {createRenderer} from 'react-addons-test-utils'
+// import {createRenderer} from 'react-addons-test-utils'
+import { mount } from 'enzyme'
 import PlayerForm from '../src/client/components/playerForm/playerForm'
+
+
+// enzyme
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-15';
+configure({ adapter: new Adapter() });
+
+
 
 chai.should()
 chai.use(equalJSX)
 
-describe('PlayerForm Test #1', function(){
-	// it('JSX Test', function(){
-	// 	const renderer = createRenderer()
+
+describe('PlayerForm', function(){
+
+	// let props;
+	// let mountedPlayerForm;
+	// function playerForm() {
+	// 	console.log("playerForm test. props: ", props);
+	//
+	// 	if (!mountedPlayerForm) {
+	// 		mountedPlayerForm = mount(
+	// 			<PlayerForm {...props} />
+	// 		);
+	// 	}
+	// 	return mountedPlayerForm;
+	// }
+
+	// beforeEach(() => {
+	// 	props = {
+	// 		onUpdateName: undefined
+	// 	};
+	// 	// mountedPlayerForm = undefined;
+	// });
+
+	it('always renders a div', function() {
+		let props = {onUpdateName: undefined};
+		let playerForm = mount(<PlayerForm {...props}/>);
+		const divs = playerForm.find("div");
+		expect(divs.length).equals(1);
+
+
+		// const wrappingDiv = divs.first();
+		// console.log(...wrappingDiv);
+		// expect(wrappingDiv.children()).to.equal(playerForm.children());
+
+
+
+			// 	const renderer = createRenderer()
 	// 	renderer.render(<PlayerForm onUpdateName={undefined}/>)
 	// 	const output = renderer.getRenderOutput()
 	// 	let expectedElement = (
@@ -20,16 +71,15 @@ describe('PlayerForm Test #1', function(){
 	// 		</div>
 	// 	)
 	// 	output.should.equalJSX(expectedElement);
-	// })
+	})
 
-
-	// it('Keyboard event', function() {
-	// 	const onKeyDown = sinon.spy();
-	// 	const wrapper = mount(<PlayerForm onKeyDown={onKeyDown}/>);
-	// 	const input = wrapper.find('input');
-	// 	input.simulate('keyDown', {keyCode: 40});
-	// 	expect(onKeyDown.called).to.be.true;
-	// })
+	it("contains everything else that gets rendered", function() {
+		let props = {onUpdateName: undefined};
+		let playerForm = mount(<PlayerForm {...props}/>);
+		const divs = playerForm.find("div");
+		const wrappingDiv = divs.first();
+		expect(wrappingDiv).to.equal(playerForm);
+	})
 })
 
 

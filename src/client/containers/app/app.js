@@ -41,7 +41,6 @@ const App = (props) => {
 					break ;
 			}
 		}
-
 	}
 
 	if (props.errorMessage) {
