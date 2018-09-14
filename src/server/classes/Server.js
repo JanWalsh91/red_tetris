@@ -137,9 +137,11 @@ class Server {
 	}
 
 	joinGame(socket, gameID) {
+		console.log("[Server.js] joinGame, id: ", 1);
 		let player = this.players.get(socket.id);
 		let game = this.getGameByID(gameID);
 		if (!game) return ;
+		console.log("\tcheck");
 
 		game.players.push(player);
 
@@ -267,7 +269,7 @@ class Server {
 	}
 
 	playerDisconnect(socket) {
-		// console.log("[Server.js] playerDisconnect: ", socket.id);
+		console.log("[Server.js] playerDisconnect: ", socket.id);
 		// console.log("\tNumber of players: ", this.players.size);
 		this.lock.acquire("K", done => {
 			// console.log("[Server.js] playerDisconnect MUTEX");
@@ -299,6 +301,7 @@ class Server {
 			}
 			if (game.host.socketID == socket.id) {
 				game.host = game.players[0];
+				console.log("[Server.js] udpate host status");
 				this.io.to(game.host.socketID).emit(ActionNames.UPDATE_HOST_STATUS, true);
 			}
 			done();

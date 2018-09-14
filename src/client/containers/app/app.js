@@ -52,7 +52,7 @@ const App = (props) => {
 	}
 
 	return (
-		<div className={styles.app} tabIndex="0"  onKeyDown={keyboardEvent}>
+		<div className={styles.app} tabIndex="0" onKeyDown={keyboardEvent}>
 			<HeaderBar></HeaderBar>
 			<Main></Main>
 		</div>
