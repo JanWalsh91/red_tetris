@@ -230,10 +230,13 @@ class Server {
 		game.setGameTic();
 		this.updateHostList();
 
+		// TODO: not sending value.
+		// TODO: resolve use of gameStart and game.isPlaying booleans on client side
 		this.io.to(game.id).emit(ActionNames.UPDATE_GAME_START);
 	}
 
 	playerAction(socket, action) {
+		console.log("[Server.js] playerAction: ", action);
 		let player = this.players.get(socket.id);
 		if (player.board.gameOver) return;
 		let game = this.games.get(socket.id);

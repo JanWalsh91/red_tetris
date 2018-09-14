@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">7.69% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/13</span>
+        <span class='fraction'>13/13</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">75% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/24</span>
+        <span class='fraction'>18/24</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/5</span>
+        <span class='fraction'>5/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">7.69% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/13</span>
+        <span class='fraction'>13/13</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -170,10 +170,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -195,14 +195,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -214,16 +214,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -233,7 +233,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -242,10 +242,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -275,16 +275,16 @@ class Game {
 	static maxPlayers = 4;
 	static newPiecesCount = 10;
 &nbsp;
-<span class="fstat-no" title="function not covered" >	constructor( player, gameID ) {</span>
+	constructor( player, gameID ) {
 		this.id = Game.gameCount++;
 		this.host = player;
 		this.isPlaying = false;
 		this.players = [player];
 		this.piecesList = [];
-<span class="cstat-no" title="statement not covered" >		this.level = 0; // determines piece speed and score</span>
+		this.level = 0; // determines piece speed and score
 		this.highestScore = 0;
 		this.interval = undefined;
-<span class="cstat-no" title="statement not covered" >		if (gameID) {</span>
+		<span class="missing-if-branch" title="else path not taken" >E</span>if (gameID) {
 			this.id = gameID;
 		}
 	}
@@ -306,35 +306,35 @@ class Game {
 	initPlayerBoard( player ) {
 		console.log("[Game.js] initPlayerBoard");
 &nbsp;
-<span class="cstat-no" title="statement not covered" >		if (!player) r</span>eturn ;
+		if (!player) return ;
 &nbsp;
 		player.board = new Board({
-			getPiecesFromGame: <span class="fstat-no" title="function not covered" >(board) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >				if (board.piecesCopiedCount - this.piecesList.length &lt; 5) {</span>
+			getPiecesFromGame: (board) =&gt; {
+				<span class="missing-if-branch" title="else path not taken" >E</span>if (board.piecesCopiedCount - this.piecesList.length &lt; 5) {
 					this.piecesList.push(...Piece.generateRandomPieces(Game.newPiecesCount));
 				}
-<span class="cstat-no" title="statement not covered" >				if (board.piecesList.length &lt; 5) {</span>
+				if (board.piecesList.length &lt; 5) {
 					board.addPieces(this.piecesList.slice(board.piecesCopiedCount, board.piecesCopiedCount + 5).map( piece =&gt; new Piece(piece) ));
 					board.piecesCopiedCount += 5;
 				}
 			},
-			updateScoreAndFrozenLinesInGame: <span class="fstat-no" title="function not covered" >(linesRemoved) =&gt; {</span>
+			updateScoreAndFrozenLinesInGame: (linesRemoved) =&gt; {
 				// update player score
 				const multiplier = [40, 100, 300, 1200];
 				player.score += multiplier[linesRemoved - 1] * (this.level + 1);
 				// update game level
 				this.updateGameLevel(player.score);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >				if (linesRemoved &gt;= 2) {</span>
-					this.players.forEach(<span class="fstat-no" title="function not covered" >(p) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >						if (player.socketID != p.socketID) {</span>
+				<span class="missing-if-branch" title="else path not taken" >E</span>if (linesRemoved &gt;= 2) {
+					this.players.forEach((p) =&gt; {
+						<span class="missing-if-branch" title="else path not taken" >E</span>if (player.socketID != p.socketID) {
 							p.board.frozenLines += linesRemoved - 1;
 						}
 					})
 				}
 			},
-			checkForEndGame: <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >				if (this.players.every( p =&gt; p.board.gameOver)) {</span>
+			checkForEndGame: () =&gt; {
+				<span class="missing-if-branch" title="else path not taken" >E</span>if (this.players.every( p =&gt; p.board.gameOver)) {
 					player.isWinner = true;
 				}
 			}
@@ -344,7 +344,7 @@ class Game {
 	setGameTic() {
 		let ticTime = 1000 / Math.log2(this.level + 2);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >		if (this.interval != undefined) {</span>
+		if (this.interval != undefined) {
 			clearInterval(this.interval);
 		}
 		this.interval = setInterval(this.ticFunction, ticTime);
@@ -353,10 +353,10 @@ class Game {
 	updateGameLevel(playerScore) {
 		const thresholds = [1200, 2400, 3600, 4800, 6000, 7200, 8400, 9600, 10800, 12000];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >		if (playerScore &gt; this.highestScore) {</span>
+		<span class="missing-if-branch" title="else path not taken" >E</span>if (playerScore &gt; this.highestScore) {
 			this.highestScore = playerScore;
-<span class="cstat-no" title="statement not covered" >			if (this.highestScore &gt; thresholds[this.level] &amp;&amp; this.level &lt; thresholds.length - 1) {</span>
-<span class="cstat-no" title="statement not covered" >				while (this.highestScore &gt; thresholds[this.level] &amp;&amp; this.level &lt; thresholds.length - 1) {</span>
+			if (this.highestScore &gt; thresholds[this.level] &amp;&amp; this.level &lt; thresholds.length - 1) {
+				while (this.highestScore &gt; thresholds[this.level] &amp;&amp; this.level &lt; thresholds.length - 1) {
 					this.level++;
 				}
 				this.setGameTic();
@@ -382,7 +382,7 @@ export default Game
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Sep 14 2018 11:00:03 GMT+0200 (CEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Sep 14 2018 15:15:38 GMT+0200 (CEST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

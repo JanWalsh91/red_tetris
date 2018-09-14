@@ -30,9 +30,9 @@
         <span class='fraction'>0/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">73.68% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/19</span>
+        <span class='fraction'>14/19</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">50% </span>
@@ -153,7 +153,8 @@
 108
 109
 110
-111</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+111
+112</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -243,7 +244,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -276,7 +278,7 @@ import * as ActionNames from './serverActions'
 &nbsp;
 const logerror = debug('tetris:error'), loginfo = debug('tetris:info')
 &nbsp;
-const initApp = <span class="fstat-no" title="function not covered" >(app, params, cb) =&gt; {</span>
+const initApp = (app, params, cb) =&gt; {
 &nbsp;
 	const {host, port} = params
 	const handler = <span class="fstat-no" title="function not covered" >(req, res) =&gt; {</span>
@@ -295,7 +297,7 @@ const initApp = <span class="fstat-no" title="function not covered" >(app, param
 &nbsp;
 	app.on('request', handler)
 &nbsp;
-	app.listen({host, port}, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+	app.listen({host, port}, () =&gt; {
 		loginfo(`tetris listen on ${params.url}`)
 		cb()
 	})
@@ -303,9 +305,9 @@ const initApp = <span class="fstat-no" title="function not covered" >(app, param
 &nbsp;
 export const server = new Server();
 &nbsp;
-const initEngine = <span class="fstat-no" title="function not covered" >io =&gt; {</span>
+const initEngine = io =&gt; {
 	server.io = io;
-	io.on(ActionNames.CONNECTION, <span class="fstat-no" title="function not covered" >function(socket) {</span>
+	io.on(ActionNames.CONNECTION, function(socket) {
 		console.log("[server/index.js] ", ActionNames.CONNECTION);
 &nbsp;
 		// console.log(socket.request.headers);
@@ -320,7 +322,7 @@ const initEngine = <span class="fstat-no" title="function not covered" >io =&gt;
 		/*
 		*	Emitted when client updates name in GUI
 		*/
-		socket.on(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, <span class="fstat-no" title="function not covered" >(playerName) =&gt; {</span>
+		socket.on(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, (playerName) =&gt; {
 			console.log("[server/index.js] ", "Adding", playerName, "to lobby");
 			server.addNewPlayerToLobby(socket, playerName);
 		})
@@ -329,19 +331,20 @@ const initEngine = <span class="fstat-no" title="function not covered" >io =&gt;
 			server.joinGame(socket, gameID);
 		})
 &nbsp;
-		socket.on(ActionNames.CREATE_GAME, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+		socket.on(ActionNames.CREATE_GAME, () =&gt; {
 			server.createGame(socket);
 		})
 &nbsp;
-		socket.on(ActionNames.START_GAME, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+		socket.on(ActionNames.START_GAME, () =&gt; {
 			server.startGame(socket);
 		})
 &nbsp;
-		socket.on(ActionNames.SEND_GAME_ACTION, <span class="fstat-no" title="function not covered" >(action) =&gt; {</span>
+		socket.on(ActionNames.SEND_GAME_ACTION, (action) =&gt; {
 			server.playerAction(socket, action);
 		})
 &nbsp;
-		socket.on(ActionNames.DISCONNECT, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+		socket.on(ActionNames.DISCONNECT, () =&gt; {
+			console.log("[Server/index.js] DISCONNECT");
 			server.playerDisconnect(socket);
 		})
 &nbsp;
@@ -353,14 +356,14 @@ const initEngine = <span class="fstat-no" title="function not covered" >io =&gt;
 	})
 }
 &nbsp;
-export <span class="fstat-no" title="function not covered" >function create(params) {</span>
-	const promise = new Promise( <span class="fstat-no" title="function not covered" >(resolve, reject) =&gt; {</span>
+export function create(params) {
+	const promise = new Promise( (resolve, reject) =&gt; {
 		const app = require('http').createServer();
-		initApp(app, params, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+		initApp(app, params, () =&gt; {
 			const io = require('socket.io')(app)
-			const stop = <span class="fstat-no" title="function not covered" >(cb) =&gt; {</span>
+			const stop = (cb) =&gt; {
 				io.close()
-				app.close( <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+				app.close( () =&gt; {
 					app.unref()
 				})
 				loginfo(`Engine stopped.`)
@@ -379,7 +382,7 @@ export <span class="fstat-no" title="function not covered" >function create(para
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Sep 14 2018 11:00:03 GMT+0200 (CEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Sep 14 2018 15:15:38 GMT+0200 (CEST)
 </div>
 </div>
 <script src="../prettify.js"></script>

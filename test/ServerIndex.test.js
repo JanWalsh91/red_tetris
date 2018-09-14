@@ -65,7 +65,7 @@ describe('Fake server test', function(){
 	// 			done();
 	// 		});
 	// });
-	//
+
 	// it('CREATE_GAME check gameJoined', function(done) {
 	// 	let client = io.connect(params.server.getUrl(), options);
 	// 	client.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name');
@@ -77,7 +77,7 @@ describe('Fake server test', function(){
 	// 		done();
 	// 	});
 	// });
-	//
+
 	// it('CREATE_GAME check hostlist', function(done) {
 	// 	let client1 = io.connect(params.server.getUrl(), options);
 	// 	let client2 = io.connect(params.server.getUrl(), options);
@@ -134,15 +134,133 @@ describe('Fake server test', function(){
 	// 	})
 	// });
 
-	it('UPDATE_GAME_STATE', function(done) {
+	// it('UPDATE_GAME_STATE', function(done) {
+	// 	let client1 = io.connect(params.server.getUrl(), options);
+	// 	client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+	// 	client1.emit(ActionNames.CREATE_GAME);
+	//
+	// 	client1.on(ActionNames.UPDATE_GAME_STATE, gameState => {
+	// 		expect(!!gameState).equal(true);
+	// 		done();
+	// 	});
+	// });
+
+	// it('START_GAME, -> updating game state', function(done) {
+	// 	let client1 = io.connect(params.server.getUrl(), options);
+	// 	client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+	// 	client1.emit(ActionNames.CREATE_GAME);
+	// 	client1.emit(ActionNames.START_GAME);
+	// 	// game stated if player recieved UPDATE_GAME_START
+	// 	client1.on(ActionNames.UPDATE_GAME_START, () => {
+	// 		done();
+	// 	})
+	// });
+
+	// playerAction
+	// send actionm, check updated game state after action if done as expected
+	// it('SEND_GAME_ACTION, downShortcut', function(done) {
+	// 	let client1 = io.connect(params.server.getUrl(), options);
+	// 	client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+	// 	client1.emit(ActionNames.CREATE_GAME);
+	// 	client1.emit(ActionNames.START_GAME);
+	// 	client1.emit(ActionNames.SEND_GAME_ACTION, "downShortcut");
+	//
+	// 	let check = true;
+	// 	client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
+	// 		let newPiece = server.server.players.get(client1.id).board.activePiece;
+	// 		// console.log("oldPiece coords: ", activePiece.coords);
+	// 		console.log("newPiece coords: ", newPiece.coords);
+	// 		if (newPiece.coords.y = 19) {
+	// 			if (check) {
+	// 				done();
+	// 				check = false;
+	// 			}
+	// 		}
+	// 	})
+	// });
+
+
+	// it('SEND_GAME_ACTION, left', function(done) {
+	// 	let client1 = io.connect(params.server.getUrl(), options);
+	// 	client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+	// 	client1.emit(ActionNames.CREATE_GAME);
+	// 	client1.emit(ActionNames.START_GAME);
+	//
+	// 	let activePiece = undefined;
+	// 	client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
+	// 		if (!activePiece) {
+	// 			activePiece = server.server.players.get(client1.id).board.activePiece;
+	// 			client1.emit(ActionNames.SEND_GAME_ACTION, "left");
+	// 			return ;
+	// 		}
+	// 		let newPiece = server.server.players.get(client1.id).board.activePiece;
+	// 		if (newPiece.coords.x - activePiece.coords.x == -1) {
+	// 			done();
+	// 		}
+	// 	})
+	// });
+
+
+	// it('SEND_GAME_ACTION, rotate', function(done) {
+	// 	let client1 = io.connect(params.server.getUrl(), options);
+	// 	client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+	// 	client1.emit(ActionNames.CREATE_GAME);
+	// 	client1.emit(ActionNames.START_GAME);
+	//
+	// 	let activePiece = undefined;
+	// 	client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
+	// 		if (!activePiece) {
+	// 			activePiece = server.server.players.get(client1.id).board.activePiece;
+	// 			client1.emit(ActionNames.SEND_GAME_ACTION, "rotate");
+	// 			return ;
+	// 		}
+	// 		let newPiece = server.server.players.get(client1.id).board.activePiece;
+	// 		// console.log("newPiece orientation: ", newPiece.orientation);
+	// 		// console.log("activePiece orientation: ", activePiece.orientation);
+	// 		if (activePiece.orientation == 0 && newPiece.orientation == 1) {
+	// 			done();
+	// 		}
+	// 	})
+	// });
+
+	it('SEND_GAME_ACTION, right', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
 		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
 		client1.emit(ActionNames.CREATE_GAME);
+		client1.emit(ActionNames.START_GAME);
 
-		client1.on(ActionNames.UPDATE_GAME_STATE, gameState => {
-			expect(!!gameState).equal(true);
-			done();
-		});
+		let activePiece = undefined;
+		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
+			if (!activePiece) {
+				activePiece = server.server.players.get(client1.id).board.activePiece;
+				client1.emit(ActionNames.SEND_GAME_ACTION, "right");
+				return ;
+			}
+			let newPiece = server.server.players.get(client1.id).board.activePiece;
+			if (newPiece.coords.x - activePiece.coords.x == 1) {
+				done();
+			}
+		})
 	});
+
+	// it('SEND_GAME_ACTION, down', function(done) {
+	//
+	// });
+	// it('SEND_GAME_ACTION, invalid action', function(done) {
+	//
+	// });
+
+	// player DISCONNECT delete game
+
+	// playe disconnect update game host
+
+	// writeBestScore
+
+	// on URL join
+
+	// update Shadow board
+
+	// update host status
+
 
 });

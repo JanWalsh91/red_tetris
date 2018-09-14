@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">12.5% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/8</span>
+        <span class='fraction'>8/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">83.33% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/24</span>
+        <span class='fraction'>20/24</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/1</span>
+        <span class='fraction'>1/1</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">12.5% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/8</span>
+        <span class='fraction'>8/8</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -384,7 +384,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">60×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -395,11 +395,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">60×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -410,7 +410,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">156×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -428,7 +428,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">156×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -455,7 +455,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">78×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -704,7 +704,7 @@ class Piece {
 	*/
 	static generateRandomPiece(lastPieceType) {
 		let newType = Math.floor(Math.random() * (Piece.typeCount));
-<span class="cstat-no" title="statement not covered" >		if (newType === lastPieceType) {</span>
+		if (newType === lastPieceType) {
 			newType = Math.floor(Math.random() * (Piece.typeCount));
 		}
 		// let newType = 3;
@@ -715,11 +715,11 @@ class Piece {
 	*	Generates and returns a list of num pieces.
 	*/
 	static generateRandomPieces(num) {
-<span class="cstat-no" title="statement not covered" >		if (!num) n</span>um = 1;
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (!num) num = 1;
 		let pieces = [];
-<span class="cstat-no" title="statement not covered" >		for (let i = 0; i &lt; num; i++) {</span>
+		for (let i = 0; i &lt; num; i++) {
 			let lastPieceType = null;
-<span class="cstat-no" title="statement not covered" >			if (pieces.length &gt; 0)</span>
+			if (pieces.length &gt; 0)
 				lastPieceType = pieces[pieces.length - 1].type;
 			pieces.push( Piece.generateRandomPiece(lastPieceType) );
 		}
@@ -729,8 +729,8 @@ class Piece {
 	/*
 	*	param is either an instance of Piece or an Integer between 0 and 7
 	*/
-<span class="fstat-no" title="function not covered" >	constructor( params ) {</span>
-<span class="cstat-no" title="statement not covered" >		if (params instanceof Piece) {</span>
+	constructor( params ) {
+		if (params instanceof Piece) {
 			// Copy constructor
 			// console.log("[Piece.js] Piece constructor COPY");
 			params = {
@@ -748,7 +748,7 @@ class Piece {
 		};
 		params = {...defaultParams, ...params, coords: {...(params &amp;&amp; params.coords ? params.coords : defaultParams.coords)}};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	 	if (params.type &lt; 0 || params.type &gt;= Piece.typeCount) {</span>
+	 	<span class="missing-if-branch" title="if path not taken" >I</span>if (params.type &lt; 0 || params.type &gt;= Piece.typeCount) {
 			console.log("[Piece.js] invalid piece parameters");
 			return null;
 		}
@@ -773,9 +773,9 @@ class Piece {
 		this.cells = Piece.types[this.type][this.orientation];
 	}
 &nbsp;
-	move( vector = {x: 0, y : 1} ) {
+	move( vector = <span class="branch-1 cbranch-no" title="branch not covered" >{x: 0, y : 1} ) {</span>
 		// console.log("[Piece.js] move. vector: ", vector);
-<span class="cstat-no" title="statement not covered" >		if (!Number.isInteger(vector.x) || !Number.isInteger(vector.y)){</span>
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (!Number.isInteger(vector.x) || !Number.isInteger(vector.y)){
 			console.log("   vector invalid");
 			return ;
 		}
@@ -1009,7 +1009,7 @@ export default Piece;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Sep 14 2018 11:00:03 GMT+0200 (CEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Sep 14 2018 15:15:38 GMT+0200 (CEST)
 </div>
 </div>
 <script src="../../prettify.js"></script>
