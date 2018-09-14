@@ -7,6 +7,13 @@
 	outline-offset: -8px;
 }
 
+@media screen and (min-width: 2560px) {
+	.cell {
+		width: 2.5rem;
+		height: 2.5rem;
+	}
+}
+
 .line {
 	background: #00B8D4;
 	outline: 8px outset #00E5FF;

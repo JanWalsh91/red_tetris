@@ -13,7 +13,6 @@ const PlayerForm = ( props ) => {
 	return (
 		<div className={styles.playerForm}>
 			<input onKeyDown={keyboardEvent} type="text" id="playerInputName" placeholder="Enter your username" />
-			<br/>
 			<input id="buttonPlayerInputName" value="Play" type="button" onClick={props.onUpdateName} />
 		</div>
 	)

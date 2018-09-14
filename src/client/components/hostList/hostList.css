@@ -1,4 +1,11 @@
 .hostList {
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 5rem;
+}
+
+@media screen and (min-width: 2560px) {
+	.hostList {
+		margin-bottom: 15rem;
+	}
 }

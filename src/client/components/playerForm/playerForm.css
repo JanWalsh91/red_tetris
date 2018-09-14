@@ -1,6 +1,16 @@
 .playerForm {
 	display: flex;
 	flex-direction: column;
+	align-content: center;
+	align-items: center;
+	margin-bottom: 10rem;
+}
+
+
+@media screen and (min-width: 2560px) {
+	.playerForm {
+		margin-bottom: 15rem;
+	}
 }
 
 .playerForm input[type="button"] {
@@ -25,11 +35,9 @@
 
 input[type="text"] {
 	font-size: 0.8rem;
+	border: 0;
 	height: 1rem;
 	padding: 10px;
-	border: grey solid;
-	border-width: 1px;
-	border-radius: 0rem;
 	text-align: center;
 	outline: 0;
 	background: #FFCDD2;
@@ -37,6 +45,8 @@ input[type="text"] {
 	outline: 10px inset #E53935;
 	outline-offset: 0px;
 	font-weight: bold;
-	width: 20%;
-	margin: auto;
+	/* margin: auto; */
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 30%;
 }
