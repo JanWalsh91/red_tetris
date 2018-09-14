@@ -1,6 +1,29 @@
 h1 {
 	/* border: 1px solid blue; */
-	padding-top: 10rem;
+	/* padding-top: 5rem; */
+	/* height: 20vh; */
 	font-size: 5rem;
+	margin: 5rem;
 	text-align: center;
+}
+
+@media screen and (min-width: 1920) {
+	h1 {
+		font-size: 5rem;
+	}
+}
+
+@media screen and (min-width: 2560px) {
+
+	.headerContainer {
+		margin-top: 5rem;
+	}
+
+	h1 {
+		font-size: 10rem;
+	}
+}
+
+.headerContainer {
+	height: 20vh;
 }
