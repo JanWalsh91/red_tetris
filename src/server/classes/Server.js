@@ -24,8 +24,10 @@ class Server {
 				joinableGames.set(game.id, game.getInfo());
 			}
 		}
-		console.log("emitting update host list form server: ", [...joinableGames.values()]);
-		this.io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, [...joinableGames.values()]);
+		// console.log("emitting update host list form server: ", [...joinableGames.values()]);
+		this.io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, [...joinableGames.values()].sort((a, b) => {
+			return a.id - b.id;
+		}));
 	}
 
 	/*

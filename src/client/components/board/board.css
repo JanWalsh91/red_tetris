@@ -5,3 +5,44 @@
 .row {
 	display: flex;
 }
+
+.endGameScoreLayout {
+
+	position: fixed;
+	background: #182024;
+	height: 30vh;
+	top: 40vh;
+	width: 50vw;
+	left: 25vw;
+	opacity: 0.95;
+	border: solid 4px red;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+
+}
+
+.scoreRanking {
+	display: flex;
+	flex-direction: column;
+	width: 70%;
+}
+
+.scoreRanking > h3 {
+	text-align: center;
+}
+
+.rankPosition {
+	display: flex;
+	flex-direction: row;
+}
+
+.rankPosition span {
+	flex-grow: 1;
+	flex-basis: 0;
+}
+
+.rankPosition span:last-child {
+	text-align: right;
+}

@@ -27,7 +27,26 @@ const board = ( props ) => {
 	let winnerContent = null;
 	if (props.isWinner) {
 		 winnerContent = (
-			<div>YOU WIN</div>
+			<div className={styles.endGameScoreLayout}>
+
+				<h2>You win!</h2>
+				<div className={styles.scoreRanking}>
+					<h3>Score</h3>
+					<div className={styles.rankPosition}>
+						<span>jean eude</span>
+						<span>12</span>
+					</div>
+					<div className={styles.rankPosition}>
+						<span>To</span>
+						<span>78974</span>
+					</div>
+					<div className={styles.rankPosition}>
+						<span>Top</span>
+						<span>12</span>
+					</div>
+				</div>
+
+			</div>
 		)
 	}
 
