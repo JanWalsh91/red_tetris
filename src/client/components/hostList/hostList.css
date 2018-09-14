@@ -3,7 +3,9 @@
 	flex-direction: column;
 	margin-bottom: 5rem;
 }
-
+.list {
+	overflow-y: auto;
+}
 @media screen and (min-width: 2560px) {
 	.hostList {
 		margin-bottom: 15rem;

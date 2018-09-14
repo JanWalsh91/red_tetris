@@ -15,9 +15,9 @@ const shadowBoard = ( props ) => {
 	if (props.shadowState) {
 
 		props.shadowState.forEach((shadowBoard, sbIndex) => {
-			console.log(shadowBoard);
+			console.log("ShadowBoard JSX: ", shadowBoard);
 
-			// if (shadowBoard.id == props.playerUUID) return;
+			if (shadowBoard.id == props.playerUUID) return;
 			let board = shadowBoard.board.map( (row, rIndex) => {
 				let line = row.map( (cell, cIndex) => {
 
@@ -40,7 +40,7 @@ const shadowBoard = ( props ) => {
 					</div>
 					<div className={styles.info}>
 						<div className={styles.name} >{shadowBoard.name}</div>
-						<div>Score: 40</div>
+						<div>Score: {shadowBoard.score}</div>
 					</div>
 				</div>
 			);
