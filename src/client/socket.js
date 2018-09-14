@@ -64,22 +64,24 @@ socket.on("disconnect", () => {
 })
 
 const readHash = () => {
-	// console.log("[socket.js] readHash");
+	console.log("[socket.js] readHash");
 	let regexPlayerRoom = /#(\d+)\[(.+)\]/;
 	let url = window.location.hash;
 
 	let match = regexPlayerRoom.exec(url);
-	if (match) {
+	console.log(match);
+	if (!!match) {
 		let gameID = match[1];
-		if (gameID == store.getState().gameID) return ;
 		let playerName = match[2];
-
+		if (gameID == store.getState().gameID && playerName == store.getState().playerName) return ;
+		console.log("UPDATE_REQUEST_URL", {gameID, playerName});
 		store.dispatch(resetState());
 		socket.emit(ActionNames.UPDATE_REQUEST_URL, {gameID, playerName});
 	}
 }
 
 const updateHash = (playerName, gameID) => {
+	console.log("UpdateHash");
 	if (!playerName || !gameID) {
 		window.location.href = '/';
 	} else {

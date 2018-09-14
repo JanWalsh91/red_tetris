@@ -16,11 +16,14 @@ const App = (props) => {
 	let canMove = true;
 
 	const keyboardEvent = (event) => {
-		if (!canMove) return ;
+		console.log(event);
+		if (!canMove) {
+			return ;
+		}
 		canMove = false;
-		setTimeout(function() { canMove = true; }, 100);
+		setTimeout(function() { canMove = true; }, 25);
 		if (props.gameJoined) {
-			event.preventDefault();
+			// event.preventDefault();
 			switch (event.keyCode) {
 				case 32:
 					socket.emit(ActionNames.SEND_GAME_ACTION, "downShortcut");
@@ -52,7 +55,7 @@ const App = (props) => {
 	}
 
 	return (
-		<div className={styles.app} tabIndex="0"  onKeyDown={keyboardEvent}>
+		<div className={styles.app} tabIndex="0" onKeyDown={keyboardEvent}>
 			<HeaderBar></HeaderBar>
 			<Main></Main>
 		</div>

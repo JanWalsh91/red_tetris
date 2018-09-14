@@ -71,6 +71,7 @@ class Server {
 			id: player.uuid,
 			name: player.name,
 			board: player.board.getShadowCells(),
+			score: player.score,
 			update
 		}
 		this.io.to(gameID).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);

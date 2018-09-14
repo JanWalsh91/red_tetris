@@ -38,7 +38,9 @@ const hostList = ( props ) => {
 
 	return (
 		<div className={styles.hostList}>
-			{content}
+			<div className={styles.list}>
+				{content}
+			</div>
 			<Button onClick={() => props.gameSelected != null ? joinGame() : createGame()} type='button'
 				value={props.gameSelected != null ? "JOIN GAME #" + props.gameSelected : "CREATE GAME" }
 			/>
