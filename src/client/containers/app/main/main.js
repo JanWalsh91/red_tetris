@@ -5,10 +5,12 @@ import PlayerForm from '../../../components/playerForm/playerForm'
 import HostList from '../../../components/hostList/hostList'
 import Board from '../../../components/board/board'
 import ShadowBoard from '../../../components/shadowBoard/shadowBoard'
+import EndGameLeaderBoard from '../../../components/endGameLeaderBoard/endGameLeaderBoard'
 import GameData from '../../../components/gameData/gameData'
 import Button from '../../../components/button/button'
 import socket from '../../../socket'
 import {updatePlayerName, updateSelectedGame, resetState} from '../../../actions/client'
+
 
 import * as ActionNames from '../../../../server/serverActions'
 
@@ -24,10 +26,8 @@ const Main = ( props ) => {
 	}
 	const updateName = () => {
 		let name = document.getElementById('playerInputName').value;
-		console.log("PlayerName: ", name);
 
 		if (name != undefined && name.length > 0) {
-			console.log("Emit new player");
 			socket.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, name);
 			props.onUpdatePlayerName(name);
 		}
@@ -57,6 +57,11 @@ const Main = ( props ) => {
 			</div>
 		);
 
+		let endGameContent = null;
+		if (props.endGame) {
+			endGameContent = <EndGameLeaderBoard uuid={props.playerUUID} isWinnerByScore={props.isWinnerByScore} isWinner={props.isWinner} playersInfo={props.shadowState}/>
+		}
+
 		if (props.gameJoined) {
 			content = (
 				<div>
@@ -65,7 +70,8 @@ const Main = ( props ) => {
 							<ShadowBoard playerUUID={props.playerUUID} shadowState={props.shadowState}/>
 						</div>
 						<div className={styles.boardWrapper}>
-							<Board gameState={props.gameState} isWinner={props.isWinner} isWinnerByScore={props.isWinnerByScore}/>
+							<Board gameState={props.gameState}/>
+							{endGameContent}
 						</div>
 						<div>
 							<GameData gameData={props.gameState}/>
@@ -93,6 +99,7 @@ const Main = ( props ) => {
 }
 
 const mapStateToProps = (state) => {
+
 	return {
 		hostList: state.hostList,
 		playerName: state.playerName,
@@ -104,7 +111,8 @@ const mapStateToProps = (state) => {
 		playerUUID: state.playerUUID,
 		gameStart: state.gameStart,
 		isWinner: state.isWinner,
-		isWinnerByScore: state.isWinnerByScore
+		isWinnerByScore: state.isWinnerByScore,
+		endGame: state.endGame
 	}
 }
 

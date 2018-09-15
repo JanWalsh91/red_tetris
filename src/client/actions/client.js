@@ -129,3 +129,11 @@ export const isWinnerByScore = () => {
 		type: IS_WINNER_BY_SCORE
 	}
 }
+
+export const END_GAME = 'END_GAME'
+
+export const endGame = () => {
+	return {
+		type: END_GAME
+	}
+}

@@ -227,6 +227,8 @@ class Server {
 			})) {
 				this.io.to(bestScorePlayer.socketID).emit(ActionNames.IS_WINNER_BY_SCORE);
 				clearInterval(game.interval);
+				this.io.to(game.id).emit(ActionNames.END_GAME);
+				game.isPlaying = false;
 				this.writeBestScore(bestScorePlayer);
 			}
 

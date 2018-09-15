@@ -3,8 +3,6 @@ import styles from './board.css'
 import cellStyles from '../cell/cell.css'
 
 const board = ( props ) => {
-	// socket.emit('server/ping', null);
-
 	let content = <div>EMPTY BOARD</div>;
 
 	let cellClasses = [];
@@ -24,44 +22,10 @@ const board = ( props ) => {
 			return line;
 		})
 	}
-	let winnerContent = null;
-	if (props.isWinner) {
-		 winnerContent = (
-			<div className={styles.endGameScoreLayout}>
-
-				<h2>You win!</h2>
-				<div className={styles.scoreRanking}>
-					<h3>Score</h3>
-					<div className={styles.rankPosition}>
-						<span>jean eude</span>
-						<span>12</span>
-					</div>
-					<div className={styles.rankPosition}>
-						<span>To</span>
-						<span>78974</span>
-					</div>
-					<div className={styles.rankPosition}>
-						<span>Top</span>
-						<span>12</span>
-					</div>
-				</div>
-
-			</div>
-		)
-	}
-
-	let scoreWinnerContent = null;
-	if (props.isWinnerByScore) {
-		 scoreWinnerContent = (
-			<div>YOU WIN (SEXY SCORE)</div>
-		)
-	}
 
 	return (
 		<div className={styles.Board}>
 			{content}
-			{winnerContent}
-			{scoreWinnerContent}
 		</div>
 	);
 }

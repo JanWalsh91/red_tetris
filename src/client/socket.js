@@ -2,12 +2,14 @@ import io from 'socket.io-client'
 import params from '../../params'
 
 import store from './store'
-import {updateHostList, updateGameJoined, updateGameState, updateShadowState, updateHostStatus, updatePlayerUUID, updateError, updatePlayerName, resetState, updateGameStart, isWinner, isWinnerByScore} from './actions/client'
+import {updateHostList, updateGameJoined, updateGameState, updateShadowState, updateHostStatus, updatePlayerUUID, updateError, updatePlayerName, resetState, updateGameStart, isWinner, isWinnerByScore, endGame} from './actions/client'
 
 import * as ActionNames from '../server/serverActions'
 
 const socket = io.connect(params.server.getUrl())
 
+//TODO: to remove
+window.sio = socket;
 
 socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
 	store.dispatch(updateHostList(hostList));
@@ -51,7 +53,11 @@ socket.on(ActionNames.IS_WINNER_BY_SCORE, () => {
 	store.dispatch(isWinnerByScore());
 })
 
+socket.on(ActionNames.END_GAME, () => {
 
+	console.log("SOCKET END GAME");
+	store.dispatch(endGame());
+})
 
 socket.on("connect", () => {
 	readHash();

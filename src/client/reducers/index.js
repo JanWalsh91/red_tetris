@@ -1,4 +1,4 @@
-import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID, UPDATE_ERROR, RESET_STATE, UPDATE_GAME_START, IS_WINNER, IS_WINNER_BY_SCORE} from '../actions/client'
+import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID, UPDATE_ERROR, RESET_STATE, UPDATE_GAME_START, IS_WINNER, IS_WINNER_BY_SCORE, END_GAME} from '../actions/client'
 // import socket from '../socket'
 
 import * as ActionNames from '../../server/serverActions'
@@ -162,6 +162,15 @@ const isWinnerByScore = state => {
 	}
 }
 
+const endGame = state => {
+	console.log("END GAME");
+	return {
+		...state,
+		endGame: true
+	}
+}
+
+
 const reducer = (state = {} , action) => {
 	console.log("reducer action type: ", action.type);
 	switch(action.type) {
@@ -178,6 +187,7 @@ const reducer = (state = {} , action) => {
 		case UPDATE_GAME_START: return updateGameStart(state);
 		case IS_WINNER: return isWinner(state);
 		case IS_WINNER_BY_SCORE: return isWinnerByScore(state);
+		case END_GAME: return endGame(state);
 		default: console.log('default'); return state;
 	}
 }

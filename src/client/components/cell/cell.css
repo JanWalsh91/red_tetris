@@ -58,3 +58,16 @@
 	background: #3D3D3D;
 	outline: 8px outset #525252;
 }
+
+.previewPiece {
+	/* border: 1px solid #577280;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+   -webkit-box-sizing: border-box; */
+
+   background: #304047;
+}
+
+.previewPiece + .previewPiece {
+	border-left: 0;
+}

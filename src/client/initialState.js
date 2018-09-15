@@ -5,6 +5,9 @@ const initialState = {
 	gameJoined: false, // True / False
 	gameID: null,
 	isHost: false,
+	endGame: false,
+	isWinner: false,
+	isWinnerByScore: false,
 	gameState: {
 		score: 0,
 		level: 0,

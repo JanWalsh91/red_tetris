@@ -280,9 +280,27 @@ class Board {
 		let cells = JSON.parse(JSON.stringify(this.cells));
 		if (!this.activePiece) return cells;
 		// console.log(this.activePiece);
+
+		let canMove = false;
+		for (let y = 0; y < this.size.y; y++) {
+			let movedPiece = new Piece(this.activePiece);
+			canMove = this.tryToMovePiece(movedPiece, {x: 0, y});
+			if (!canMove && y > 0) {
+				movedPiece = new Piece(this.activePiece);
+				canMove = this.tryToMovePiece(movedPiece, {x: 0, y: y - 1});
+				for (let y = 0; y < 4; y++) {
+					for (let x = 0; x < 4; x++) {
+						if (movedPiece.coords.y + y >= 0 && movedPiece.cells[y][x] != 0x0) {
+							cells[movedPiece.coords.y + y][movedPiece.coords.x + x] = 'previewPiece';
+						}
+					}
+				}
+				break;
+			}
+		}
+
 		for (let y = 0; y < 4; y++) {
 			for (let x = 0; x < 4; x++) {
-
 				if (this.activePiece.coords.y + y >= 0 && this.activePiece.cells[y][x] != 0x0) {
 					cells[this.activePiece.coords.y + y][this.activePiece.coords.x + x] = this.activePiece.cells[y][x];
 				}
