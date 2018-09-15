@@ -206,7 +206,6 @@ class Server {
 		let game = this.games.get(socket.id);
 
 		if (game.host.socketID !== socket.id || game.isPlaying) return ;
-		console.log("Server.js - After condition");
 		if (!game.isPlaying) {
 			game.reset();
 		}
@@ -290,6 +289,14 @@ class Server {
 				this.updateGameState(player);
 			default: break;
 		}
+	}
+
+	setInvisibleMode(socket, action) {
+		let player = this.players.get(socket.id);
+		let game = this.games.get(socket.id);
+		if (game.host.socketID !== socket.id || game.isPlaying) return ;
+
+		game.setInvisibleMode(action);
 	}
 
 	playerDisconnect(socket) {

@@ -78,8 +78,7 @@ class Game {
 		console.log("Game.js: ", this.players);
 		this.players.forEach(player => {
 			player.reset();
-			player.board.savedPiece = null;
-			this.initPlayerBoard(player);
+			player.board.reset();
 		})
 	}
 
@@ -104,6 +103,13 @@ class Game {
 				this.setGameTic();
 			}
 		}
+	}
+
+	setInvisibleMode(invisibleMode) {
+		this.players.forEach(player => {
+			console.log("Set invisible Mode: ", invisibleMode);
+			player.board.setInvisibleMode(invisibleMode);
+		})
 	}
 
 	start () {

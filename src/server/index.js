@@ -87,6 +87,11 @@ const initEngine = io => {
 			server.playerDisconnect(socket);
 			server.addNewPlayerToLobby(socket, playerName);
 		})
+
+		socket.on(ActionNames.UPDATE_INVISIBLE_MODE, (action) => {
+			server.setInvisibleMode(socket, action);
+		})
+
 	})
 }
 

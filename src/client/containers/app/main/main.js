@@ -38,6 +38,10 @@ const Main = ( props ) => {
 		}
 	}
 
+	const updateInvisibleMode = () => {
+		socket.emit(ActionNames.UPDATE_INVISIBLE_MODE, document.getElementById('invisibleMode').checked);
+	}
+
 	let content;
 
 	if (props.playerName === undefined || props.playerName.length == 0) {
@@ -50,16 +54,28 @@ const Main = ( props ) => {
 	}
 	else {
 		let startButton = null;
+		let invisibleMode = null;
 		if (props.isHost) {
 			if (!props.gameStart) {
 				startButton = <Button onClick={startGame} value="Start Game"/>;
+				invisibleMode = (
+					<span>
+						<input id="invisibleMode" onChange={updateInvisibleMode} type="checkbox" />
+						<label htmlFor="invisibleMode">Invisible Mode</label>
+					</span>
+				)
 			}
 		}
 
 		let buttons = (
 			<div className={styles.buttons}>
-				{startButton}
-				<Button onClick={quitGame} value="Quit Game"/>
+				<div>
+					{startButton}
+					<Button onClick={quitGame} value="Quit Game"/>
+				</div>
+				<div>
+					{invisibleMode}
+				</div>
 			</div>
 		);
 

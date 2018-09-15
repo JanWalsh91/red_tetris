@@ -33,6 +33,7 @@ class Board {
 			frozenLines: 0,
 			removedLines: 0,
 			savedPiece: null,
+			invisibleMode: false,
 			getPiecesFromGame: () => {console.log("no callback set");},
 			updateScoreAndFrozenLinesInGame: () => {console.log("no callback set");},
 			checkForEndGame: () => {console.log("no callback set");}
@@ -52,6 +53,7 @@ class Board {
 		this.needToBroadcast = params.needToBroadcast;
 		this.frozenLines = params.frozenLines;
 		this.removedLines = params.removedLines;
+		this.invisibleMode = params.invisibleMode;
 		this.getPiecesFromGame = params.getPiecesFromGame;
 		this.updateScoreAndFrozenLinesInGame = params.updateScoreAndFrozenLinesInGame;
 		this.checkForEndGame = params.checkForEndGame;
@@ -156,7 +158,11 @@ class Board {
 		for (let y = 0; y < 4; y++) {
 			for (let x = 0; x < 4; x++) {
 				if (piece.cells[y][x] != 0x0 && piece.coords.y >= 0) {
-					this.cells[piece.coords.y + y][piece.coords.x + x] = piece.cells[y][x];
+					if (this.invisibleMode) {
+						this.cells[piece.coords.y + y][piece.coords.x + x] = 'invisible';
+					} else {
+						this.cells[piece.coords.y + y][piece.coords.x + x] = piece.cells[y][x];
+					}
 				}
 			}
 		}
@@ -327,6 +333,22 @@ class Board {
 			cells[this.size.y - y - 1] = new Array(this.size.x).fill("frozenLine");
 		}
 		return cells;
+	}
+
+	setInvisibleMode(invisibleMode) {
+		console.log("InvisibleMode: ", this.invisibleMode);
+		this.invisibleMode = invisibleMode;
+		console.log("InvisibleMode: ", this.invisibleMode);
+	}
+
+	reset() {
+		this.cells = new Array(this.size.y);
+		for (let y = 0; y < this.size.y; y++) {
+			this.cells[y] = new Array(this.size.x).fill(0x0);
+		}
+		this.activePiece = null;
+		this.savedPiece = null;
+		this.gameOver = false;
 	}
 
 	// TODO: to remove
