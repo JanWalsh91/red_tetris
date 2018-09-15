@@ -10,6 +10,11 @@ class Player {
 		this.board = null;
 		this.score = 0;
 	}
+
+	reset() {
+		this.score = 0;
+		this.isWinner = false;
+	}
 }
 
 

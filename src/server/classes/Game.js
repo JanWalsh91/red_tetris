@@ -74,6 +74,13 @@ class Game {
 		});
 	}
 
+	reset() {
+		this.players.forEach(player => {
+			player.reset();
+			this.initPlayerBoard(player);
+		})
+	}
+
 	setGameTic() {
 		let ticTime = 1000 / Math.log2(this.level + 2);
 

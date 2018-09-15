@@ -195,6 +195,14 @@ class Server {
 
 		if (game.host.socketID !== socket.id || game.isPlaying) return ;
 
+		game.players.some( player => {
+			if (player.isWinner) {
+				game.reset();
+				return false;
+			}
+		});
+
+
 		game.start();
 
 		game.players.forEach( player => {

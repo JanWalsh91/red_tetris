@@ -8,4 +8,4 @@ node_modules
 params.js
 coverage
 .nyc_output
-
+bestScore

@@ -144,7 +144,8 @@ const resetState = (state, action) => {
 const updateGameStart = state => {
 	return {
 		...state,
-		gameStart: true
+		gameStart: true,
+		endGame: false
 	}
 }
 
@@ -166,7 +167,8 @@ const endGame = state => {
 	console.log("END GAME");
 	return {
 		...state,
-		endGame: true
+		endGame: true,
+		gameStart: false
 	}
 }
 
