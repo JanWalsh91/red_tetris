@@ -40,6 +40,7 @@ const App = (props) => {
 					socket.emit(ActionNames.SEND_GAME_ACTION, "down");
 					break;
 				case 48:
+				case 96:
 					socket.emit(ActionNames.SEND_GAME_ACTION, "savePiece")
 				default:
 					break ;

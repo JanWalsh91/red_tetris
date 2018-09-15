@@ -7,4 +7,5 @@ div .savedPiece {
  	box-sizing: border-box;
 	display: flex;
 	width: fit-content;
+	width: -moz-fit-content;
 }
