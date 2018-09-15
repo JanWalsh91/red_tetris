@@ -43,7 +43,7 @@ export const UPDATE_GAME_STATE = 'UPDATE_GAME_STATE'
 
 export const updateGameState = (gameState) => {
 
-	console.log("updateGameState");
+	console.log("client.js: updateGameState: ", gameState);
 
 	return {
 		type: UPDATE_GAME_STATE,
@@ -135,5 +135,14 @@ export const END_GAME = 'END_GAME'
 export const endGame = () => {
 	return {
 		type: END_GAME
+	}
+}
+
+export const UPDATE_LEADER_BOARD = 'UPDATE_LEADER_BOARD'
+
+export const updateLeaderBoard = (leaderBoard) => {
+	return {
+		type: UPDATE_LEADER_BOARD,
+		leaderBoard
 	}
 }

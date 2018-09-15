@@ -2,7 +2,7 @@ import io from 'socket.io-client'
 import params from '../../params'
 
 import store from './store'
-import {updateHostList, updateGameJoined, updateGameState, updateShadowState, updateHostStatus, updatePlayerUUID, updateError, updatePlayerName, resetState, updateGameStart, isWinner, isWinnerByScore, endGame} from './actions/client'
+import {updateHostList, updateGameJoined, updateGameState, updateShadowState, updateHostStatus, updatePlayerUUID, updateError, updatePlayerName, resetState, updateGameStart, isWinner, isWinnerByScore, endGame, updateLeaderBoard} from './actions/client'
 
 import * as ActionNames from '../server/serverActions'
 
@@ -59,6 +59,7 @@ socket.on(ActionNames.END_GAME, () => {
 	store.dispatch(endGame());
 })
 
+
 socket.on("connect", () => {
 	readHash();
 	store.dispatch(updateError(null));
@@ -68,6 +69,11 @@ socket.on("disconnect", () => {
 	updateHash();
 	store.dispatch(updateError("500"));
 })
+
+socket.on(ActionNames.UPDATE_LEADER_BOARD, (leaderBoard) => {
+	store.dispatch(updateLeaderBoard(leaderBoard));
+})
+
 
 const readHash = () => {
 	console.log("[socket.js] readHash");

@@ -41,8 +41,9 @@ export const server = new Server();
 const initEngine = io => {
 	server.io = io;
 	io.on(ActionNames.CONNECTION, function(socket) {
-		console.log("[server/index.js] ", ActionNames.CONNECTION);
+		console.log("[server/index.js] ", ActionNames.CONNECTION, ": ", socket.id);
 
+		server.sendBestScore(socket);
 		// console.log(socket.request.headers);
 		// loginfo("Socket connected: " + socket.id)
 

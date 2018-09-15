@@ -1,0 +1,32 @@
+.LeaderBoard {
+	display: flex;
+	flex-grow: 5;
+	flex-direction: column;
+	align-items: center;
+	align-self: center;
+	width: 50%;
+}
+
+.ranking {
+	width: 100%;
+}
+
+.rankingRow {
+	display: flex;
+	flex-direction: row;
+}
+
+.rankingRow * {
+	flex-grow: 1;
+	margin: 5px;
+}
+
+.rankingRow span:first-child {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: left;
+}
+
+.rankingRow span:last-child {
+	text-align: right;
+}

@@ -13,7 +13,8 @@ const initialState = {
 		level: 0,
 		cells: undefined,
 		nextPieces: undefined,
-		removedLines: 0
+		removedLines: 0,
+		savedPiece: null
 	}
 }
 

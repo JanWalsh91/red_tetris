@@ -75,8 +75,10 @@ class Game {
 	}
 
 	reset() {
+		console.log("Game.js: ", this.players);
 		this.players.forEach(player => {
 			player.reset();
+			player.board.savedPiece = null;
 			this.initPlayerBoard(player);
 		})
 	}

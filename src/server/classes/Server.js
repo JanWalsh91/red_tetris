@@ -102,6 +102,13 @@ class Server {
 		this.io.to(player.socketID).emit(ActionNames.UPDATE_PLAYER_NAME, player.name);
 	}
 
+
+	sendBestScore(socket) {
+		this.readBestScore((leaderBoard) => {
+			this.io.to(socket.id).emit(ActionNames.UPDATE_LEADER_BOARD, leaderBoard);
+		})
+	}
+
 	// NEW functions
 
 	onURLJoin(socket, data) {
@@ -194,19 +201,15 @@ class Server {
 	}
 
 	startGame(socket) {
-
+		console.log("Server.js - Start Game");
 		let player = this.players.get(socket.id);
 		let game = this.games.get(socket.id);
 
 		if (game.host.socketID !== socket.id || game.isPlaying) return ;
-
-		game.players.some( player => {
-			if (player.isWinner) {
-				game.reset();
-				return false;
-			}
-		});
-
+		console.log("Server.js - After condition");
+		if (!game.isPlaying) {
+			game.reset();
+		}
 
 		game.start();
 
@@ -334,15 +337,7 @@ class Server {
 
 			let filePath = __dirname + '/../../../bestScore';
 
-			fs.readFile(filePath, (err, data) => {
-
-				let highScores = null;
-				try {
-					highScores = JSON.parse(data);
-				} catch (err) {
-					highScores = [];
-				}
-
+			let highScore = this.readBestScore( highScores => {
 				highScores.push({playerName: player.name, score: player.score});
 				highScores.sort((a, b) => a.score < b.score)
 				highScores = highScores.slice(0, 9);
@@ -350,10 +345,29 @@ class Server {
 				fs.writeFile(filePath, JSON.stringify(highScores), function (err) {
 					console.log(err);
 				});
+				return highScores;
 			})
+
 		    done();
 		})
+	}
 
+	readBestScore(cb) {
+
+		let filePath = __dirname + '/../../../bestScore';
+		fs.readFile(filePath, (err, data) => {
+
+			let highScores = null;
+			try {
+				highScores = JSON.parse(data);
+			} catch (err) {
+				highScores = [];
+			}
+
+			if (cb) {
+				cb(highScores);
+			}
+		})
 	}
 }
 

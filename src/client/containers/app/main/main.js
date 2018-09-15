@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styles from './main.css'
 import PlayerForm from '../../../components/playerForm/playerForm'
+import LeaderBoard from '../../../components/leaderBoard/leaderBoard'
 import HostList from '../../../components/hostList/hostList'
 import Board from '../../../components/board/board'
 import ShadowBoard from '../../../components/shadowBoard/shadowBoard'
@@ -40,7 +41,12 @@ const Main = ( props ) => {
 	let content;
 
 	if (props.playerName === undefined || props.playerName.length == 0) {
-		content = (<PlayerForm onUpdateName={updateName}></PlayerForm>);
+		content = (
+			<div className={styles.playerFormContainer}>
+				<PlayerForm onUpdateName={updateName}></PlayerForm>
+				<LeaderBoard players={props.leaderBoard}/>
+			</div>
+		);
 	}
 	else {
 		let startButton = null;
@@ -116,7 +122,8 @@ const mapStateToProps = (state) => {
 		gameStart: state.gameStart,
 		isWinner: state.isWinner,
 		isWinnerByScore: state.isWinnerByScore,
-		endGame: state.endGame
+		endGame: state.endGame,
+		leaderBoard: state.leaderBoard
 	}
 }
 

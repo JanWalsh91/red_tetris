@@ -3,13 +3,13 @@
 	flex-direction: column;
 	align-content: center;
 	align-items: center;
-	margin-bottom: 10rem;
+	flex-grow: 1;
 }
 
 
 @media screen and (min-width: 2560px) {
 	.playerForm {
-		margin-bottom: 15rem;
+		margin-top: 5rem;
 	}
 }
 

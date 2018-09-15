@@ -32,6 +32,7 @@ class Board {
 			needToBroadcast: false,
 			frozenLines: 0,
 			removedLines: 0,
+			savedPiece: null,
 			getPiecesFromGame: () => {console.log("no callback set");},
 			updateScoreAndFrozenLinesInGame: () => {console.log("no callback set");},
 			checkForEndGame: () => {console.log("no callback set");}
