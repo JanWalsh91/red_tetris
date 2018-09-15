@@ -62,6 +62,8 @@ const Main = ( props ) => {
 			endGameContent = <EndGameLeaderBoard uuid={props.playerUUID} isWinnerByScore={props.isWinnerByScore} isWinner={props.isWinner} playersInfo={props.shadowState}/>
 		}
 
+		console.log("MAIN PROPS: ", props);
+
 		if (props.gameJoined) {
 			content = (
 				<div>
@@ -99,6 +101,8 @@ const Main = ( props ) => {
 }
 
 const mapStateToProps = (state) => {
+
+	console.log("State To Props: ", state);
 
 	return {
 		hostList: state.hostList,

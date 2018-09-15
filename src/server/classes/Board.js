@@ -44,6 +44,7 @@ class Board {
 			this.cells[y] = new Array(this.size.x).fill(0x0);
 		}
 		this.activePiece = null;
+		this.savedPiece = null;
 		this.piecesList = params.piecesList;
 		this.piecesCopiedCount = params.piecesCopiedCount;
 		this.gameOver = params.gameOver;
@@ -249,6 +250,20 @@ class Board {
 		}
 
 		return canMove;
+	}
+
+	savePiece() {
+		if (!this.activePiece) return ;
+
+		if (this.savedPiece) {
+			let oldActivePiece = new Piece(this.activePiece);
+			this.activePiece = this.savedPiece;
+			this.savedPiece = oldActivePiece;
+		} else {
+			this.savedPiece = this.activePiece;
+			this.setNextActivePiece();
+		}
+
 	}
 
 	removeFullLine() {

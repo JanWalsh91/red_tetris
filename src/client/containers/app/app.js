@@ -16,7 +16,6 @@ const App = (props) => {
 	let canMove = true;
 
 	const keyboardEvent = (event) => {
-		console.log(event);
 		if (!canMove) {
 			return ;
 		}
@@ -40,6 +39,8 @@ const App = (props) => {
 				case 40:
 					socket.emit(ActionNames.SEND_GAME_ACTION, "down");
 					break;
+				case 48:
+					socket.emit(ActionNames.SEND_GAME_ACTION, "savePiece")
 				default:
 					break ;
 			}

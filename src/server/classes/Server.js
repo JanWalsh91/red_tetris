@@ -38,6 +38,11 @@ class Server {
 		let gameState = {
 			cells: player.board.getCells(),
 		};
+
+		if (player.board.savedPiece) {
+			gameState.savedPiece = player.board.savedPiece;
+		}
+
 		if (player.board.needToBroadcast) {
 			this.updateShadowBoard(player);
 			gameState.score = player.score;
@@ -277,6 +282,9 @@ class Server {
 				player.board.rotate();
 				this.updateGameState(player);
 				break;
+			case "savePiece":
+				player.board.savePiece();
+				this.updateGameState(player);
 			default: break;
 		}
 	}

@@ -1,0 +1,10 @@
+div .savedPiece {
+	background: #212B30;
+	border: 3px solid #C62828;
+	padding: 5px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+ 	box-sizing: border-box;
+	display: flex;
+	width: fit-content;
+}
