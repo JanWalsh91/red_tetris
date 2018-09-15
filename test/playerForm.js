@@ -16,7 +16,7 @@ import PlayerForm from '../src/client/components/playerForm/playerForm'
 
 // enzyme
 import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-15';
+import Adapter from 'enzyme-adapter-react-15.4';
 configure({ adapter: new Adapter() });
 
 
@@ -47,11 +47,11 @@ describe('PlayerForm', function(){
 	// 	// mountedPlayerForm = undefined;
 	// });
 
-	it('always renders a div', function() {
-		let props = {onUpdateName: undefined};
-		let playerForm = mount(<PlayerForm {...props}/>);
-		const divs = playerForm.find("div");
-		expect(divs.length).equals(1);
+	// it('always renders a div', function() {
+	// 	let props = {onUpdateName: undefined};
+	// 	let playerForm = mount(<PlayerForm {...props}/>);
+	// 	const divs = playerForm.find("div");
+	// 	expect(divs.length).equals(1);
 
 
 		// const wrappingDiv = divs.first();
@@ -71,15 +71,15 @@ describe('PlayerForm', function(){
 	// 		</div>
 	// 	)
 	// 	output.should.equalJSX(expectedElement);
-	})
-
-	it("contains everything else that gets rendered", function() {
-		let props = {onUpdateName: undefined};
-		let playerForm = mount(<PlayerForm {...props}/>);
-		const divs = playerForm.find("div");
-		const wrappingDiv = divs.first();
-		expect(wrappingDiv).to.equal(playerForm);
-	})
+	// })
+	//
+	// it("contains everything else that gets rendered", function() {
+	// 	let props = {onUpdateName: undefined};
+	// 	let playerForm = mount(<PlayerForm {...props}/>);
+	// 	const divs = playerForm.find("div");
+	// 	const wrappingDiv = divs.first();
+	// 	expect(wrappingDiv).to.equal(playerForm);
+	// })
 })
 
 

@@ -3,8 +3,6 @@ import styles from './nextPieces.css'
 import cellStyles from '../../cell/cell.css'
 
 const nextPieces = ( props ) => {
-	console.log("GAME DATA =================");
-
 	let cellClasses = [];
 	cellClasses.push(cellStyles.cell);
 

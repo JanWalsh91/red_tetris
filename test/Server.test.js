@@ -46,11 +46,11 @@ describe('Server Test', function() {
 		// ?
 	})
 
-	it('updateHostList', function() {
-
-		let client1 = io.connect(socketURL, options);
-		// expect(Game.gameCount).equal(1);
-	})
+	// it('updateHostList', function() {
+	//
+	// 	let client1 = io.connect(socketURL, options);
+	// 	// expect(Game.gameCount).equal(1);
+	// })
 
 
 })

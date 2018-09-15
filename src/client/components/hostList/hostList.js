@@ -12,14 +12,10 @@ const hostList = ( props ) => {
 	let content = null;
 
 	const joinGame = () => {
-		console.log("joinGame");
 		socket.emit(ActionNames.JOIN_GAME, props.gameSelected);
-		// TODO: update gameJoined
-
 	}
 
 	const createGame = () => {
-		console.log("createGame");
 		socket.emit(ActionNames.CREATE_GAME);
 	}
 
@@ -33,8 +29,6 @@ const hostList = ( props ) => {
 			/>;
 		});
 	}
-
-
 
 	return (
 		<div className={styles.hostList}>

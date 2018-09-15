@@ -2,56 +2,57 @@ import React from 'react'
 import styles from './endGameLeaderBoard.css'
 
 const endGameLeaderBoard = ( props ) => {
+	let leaderBoard = null;
+	let sortedPlayers = null;
 
-	let sortedPlayers = [...props.playersInfo.values()].sort((a, b) => {
-		return b.score - a.score;
-	});
+	// console.log("props: ", props);
+	if (props.playersInfo && props.playersInfo.size > 0) {
+		sortedPlayers = [...props.playersInfo.values()].sort((a, b) => {
+			return b.score - a.score;
+		});
 
-	let winnerByScore = null;
-	if (props.isWinnerByScore && sortedPlayers.length > 1) {
-		winnerByScore = (
-			<span>*</span>
-		)
-	}
-
-	let leaderBoard = sortedPlayers.map( player => {
-		let playerName = null;
-
-		if (winnerByScore && player.id == props.uuid) {
-			playerName = "*" + player.name
-		} else {
-			playerName = player.name
+		let winnerByScore = null;
+		if (props.isWinnerByScore && sortedPlayers.length > 1) {
+			winnerByScore = (
+				<span>*</span>
+			)
 		}
-		return (
-			<div key={player.id} className={styles.rankPosition}>
-				<span>{playerName}</span>
-				<span>{player.score}</span>
-			</div>
-		)
-	})
 
-	let status = null;
-	if (sortedPlayers.length == 1 || props.isWinner == false) {
-		status = <h2>You loose...</h2>
-	} else {
-		status = <h2>You win!</h2>
-	}
+		leaderBoard = sortedPlayers.map( player => {
+			let playerName = null;
 
+			if (winnerByScore && player.id == props.uuid) {
+				playerName = "*" + player.name
+			} else {
+				playerName = player.name
+			}
+			return (
+				<div key={player.id} className={styles.rankPosition}>
+					<span>{playerName}</span>
+					<span>{player.score}</span>
+				</div>
+			)
+		})
 
-	let winnerContent = (
-		<div className={styles.endGameScoreLayout}>
-			{status}
+		leaderBoard = (
 			<div className={styles.scoreRanking}>
 				<h3>Score</h3>
 				{leaderBoard}
 			</div>
+		);
+	}
 
-		</div>
-	)
+	let status = null;
+	if (!sortedPlayers || sortedPlayers.length == 1 || props.isWinner == false) {
+		status = <h2>You lose...</h2>
+	} else {
+		status = <h2>You win!</h2>
+	}
 
 	return (
-		<div>
-			{winnerContent}
+		<div className={styles.endGameLeaderBoard}>
+			{status}
+			{leaderBoard}
 		</div>
 	);
 }
