@@ -5,11 +5,8 @@ import store from './store'
 import {updateHostList, updateGameJoined, updateGameState, updateShadowState, updateHostStatus, updatePlayerUUID, updateError, updatePlayerName, resetState, updateGameStart, isWinner, isWinnerByScore, endGame, updateLeaderBoard} from './actions/client'
 
 import * as ActionNames from '../server/serverActions'
-
 const socket = io.connect(params.server.getUrl())
-
-//TODO: to remove
-// window.sio = socket;
+console.log("ID:" , socket.id);
 
 socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
 	store.dispatch(updateHostList(hostList));
@@ -54,8 +51,6 @@ socket.on(ActionNames.IS_WINNER_BY_SCORE, () => {
 })
 
 socket.on(ActionNames.END_GAME, () => {
-
-	console.log("SOCKET END GAME");
 	store.dispatch(endGame());
 })
 
@@ -74,14 +69,15 @@ socket.on(ActionNames.UPDATE_LEADER_BOARD, (leaderBoard) => {
 	store.dispatch(updateLeaderBoard(leaderBoard));
 })
 
+socket.on(ActionNames.SEND_ERROR_STATUS, (errorMessage) => {
+	store.dispatch(updateError(errorMessage));
+})
 
 const readHash = () => {
-	console.log("[socket.js] readHash");
 	let regexPlayerRoom = /#(\d+)\[(.+)\]/;
 	let url = window.location.hash;
 
 	let match = regexPlayerRoom.exec(url);
-	console.log(match);
 	if (!!match) {
 		let gameID = match[1];
 		let playerName = match[2];
@@ -93,18 +89,12 @@ const readHash = () => {
 }
 
 const updateHash = (playerName, gameID) => {
-	console.log("UpdateHash");
 	if (!playerName || !gameID) {
 		window.location.href = '/';
 	} else {
 		window.location.hash = `${gameID}[${playerName}]`;
 	}
 }
-
-socket.on(ActionNames.SEND_ERROR_STATUS, (errorMessage) => {
-	store.dispatch(updateError(errorMessage));
-})
-
 
 window.onhashchange = readHash;
 

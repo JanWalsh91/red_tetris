@@ -277,20 +277,20 @@ describe('server test', function(){
 
 	// TODO: not working
 	// player DISCONNECT delete game
-	// it('DISCONNECT, delete game', function(done) {
-	// 	let client1 = io.connect(params.server.getUrl(), options);
-	// 	// let client2 = io.connect(params.server.getUrl(), options);
-	// 	client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-	// 	client1.emit(ActionNames.CREATE_GAME);
-	//
-	// 	client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
-	// 		client1.disconnect();
-	// 	});
-	// 	client1.on(ActionNames.DISCONNECT, () => {
-	// 		console.log("you disconnected");
-	// 		done();
-	// 	});
-	// });
+	it('DISCONNECT, delete game', function(done) {
+		let client1 = io.connect(params.server.getUrl(), options);
+		// let client2 = io.connect(params.server.getUrl(), options);
+		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ActionNames.CREATE_GAME);
+
+		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
+			client1.disconnect();
+		});
+		client1.on(ActionNames.DISCONNECT, () => {
+			console.log("you disconnected");
+			done();
+		});
+	});
 
 	it('DISCONNECT, update game host', function (done) {
 		let client1 = io.connect(params.server.getUrl(), options);
@@ -348,5 +348,15 @@ describe('server test', function(){
 			check = false;
 		});
 	});
+
+	it('set invisible mode', function (done) {
+
+		let client1 = io.connect(params.server.getUrl(), options);
+		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ActionNames.CREATE_GAME);
+		client1.emit(ActionNames.UPDATE_INVISIBLE_MODE, true);
+		done();
+
+	})
 
 });

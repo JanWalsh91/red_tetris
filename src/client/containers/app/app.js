@@ -11,42 +11,6 @@ import * as ActionNames from '../../../server/serverActions'
 
 
 const App = (props) => {
-
-	let canMove = true;
-
-	// const keyboardEvent = (event) => {
-	// 	if (!canMove) {
-	// 		return ;
-	// 	}
-	// 	canMove = false;
-	// 	setTimeout(function() { canMove = true; }, 25);
-	// 	if (props.gameJoined) {
-	// 		// event.preventDefault();
-	// 		switch (event.keyCode) {
-	// 			case 32:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "downShortcut");
-	// 				break;
-	// 			case 37:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "left");
-	// 				break;
-	// 			case 38:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "rotate");
-	// 				break;
-	// 			case 39:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "right");
-	// 				break;
-	// 			case 40:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "down");
-	// 				break;
-	// 			case 48:
-	// 			case 96:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "savePiece")
-	// 			default:
-	// 				break ;
-	// 		}
-	// 	}
-	// }
-
 	function KeyboardController(keys, repeat) {
 
 		var timers = {};
@@ -54,11 +18,13 @@ const App = (props) => {
 
 		var lockedKey = [38, 32, 48, 96];
 
-		document.body.onkeydown = (event) => {
+		document.onkeydown = (event) => {
+		// document.body.onkeydown = (event) => {
 			if (props.gameJoined) {
 				let key = event.keyCode;
+				console.log("KEYS:");
 				console.log(key in keys);
-				if (!(key in keys)) {
+				if (!(key in keys) || !repeat) {
 					return true;
 				}
 				if (lockedKey.includes(key)) {
@@ -69,14 +35,12 @@ const App = (props) => {
 				} else if (!(key in timers)) {
 					timers[key] = null;
 					keys[key]();
-					if (repeat !== 0) {
-						timers[key] = setInterval(keys[key], repeat);
-					}
+					timers[key] = setInterval(keys[key], repeat);
 				}
 			}
-		}
+		};
 
-		document.onkeyup = function(event) {
+		document.onkeyup = (event) => {
 			let key = event.keyCode;
 			if (key in timers) {
 				if (timers[key] != null) {
@@ -87,7 +51,7 @@ const App = (props) => {
 			else if (key in locked) {
 				delete locked[key];
 			}
-		}
+		};
 	}
 
 	KeyboardController({
@@ -101,40 +65,10 @@ const App = (props) => {
 
 	}, 125);
 
-	// const keyboardEvent = (event) => {
-	// 	if (props.gameJoined) {
-	//
-	// 		switch (event.keyCode) {
-	// 			case 32:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "downShortcut");
-	// 				break;
-	// 			case 37:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "left");
-	// 				break;
-	// 			case 38:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "rotate");
-	// 				break;
-	// 			case 39:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "right");
-	// 				break;
-	// 			case 40:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "down");
-	// 				break;
-	// 			case 48:
-	// 			case 96:
-	// 				socket.emit(ActionNames.SEND_GAME_ACTION, "savePiece")
-	// 			default:
-	// 				break ;
-	// 		}
-	// 	}
-	// }
-
 	if (props.errorMessage) {
-
 		return (
 			<span>ERROR : {props.errorMessage}</span>
 		)
-
 	}
 
 	return (

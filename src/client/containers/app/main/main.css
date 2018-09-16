@@ -127,3 +127,7 @@ label {
 [type="checkbox"]:not(:checked):focus + label:before {
   border: 1px dotted blue;
 }
+
+.audio {
+	display: none;
+}

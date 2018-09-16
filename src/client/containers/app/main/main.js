@@ -17,10 +17,19 @@ import * as ActionNames from '../../../../server/serverActions'
 
 const Main = ( props ) => {
 
+	// window.sound = new Audio('/src/client/mainTheme.mp3');
+
 	const startGame = () => {
 		socket.emit(ActionNames.START_GAME);
+		document.getElementById('audio').loop = true;
+		document.getElementById('audio').play();
 	}
 	const quitGame = () => {
+		console.log('QuitGame');
+		document.getElementById('audio').loop = false;
+		document.getElementById('audio').currentTime = 0.0;
+		document.getElementById('audio').pause();
+		delete window.sound;
 		socket.emit(ActionNames.QUIT_GAME);
 		props.resetState({playerName: props.playerName});
 		window.history.pushState(null, '', '/');
@@ -58,6 +67,7 @@ const Main = ( props ) => {
 		let startButton = null;
 		let invisibleMode = null;
 		if (props.isHost) {
+			console.log("salut");
 			if (!props.gameStart) {
 				startButton = <Button onClick={startGame} value="Start Game"/>;
 				invisibleMode = (
@@ -73,7 +83,7 @@ const Main = ( props ) => {
 			<div className={styles.buttons}>
 				<div>
 					{startButton}
-					<Button onClick={quitGame} value="Quit Game"/>
+					<Button id="quitGameButton" onClick={quitGame} value="Quit Game"/>
 				</div>
 				<div>
 					{invisibleMode}
@@ -86,7 +96,7 @@ const Main = ( props ) => {
 			endGameContent = <EndGameLeaderBoard uuid={props.playerUUID} isWinnerByScore={props.isWinnerByScore} isWinner={props.isWinner} playersInfo={props.shadowState}/>
 		}
 
-		console.log("MAIN PROPS: ", props);
+		// console.log("MAIN PROPS: ", props);
 
 		if (props.gameJoined) {
 			content = (
@@ -102,6 +112,9 @@ const Main = ( props ) => {
 						<div>
 							<GameData gameData={props.gameState}/>
 						</div>
+						<audio controls loop="true" id="audio" className={styles.audio}>
+  							<source src="/src/client/mainTheme.mp3" type="audio/mpeg"/>
+						</audio>
 					</div>
 					{buttons}
 				</div>
@@ -125,8 +138,6 @@ const Main = ( props ) => {
 }
 
 const mapStateToProps = (state) => {
-
-	console.log("State To Props: ", state);
 
 	return {
 		hostList: state.hostList,

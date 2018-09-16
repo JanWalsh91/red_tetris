@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import reducer from '../src/client/reducers'
 import * as Actions from '../src/client/actions/client'
 
-describe('action test', function() {
+describe('reducer test', function() {
 
 	// let state = {}
 
@@ -80,6 +80,35 @@ describe('action test', function() {
 		expect(state.gameStart).equal(true);
 		expect(state.endGame).equal(false);
 	});
+
+	it('isWinner', function() {
+		let isWinner = true;
+		expect(reducer(undefined, Actions.isWinner(isWinner)).isWinner).equal(isWinner);
+	});
+
+	it('isWinnerByScore', function() {
+		let isWinnerByScore = true;
+		expect(reducer(undefined, Actions.isWinnerByScore(isWinnerByScore)).isWinnerByScore).equal(isWinnerByScore);
+	});
+
+
+	it('endGame', function() {
+		let gameStart = 1;
+		let state = reducer(undefined, Actions.endGame());
+		expect(state.gameStart).equal(false);
+		expect(state.endGame).equal(true);
+	});
+
+	it('updateLeaderBoard', function() {
+		let leaderBoard = true;
+		expect(reducer(undefined, Actions.updateLeaderBoard(leaderBoard)).leaderBoard).equal(leaderBoard);
+	});
+
+	it('updateInvisibleMode', function() {
+		let invisibleMode = true;
+		expect(reducer(undefined, Actions.updateInvisibleMode(invisibleMode)).invisibleMode).equal(invisibleMode);
+	});
+
 
 
 })

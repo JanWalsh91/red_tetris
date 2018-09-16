@@ -44,11 +44,7 @@ const initEngine = io => {
 		console.log("[server/index.js] ", ActionNames.CONNECTION, ": ", socket.id);
 
 		server.sendBestScore(socket);
-		// console.log(socket.request.headers);
-		// loginfo("Socket connected: " + socket.id)
-
-
-
+		
 		socket.on(ActionNames.UPDATE_REQUEST_URL, (data) => {
 			server.onURLJoin(socket, data);
 		})

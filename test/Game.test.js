@@ -71,6 +71,10 @@ describe('Game Test', function() {
 		expect(game.isPlaying).equal(true);
 	})
 
+	it('setInvisibleMode', function() {
+		game.setInvisibleMode(true);
+	})
+
 	describe('Board callbacks from Game Test', function() {
 		let callbackPlayer = null;
 
