@@ -10,7 +10,7 @@ import EndGameLeaderBoard from '../../../components/endGameLeaderBoard/endGameLe
 import GameData from '../../../components/gameData/gameData'
 import Button from '../../../components/button/button'
 import socket from '../../../socket'
-import {updatePlayerName, updateSelectedGame, resetState} from '../../../actions/client'
+import {updatePlayerName, updateSelectedGame, resetState, updateInvisibleMode} from '../../../actions/client'
 
 
 import * as ActionNames from '../../../../server/serverActions'
@@ -39,7 +39,9 @@ const Main = ( props ) => {
 	}
 
 	const updateInvisibleMode = () => {
-		socket.emit(ActionNames.UPDATE_INVISIBLE_MODE, document.getElementById('invisibleMode').checked);
+		let isInvisibleMode = document.getElementById('invisibleMode').checked
+		socket.emit(ActionNames.UPDATE_INVISIBLE_MODE, isInvisibleMode);
+		props.updateInvisibleMode(isInvisibleMode);
 	}
 
 	let content;
@@ -55,12 +57,13 @@ const Main = ( props ) => {
 	else {
 		let startButton = null;
 		let invisibleMode = null;
+		let isInvisibleMode = props.invisibleMode ? props.invisibleMode : false;
 		if (props.isHost) {
 			if (!props.gameStart) {
 				startButton = <Button onClick={startGame} value="Start Game"/>;
 				invisibleMode = (
 					<span>
-						<input id="invisibleMode" onChange={updateInvisibleMode} type="checkbox" />
+						<input id="invisibleMode" onChange={updateInvisibleMode} type="checkbox" checked={isInvisibleMode} />
 						<label htmlFor="invisibleMode">Invisible Mode</label>
 					</span>
 				)
@@ -139,7 +142,8 @@ const mapStateToProps = (state) => {
 		isWinner: state.isWinner,
 		isWinnerByScore: state.isWinnerByScore,
 		endGame: state.endGame,
-		leaderBoard: state.leaderBoard
+		leaderBoard: state.leaderBoard,
+		invisibleMode: state.invisibleMode
 	}
 }
 
@@ -148,7 +152,8 @@ const mapDispatchToProps = dispatch => {
 		onUpdatePlayerName: playerName => dispatch(updatePlayerName(playerName)),
 		onSelectGame: hostID => dispatch(updateSelectedGame(hostID)),
 		onUpdateGameJoined: gameJoined => dispatch(onUpdateGameJoined(gameJoined)),
-		resetState: action => dispatch(resetState(action))
+		resetState: action => dispatch(resetState(action)),
+		updateInvisibleMode: isInvisibleMode => dispatch(updateInvisibleMode(isInvisibleMode))
 	}
 }
 
