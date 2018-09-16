@@ -156,6 +156,7 @@ describe('server test', function(){
 		})
 	});
 
+	// TODO: fix
 	// playerAction
 	it('SEND_GAME_ACTION, downShortcut', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
