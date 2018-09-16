@@ -22,6 +22,7 @@ const hostList = ( props ) => {
 	if (props.hostList) {
 		console.log("creating lsit of hosts: ", props.hostList);
 		content = props.hostList.map( host => {
+			console.log("creating host");
 			return <Host
 				key={host.id}
 				host={host}

@@ -1,12 +1,9 @@
 import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID, UPDATE_ERROR, RESET_STATE, UPDATE_GAME_START, IS_WINNER, IS_WINNER_BY_SCORE, END_GAME, UPDATE_LEADER_BOARD, UPDATE_INVISIBLE_MODE} from '../actions/client'
-// import socket from '../socket'
 
 import * as ActionNames from '../../server/serverActions'
 import initialState from '../initialState'
 
 const updateHostList = (state, action) => {
-	console.log("updateHostList reducer");
-
 	return {
 		...state,
 		hostList: action.hostList
@@ -14,31 +11,12 @@ const updateHostList = (state, action) => {
 }
 
 const updatePlayerName = (state, action) => {
-
-	// console.log("SOCKET", socket);
-
 	if (action.playerName) {
 		return {
 			...state,
 			playerName: action.playerName
 		};
 	}
-
-	// let name = document.getElementById('playerInputName').value;
-	// console.log("PlayerName: ", name);
-	//
-	// if (name != undefined && name.length > 0) {
-	// 	console.log("Emit new player");
-	// 	socket.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, name);
-	// }
-	// else {
-	// 	//Error
-	// }
-	//
-	// return {
-	// 	...state,
-	// 	playerName: name
-	// }
 }
 
 const updateSelectedGame = (state, action) => {
@@ -49,7 +27,6 @@ const updateSelectedGame = (state, action) => {
 }
 
 const updateGameJoined = (state, action) => {
-	console.log("[reducers/index.js] updateGameJoined: ", action);
 	return {
 		...state,
 		gameJoined: action.gameJoined,
@@ -58,14 +35,10 @@ const updateGameJoined = (state, action) => {
 }
 
 const updateGameState = (state, action) => {
-	console.log("ubdex js updategamestate: ", action);
-
 	let gameState = {
 		...state.gameState,
 		...action.gameState
 	};
-
-	console.log("UpdateGameState: ", gameState);
 
 	return {
 		...state,
@@ -73,7 +46,6 @@ const updateGameState = (state, action) => {
 	}
 }
 
-// TODO: consider optimization
 const updateShadowState = (state, action) => {
 	let newShadowState = undefined;
 
@@ -95,7 +67,6 @@ const updateShadowState = (state, action) => {
 }
 
 const updateHostStatus = (state, action) => {
-	console.log("reducer UPDATE_HOST_STATUS");
 	return {
 		...state,
 		isHost: action.isHost
@@ -103,7 +74,6 @@ const updateHostStatus = (state, action) => {
 }
 
 const updatePlayerUUID = (state, action) => {
-	console.log("updatePlayerUUID");
 	return {
 		...state,
 		playerUUID: action.playerUUID
@@ -131,7 +101,6 @@ const updateError = (state, action) => {
 }
 
 const resetState = (state, action) => {
-	console.log("[reducers.js] resetState: ", action);
 	let resetState = {
 		...initialState,
 		hostList: [...initialState.hostList],
@@ -166,7 +135,6 @@ const isWinnerByScore = state => {
 }
 
 const endGame = state => {
-	console.log("END GAME");
 	return {
 		...state,
 		endGame: true,
@@ -187,8 +155,6 @@ const updateInvisibleMode = (state, action) => {
 		invisibleMode: action.invisibleMode
 	}
 }
-
-
 
 const reducer = (state = {} , action) => {
 	console.log("reducer action type: ", action.type);

@@ -4,7 +4,6 @@ import styles from './shadowBoard.css'
 const shadowBoard = ( props ) => {
 
 	console.log("[ShadowBoard.js] shadowBoard");
-	console.log(props);
 
 	let content = <div>EMPTY BOARD</div>;
 	let info = '';
@@ -15,8 +14,6 @@ const shadowBoard = ( props ) => {
 	if (props.shadowState) {
 
 		props.shadowState.forEach((shadowBoard, sbIndex) => {
-			console.log("ShadowBoard JSX: ", shadowBoard);
-
 			if (shadowBoard.id == props.playerUUID) return;
 			let board = shadowBoard.board.map( (row, rIndex) => {
 				let line = row.map( (cell, cIndex) => {

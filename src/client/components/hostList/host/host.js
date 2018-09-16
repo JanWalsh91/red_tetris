@@ -2,6 +2,8 @@ import React from 'react'
 import styles from './host.css'
 
 const host = ( props ) => {
+	if (!props.host || props.host.id == undefined || props.host.hostName == undefined || props.host.playerCount == undefined) return null;
+
 	let classes = [];
 	classes.push(styles.host);
 

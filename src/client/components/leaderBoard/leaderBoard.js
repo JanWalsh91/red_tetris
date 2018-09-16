@@ -5,11 +5,7 @@ const leaderBoard = ( props ) => {
 
 	let leaderBoard = null;
 	if (props.players) {
-
-		console.log(props.players);
 		leaderBoard = props.players.map( (player, index) => {
-			let playerName = null;
-
 			return (
 				<div key={index} className={styles.rankingRow}>
 					<span>{player.playerName}</span>

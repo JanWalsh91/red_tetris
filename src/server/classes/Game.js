@@ -31,14 +31,10 @@ class Game {
 	}
 
 	init() {
-		// add pieces
-		console.log("[Game.js] init");
 		this.addPieces();
 	}
 
 	initPlayerBoard( player ) {
-		console.log("[Game.js] initPlayerBoard");
-
 		if (!player) return ;
 
 		player.board = new Board({
@@ -75,7 +71,6 @@ class Game {
 	}
 
 	reset() {
-		console.log("Game.js: ", this.players);
 		this.players.forEach(player => {
 			player.reset();
 			player.board.reset();
@@ -107,7 +102,6 @@ class Game {
 
 	setInvisibleMode(invisibleMode) {
 		this.players.forEach(player => {
-			console.log("Set invisible Mode: ", invisibleMode);
 			player.board.setInvisibleMode(invisibleMode);
 		})
 	}
@@ -117,7 +111,6 @@ class Game {
 	}
 
 	addPieces() {
-		console.log("[Game.js] addPieces (generateRandomPieces)");
 		this.piecesList.push(...Piece.generateRandomPieces(Game.newPiecesCount));
 	}
 

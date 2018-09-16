@@ -5,7 +5,6 @@ import { expect } from 'chai'
 
 import * as server from '../src/server/index'
 
-import {pingServer} from '../src/client/actions/server'
 import io from 'socket.io-client'
 import params from '../params'
 
@@ -16,12 +15,6 @@ chai.should()
 describe('server test', function(){
 	let stop;
 
-
-	// before(cb => startServer( params.server, function(err, server) {
-	// 	tetrisServer = server
-	// 	cb()
-	// }))
-
 	beforeEach( () => {
 		server.create( params.server )
 			.then( (endServer) => {
@@ -29,12 +22,6 @@ describe('server test', function(){
 				stop = endServer.stop;
 			})
 	})
-
-	// let options = {
-	//   transports: ['websocket'],
-	//   'force new connection': true
-	// };
-
 	let options = {};
 
 	afterEach( function(done) {

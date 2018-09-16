@@ -73,7 +73,6 @@ class Server {
 	*	Emits the shadowBoard of a player to the whole room
 	*/
 	updateShadowBoard(player, update = true) {
-		let gameID = this.games.get(player.socketID).id;
 		let shadowCellData = {
 			id: player.uuid,
 			name: player.name,
@@ -81,7 +80,7 @@ class Server {
 			score: player.score,
 			update
 		}
-		this.io.to(gameID).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);
+		this.io.to(this.games.get(player.socketID).id).emit(ActionNames.UPDATE_SHADOW_STATE, shadowCellData);
 	}
 
 	getGameByID(gameID) {
