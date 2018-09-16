@@ -77,7 +77,7 @@ const App = (props) => {
 			}
 		}
 
-		document.onkeyup= function(event) {
+		document.onkeyup = function(event) {
 			let key = event.keyCode;
 			if (key in timers) {
 				if (timers[key] != null) {

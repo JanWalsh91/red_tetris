@@ -57,13 +57,12 @@ const Main = ( props ) => {
 	else {
 		let startButton = null;
 		let invisibleMode = null;
-		let isInvisibleMode = props.invisibleMode ? props.invisibleMode : false;
 		if (props.isHost) {
 			if (!props.gameStart) {
 				startButton = <Button onClick={startGame} value="Start Game"/>;
 				invisibleMode = (
 					<span>
-						<input id="invisibleMode" onChange={updateInvisibleMode} type="checkbox" checked={isInvisibleMode} />
+						<input id="invisibleMode" onChange={updateInvisibleMode} type="checkbox" checked={!!props.invisibleMode} />
 						<label htmlFor="invisibleMode">Invisible Mode</label>
 					</span>
 				)
