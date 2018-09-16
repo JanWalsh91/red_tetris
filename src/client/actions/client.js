@@ -146,3 +146,12 @@ export const updateLeaderBoard = (leaderBoard) => {
 		leaderBoard
 	}
 }
+
+export const UPDATE_INVISIBLE_MODE = 'UPDATE_INVISIBLE_MODE'
+
+export const updateInvisibleMode = (invisibleMode) => {
+	return {
+		type: UPDATE_INVISIBLE_MODE,
+		invisibleMode
+	}
+}
