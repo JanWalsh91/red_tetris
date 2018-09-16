@@ -29,7 +29,6 @@ const Main = ( props ) => {
 		document.getElementById('audio').loop = false;
 		document.getElementById('audio').currentTime = 0.0;
 		document.getElementById('audio').pause();
-		delete window.sound;
 		socket.emit(ActionNames.QUIT_GAME);
 		props.resetState({playerName: props.playerName});
 		window.history.pushState(null, '', '/');
