@@ -8,28 +8,6 @@ import { configure, shallow, mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-15.4';
 configure({ adapter: new Adapter() });
 
-// use jsdom for enzyme.mount
-// import { JSDOM } from 'jsdom'
-// const jsdom = new JSDOM('<!doctype html><html><body></body></html>');
-// const { window } = jsdom;
-
-// function copyProps(src, target) {
-//   const props = Object.getOwnPropertyNames(src)
-//     .filter(prop => typeof target[prop] === 'undefined')
-//     .reduce((result, prop) => ({
-//       ...result,
-//       [prop]: Object.getOwnPropertyDescriptor(src, prop),
-//     }), {});
-//   Object.defineProperties(target, props);
-// }
-//
-// global.window = window;
-// global.document = window.document;
-// global.navigator = {
-//   userAgent: 'node.js',
-// };
-// copyProps(window, global);
-
 // components:
 import Board from '../src/client/components/board/board'
 import Button from '../src/client/components/button/button'
@@ -39,7 +17,8 @@ import NextPieces from '../src/client/components/gameData/nextPieces/nextPieces'
 import SavedPiece from '../src/client/components/gameData/savedPiece/savedPiece'
 import HeaderBar from '../src/client/components/headerBar/headerBar'
 // broken bc window error
-// import HostList from '../src/client/components/hostList/hostList'
+import HostList from '../src/client/components/hostList/hostList'
+import Host from '../src/client/components/hostList/host/host'
 
 
 
@@ -79,7 +58,7 @@ import HeaderBar from '../src/client/components/headerBar/headerBar'
 // 		expect(onClick).to.have.property('callCount', 1);
 // 	});
 // });
-
+//
 // describe('endGameLeaderBoard component', function () {
 // 	let wrapper = null;
 // 	let props = {
@@ -152,7 +131,7 @@ import HeaderBar from '../src/client/components/headerBar/headerBar'
 // 		expect(wrapper.find('span').first().text()[0]).equal('*');
 // 	});
 // });
-
+//
 // describe('GameData component', function () {
 // 	let wrapper = null;
 // 	let props = {
@@ -172,7 +151,7 @@ import HeaderBar from '../src/client/components/headerBar/headerBar'
 // 		expect(wrapper.exists('div')).equals(true);
 // 	});
 // });
-
+//
 // describe('NextPieces component', function () {
 // 	let wrapper = null;
 // 	let props = {
@@ -192,7 +171,7 @@ import HeaderBar from '../src/client/components/headerBar/headerBar'
 // 		expect(wrapper.exists('div')).equals(true);
 // 	});
 // });
-
+//
 // describe('SavedPiece component', function () {
 // 	let wrapper = null;
 // 	let props = {
@@ -220,7 +199,7 @@ import HeaderBar from '../src/client/components/headerBar/headerBar'
 // 		expect(wrapper.exists('div')).equals(false);
 // 	});
 // });
-
+//
 // describe('HeaderBar component', function () {
 // 	let wrapper = null;
 //
@@ -231,33 +210,33 @@ import HeaderBar from '../src/client/components/headerBar/headerBar'
 // });
 
 // // TODO:
-// describe('hostList component', function () {
-// 	let wrapper = null;
-// 	let props = {
-// 		// hostList: [],
-// 		// gameSelected: bool,
-// 		// onSelectGame: fn
-// 	};
-//
-// 	it('should always render', function () {
-// 		wrapper = shallow(<hostList />);
-// 		expect(wrapper.exists('div')).equals(true);
-// 	});
-//
-// 	let host1 = {
-// 		id: 1
-// 	}
-// 	it('should contain at least one <Host> if hostList.length > 0', function () {
-// 		props = {
-// 			hostList: [ host1 ],
-// 			gameSelected: null
-// 		}
-// 		wrapper = shallow(<hostList {...props}/>);
-// 		console.log(...wrapper);
-// 		expect(wrapper.exists()).equals(true);
-// 	});
-//
-// });
+describe('HostList component', function () {
+	let wrapper = null;
+	let props = {
+		// hostList: [],
+		// gameSelected: bool,
+		// onSelectGame: fn
+	};
+
+	it('should always render', function () {
+		wrapper = shallow(<HostList />);
+		expect(wrapper.exists('div')).equals(true);
+	});
+
+	let host1 = {
+		id: 1
+	}
+	it('should contain at least one <Host> if hostList.length > 0', function () {
+		props = {
+			hostList: [ host1 ],
+			gameSelected: null
+		}
+		wrapper = shallow(<HostList {...props}/>);
+		console.log("is Host ? : ", wrapper.exists('Host'));
+		expect(wrapper.exists('Host')).equals(true);
+	});
+
+});
 
 // 		const onClick = sinon.spy();
 // 		props = { onClick };

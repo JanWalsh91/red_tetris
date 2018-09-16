@@ -9,7 +9,7 @@ import * as ActionNames from '../server/serverActions'
 const socket = io.connect(params.server.getUrl())
 
 //TODO: to remove
-window.sio = socket;
+// window.sio = socket;
 
 socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
 	store.dispatch(updateHostList(hostList));
