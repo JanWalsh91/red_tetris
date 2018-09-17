@@ -12,7 +12,6 @@ const shadowBoard = ( props ) => {
 
 	let contentArray = [];
 	if (props.shadowState) {
-
 		props.shadowState.forEach((shadowBoard, sbIndex) => {
 			if (shadowBoard.id == props.playerUUID) return;
 			let board = shadowBoard.board.map( (row, rIndex) => {
@@ -36,7 +35,7 @@ const shadowBoard = ( props ) => {
 						{board}
 					</div>
 					<div className={styles.info}>
-						<div className={styles.name} >{shadowBoard.name}</div>
+						<div className={styles.name} >{decodeURIComponent(shadowBoard.name)}</div>
 						<div>Score: {shadowBoard.score}</div>
 					</div>
 				</div>
