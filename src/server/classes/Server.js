@@ -24,7 +24,6 @@ class Server {
 				joinableGames.set(game.id, game.getInfo());
 			}
 		}
-		// console.log("emitting update host list form server: ", [...joinableGames.values()]);
 		this.io.to('lobby').emit(ActionNames.UPDATE_HOST_LIST, [...joinableGames.values()].sort((a, b) => {
 			return a.id - b.id;
 		}));
@@ -34,7 +33,6 @@ class Server {
 	*	For a player, send its gameState to him
 	*/
 	updateGameState = (player) => {
-		// console.log("[index.js] updateGameState");
 		let gameState = {
 			cells: player.board.getCells(),
 		};
@@ -60,12 +58,10 @@ class Server {
 	}
 
 	updateHostStatus = (player) => {
-		// console.log("updateHostStatus");
 		let isHost = false;
 		if (player.socketID == this.games.get(player.socketID).host.socketID) {
 			isHost = true;
 		}
-		// this.io.to(player.socketID).emit(ActionNames.UPDATE_HOST_STATUS, isHost);
 		this.io.to(this.games.get(player.socketID).id).emit(ActionNames.UPDATE_HOST_STATUS, isHost);
 	}
 
@@ -84,7 +80,6 @@ class Server {
 	}
 
 	getGameByID(gameID) {
-		// console.log("[getGameByID]: ", gameID);
 		for (var [socketID, game] of this.games) {
   			if (game && game.id == gameID) {
 				return game;
@@ -108,20 +103,11 @@ class Server {
 		})
 	}
 
-	// NEW functions
-
 	onURLJoin(socket, data) {
-		// console.log("[Server.js] onURLJoin");
-
 		if (this.games.get(socket.id)) {
 			this.playerDisconnect(socket);
 		}
 		this.lock.acquire("K", done => {
-			// console.log("[Server.js] onURLJoin MUTEX");
-			// console.log(this.games);
-			// console.log(this.players);
-
-			// console.log("\tcreate player: ", socket.id);
 			this.players.set(socket.id, new Player(data.playerName, socket.id));
 
 			let game = this.getGameByID(data.gameID);
@@ -151,11 +137,9 @@ class Server {
 	}
 
 	joinGame(socket, gameID) {
-		console.log("[Server.js] joinGame, id: ", 1);
 		let player = this.players.get(socket.id);
 		let game = this.getGameByID(gameID);
 		if (!game) return ;
-		console.log("\tcheck");
 
 		game.players.push(player);
 
@@ -176,17 +160,12 @@ class Server {
 
 	createGame(socket, gameID) {
 		let player = this.players.get(socket.id);
-
 		let game = new Game(player, gameID ? gameID : this.getValidGameID());
 		this.games.set(socket.id, game);
 		game.init();
-
 		socket.leave('lobby');
 		socket.join(game.id);
-
 		this.updateHostList();
-
-		// console.log("[server.js] createGame: ", {gameJoined: true, gameID: game.id});
 		socket.emit(ActionNames.UPDATE_GAME_JOINED, {gameJoined: true, gameID: game.id});
 		game.initPlayerBoard(player);
 		this.updateGameState(player);
@@ -200,7 +179,6 @@ class Server {
 	}
 
 	startGame(socket) {
-		console.log("Server.js - Start Game");
 		let player = this.players.get(socket.id);
 		let game = this.games.get(socket.id);
 
@@ -257,7 +235,6 @@ class Server {
 	}
 
 	playerAction(socket, action) {
-		console.log("[Server.js] playerAction: ", action);
 		let player = this.players.get(socket.id);
 		if (player.board.gameOver) return;
 		let game = this.games.get(socket.id);
@@ -299,25 +276,15 @@ class Server {
 	}
 
 	playerDisconnect(socket) {
-		console.log("[Server.js] playerDisconnect: ", socket.id);
-		// console.log("\tNumber of players: ", this.players.size);
 		this.lock.acquire("K", done => {
-			// console.log("[Server.js] playerDisconnect MUTEX");
 			let game = this.games.get(socket.id);
 			let player = this.players.get(socket.id);
-
 			if (player && game) {
 				this.updateShadowBoard(player, false);
 			}
-
 			socket.leave('lobby');
-
-			// console.log("\tNumber of players: ", this.players.size);
 			this.players.delete(socket.id);
-			// console.log("\tremoved player: ", socket.id);
-			// console.log("\tNumber of players: ", this.players.size);
 			this.games.delete(socket.id);
-
 			if (!game) { done(); return ;}
 			socket.leave(game.id);
 			game.players = game.players.filter( player => player.socketID != socket.id);
@@ -331,7 +298,6 @@ class Server {
 			}
 			if (game.host.socketID == socket.id) {
 				game.host = game.players[0];
-				console.log("[Server.js] udpate host status");
 				this.io.to(game.host.socketID).emit(ActionNames.UPDATE_HOST_STATUS, true);
 			}
 			done();
@@ -362,14 +328,12 @@ class Server {
 
 		let filePath = __dirname + '/../../../bestScore';
 		fs.readFile(filePath, (err, data) => {
-
 			let highScores = null;
 			try {
 				highScores = JSON.parse(data);
 			} catch (err) {
 				highScores = [];
 			}
-
 			if (cb) {
 				cb(highScores);
 			}

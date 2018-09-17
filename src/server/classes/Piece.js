@@ -47,7 +47,6 @@ class Piece {
 	constructor( params ) {
 		if (params instanceof Piece) {
 			// Copy constructor
-			// console.log("[Piece.js] Piece constructor COPY");
 			params = {
 				type: params.type,
 				orientation: params.orientation,
@@ -55,7 +54,6 @@ class Piece {
 			};
 		}
 		// Constructor with params
-		// console.log("[Piece.js] Piece constructor PARAMS");
 		let defaultParams = {
 			type: 0,
 			orientation: 0,
@@ -64,7 +62,6 @@ class Piece {
 		params = {...defaultParams, ...params, coords: {...(params && params.coords ? params.coords : defaultParams.coords)}};
 
 	 	if (params.type < 0 || params.type >= Piece.typeCount) {
-			console.log("[Piece.js] invalid piece parameters");
 			return null;
 		}
 		this.type = params.type;
@@ -84,19 +81,15 @@ class Piece {
 
 	rotate() {
 		this.orientation = (this.orientation + 1) % 4;
-		// console.log("[Piece.js] new orientation: ", this.orientation);
 		this.cells = Piece.types[this.type][this.orientation];
 	}
 
 	move( vector = {x: 0, y : 1} ) {
-		// console.log("[Piece.js] move. vector: ", vector);
 		if (!Number.isInteger(vector.x) || !Number.isInteger(vector.y)){
-			console.log("   vector invalid");
 			return ;
 		}
 		this.coords.x += vector.x;
 		this.coords.y += vector.y;
-		// console.log("piece moved: ", this.coords);
 	}
 }
 
@@ -293,28 +286,5 @@ Piece.types = [
 		]
 	],
 ];
-
-
-// for testing:
-
-// console.log("test Pieces: ");
-// let piece = Piece.generateRandomPiece();
-// console.log("piece: ", piece);
-// piece.rotate();
-// console.log("piece: ", piece);
-// piece.rotate();
-// console.log("piece: ", piece);
-// piece.rotate();
-// console.log("piece: ", piece);
-// piece.move();
-// console.log("piece: ", piece);
-
-// let p = new Piece(1);
-// console.log("p: ", p);
-
-// module.exports = {
-// 	Piece: Piece
-// }
-
 
 export default Piece;

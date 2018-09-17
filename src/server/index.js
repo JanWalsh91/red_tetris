@@ -41,10 +41,8 @@ export const server = new Server();
 const initEngine = io => {
 	server.io = io;
 	io.on(ActionNames.CONNECTION, function(socket) {
-		console.log("[server/index.js] ", ActionNames.CONNECTION, ": ", socket.id);
-
 		server.sendBestScore(socket);
-		
+
 		socket.on(ActionNames.UPDATE_REQUEST_URL, (data) => {
 			server.onURLJoin(socket, data);
 		})
@@ -53,7 +51,6 @@ const initEngine = io => {
 		*	Emitted when client updates name in GUI
 		*/
 		socket.on(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, (playerName) => {
-			console.log("[server/index.js] ", "Adding", playerName, "to lobby");
 			server.addNewPlayerToLobby(socket, playerName);
 		})
 
@@ -74,7 +71,6 @@ const initEngine = io => {
 		})
 
 		socket.on(ActionNames.DISCONNECT, () => {
-			console.log("[Server/index.js] DISCONNECT");
 			server.playerDisconnect(socket);
 		})
 

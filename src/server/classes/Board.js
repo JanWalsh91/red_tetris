@@ -34,9 +34,9 @@ class Board {
 			removedLines: 0,
 			savedPiece: null,
 			invisibleMode: false,
-			getPiecesFromGame: () => {console.log("no callback set");},
-			updateScoreAndFrozenLinesInGame: () => {console.log("no callback set");},
-			checkForEndGame: () => {console.log("no callback set");}
+			getPiecesFromGame: () => {},
+			updateScoreAndFrozenLinesInGame: () => {},
+			checkForEndGame: () => {}
 
 		}
 		params = {...defaultParams, ...params};
@@ -63,26 +63,21 @@ class Board {
 	*	Add pieces to piecesList
 	*/
 	addPieces( pieces ) {
-		// console.log("[Board.js] addPieces");
 		if (!pieces || pieces.constructor !== Array || !(pieces[0] instanceof Piece))
 			return ;
-		// console.log(pieces);
 		this.piecesList.push(...pieces);
-		// console.log(this.piecesList);
 	}
 
 	/*
 	*	Sets the next piece from piecesList as the activePiece
 	*/
 	setNextActivePiece() {
-		// console.log("[Board.js] setNextActivePiece");
 		this.getPiecesFromGame(this);
 		this.activePiece = this.piecesList.shift();
 
 		if (!this.activePiece) return;
 
 		let isPlaceable = this.pieceIsPlaceable(this.activePiece);
-		// console.log("[Board.js] isPlaceable: ", isPlaceable);
 		if (!isPlaceable) {
 			let movedPiece = new Piece(this.activePiece);
 			movedPiece.move({x: 0, y: -1});
@@ -103,11 +98,8 @@ class Board {
 	*	Does not rotate on failure.
 	*/
 	tryToRotatePiece( piece ) {
-		// console.log("[Board.js] tryToRotatePiece");
 		if (!piece) return ;
-
 		piece.rotate();
-		// console.log("\trotated piece to: ", piece.coords);
 		return this.pieceIsPlaceable(piece);
 	}
 
@@ -115,12 +107,10 @@ class Board {
 	*	Tries to move a piece or the activePiece. Returns piece (moved or not).
 	*/
 	tryToMovePiece( piece, vector ) {
-		// console.log("[Board.js] tryToMovePiece, vector: ", vector);
 		if (!piece) return ;
 		if (!vector || vector.x == undefined || vector.y == undefined) return piece ;
 
 		piece.move(vector);
-		// console.log("\tmoved piece to: ", piece.coords);
 		return this.pieceIsPlaceable(piece);
 	}
 
@@ -128,19 +118,16 @@ class Board {
 	*	Checks if the piece or activePiece can exist on this board
 	*/
 	pieceIsPlaceable( piece ) {
-		// console.log("[Board.js] pieceIsPlaceable");
 		if (!piece) return false;
 		for (let y = 0; y < 4; y++) {
 			for (let x = 0; x < 4; x++) {
 				if (piece.cells[y][x] != 0x0) {
 					// if non-null piece cell outside of board
 					if (piece.coords.x + x >= this.size.x || piece.coords.x + x < 0 || piece.coords.y + y >= this.size.y - this.frozenLines || piece.coords.y + y < 0) {
-						// console.log("[Board.js] Piece out of board bounds. coords: ", {x: piece.coords.x + x, y: piece.coords.y + y});
 						return false;
 					}
 					// if non-null piece cell on a non-null board cell
 					else if (this.cells[piece.coords.y + y][piece.coords.x + x] != 0x0 && piece.cells[y][x] != 0x0) {
-						// console.log("[Board.js] Piece overlapping at ", {x: piece.coords.x + x, y: piece.coords.y + y}, ", piece: ", piece.cells[y][x], "board: ", this.cells[piece.coords.y + y][piece.coords.x + x]);
 						return false;
 					}
 				}
@@ -169,23 +156,10 @@ class Board {
 		this.needToBroadcast = true;
 	}
 
-	// printCells() {
-	// 	// console.clear();
-	// 	console.log("[Board.js] printCells");
-	// 	for (let y = 0; y < this.size.y; y++) {
-	// 		let line = "";
-	// 		for (let x = 0; x < this.size.x; x++) {
-	// 			line += (this.cells[y][x] ? "1" : "0") + " ";
-	// 		}
-	// 		console.log(line);
-	// 	}
-	// }
-
 	// TODO: create functions for actions requested by client. Modifies activePiece if possible
 	// Change tryToMovePiece and tryToRotatePiece to not modify activePiece.
 	// Update piece passed as param, and return true or false if can be placed
 	rotate() {
-		// console.log("[Board.js] rotate");
 		if (!this.activePiece) return ;
 
 		let rotatedPiece = new Piece(this.activePiece);
@@ -230,8 +204,6 @@ class Board {
 		let canMove = this.tryToMovePiece(movedPiece, {x: 0, y: 1});
 		if (canMove) {
 			this.activePiece = movedPiece;
-		} else {
-			// console.log("Cannot move down");
 		}
 		return canMove;
 		// if move down cannot be done, freezePiece and setNextActivePiece ?
@@ -253,9 +225,7 @@ class Board {
 				this.setNextActivePiece();
 				break;
 			}
-
 		}
-
 		return canMove;
 	}
 
@@ -298,11 +268,8 @@ class Board {
 	}
 
 	getCells() {
-		// console.log("[Board.js] getCells <3");
 		let cells = JSON.parse(JSON.stringify(this.cells));
 		if (!this.activePiece) return cells;
-		// console.log(this.activePiece);
-
 		let canMove = false;
 		for (let y = 0; y < this.size.y; y++) {
 			let movedPiece = new Piece(this.activePiece);
@@ -336,9 +303,7 @@ class Board {
 	}
 
 	setInvisibleMode(invisibleMode) {
-		console.log("InvisibleMode: ", this.invisibleMode);
 		this.invisibleMode = invisibleMode;
-		console.log("InvisibleMode: ", this.invisibleMode);
 	}
 
 	reset() {
@@ -351,31 +316,7 @@ class Board {
 		this.gameOver = false;
 	}
 
-	// TODO: to remove
-	// getBinaryCells() {
-	// 	// console.log("[Board.js] getCells <3");
-	// 	let cells = JSON.parse(JSON.stringify(this.cells));
-	// 	if (!this.activePiece) return cells;
-	// 	// console.log(this.activePiece);
-	// 	for (let y = 0; y < 4; y++) {
-	// 		for (let x = 0; x < 4; x++) {
-	// 			if (this.activePiece.cells[y][x] != 0x0) {
-	// 				cells[this.activePiece.coords.y + y][this.activePiece.coords.x + x] = 1;
-	// 			}
-	// 		}
-	// 	}
-	// 	for (let y = 0; y < this.size.y; y++) {
-	// 		for (let x = 0; x < this.size.x; x++) {
-	// 			if (this.cells[y][x] != 0x0) {
-	// 				cells[y][x] = 1;
-	// 			}
-	// 		}
-	// 	}
-	// 	return cells;
-	// }
-
 	getShadowCells() {
-		// console.log("[Board.js] getCells <3");
 		let shadowCells = JSON.parse(JSON.stringify(this.cells));
 		for (let y = 0; y < this.size.y; y++) {
 			for (let x = 0; x < this.size.x; x++) {
