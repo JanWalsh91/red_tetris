@@ -52,7 +52,8 @@ const Main = ( props ) => {
 		props.updateInvisibleMode(isInvisibleMode);
 	}
 
-	let content;
+	let buttons = null;
+	let content = null;
 
 	if (props.playerName === undefined || props.playerName.length == 0) {
 		content = (
@@ -78,17 +79,19 @@ const Main = ( props ) => {
 			}
 		}
 
-		let buttons = (
-			<div className={styles.buttons}>
-				<div>
-					{startButton}
-					<Button id="quitGameButton" onClick={quitGame} value="Quit Game"/>
+		if (props.gameJoined) {
+			buttons = (
+				<div className={styles.buttons}>
+					<div>
+						{startButton}
+						<Button id="quitGameButton" onClick={quitGame} value="Quit Game"/>
+					</div>
+					<div>
+						{invisibleMode}
+					</div>
 				</div>
-				<div>
-					{invisibleMode}
-				</div>
-			</div>
-		);
+			);
+		}
 
 		let endGameContent = null;
 		if (props.endGame) {
@@ -99,23 +102,20 @@ const Main = ( props ) => {
 
 		if (props.gameJoined) {
 			content = (
-				<div>
-					<div className={styles.gameArea}>
-						<div className={styles.shadowBoard}>
-							<ShadowBoard playerUUID={props.playerUUID} shadowState={props.shadowState}/>
-						</div>
-						<div className={styles.boardWrapper}>
-							<Board gameState={props.gameState}/>
-							{endGameContent}
-						</div>
-						<div>
-							<GameData gameData={props.gameState}/>
-						</div>
-						<audio controls loop="true" id="audio" className={styles.audio}>
-  							<source src="/src/client/mainTheme.mp3" type="audio/mpeg"/>
-						</audio>
+				<div className={styles.gameArea}>
+					<div className={styles.shadowBoard}>
+						<ShadowBoard playerUUID={props.playerUUID} shadowState={props.shadowState}/>
 					</div>
-					{buttons}
+					<div className={styles.boardWrapper}>
+						<Board gameState={props.gameState}/>
+						{endGameContent}
+					</div>
+					<div>
+						<GameData gameData={props.gameState}/>
+					</div>
+					<audio controls loop="true" id="audio" className={styles.audio}>
+							<source src="/src/client/mainTheme.mp3" type="audio/mpeg"/>
+					</audio>
 				</div>
 			)
 		}
@@ -132,6 +132,7 @@ const Main = ( props ) => {
 	return (
 		<div className={styles.main}>
 			{content}
+			{buttons}
 		</div>
 	)
 }
