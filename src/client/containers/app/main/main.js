@@ -24,6 +24,7 @@ const Main = ( props ) => {
 		document.getElementById('audio').loop = true;
 		document.getElementById('audio').play();
 	}
+
 	const quitGame = () => {
 		console.log('QuitGame');
 		document.getElementById('audio').loop = false;
@@ -33,6 +34,7 @@ const Main = ( props ) => {
 		props.resetState({playerName: props.playerName});
 		window.history.pushState(null, '', '/');
 	}
+
 	const updateName = () => {
 		let name = document.getElementById('playerInputName').value;
 
@@ -76,6 +78,12 @@ const Main = ( props ) => {
 						<label htmlFor="invisibleMode">Invisible Mode</label>
 					</span>
 				)
+			}
+		} else {
+			if (props.gameStart) {
+				if (document.getElementById('audio').paused) {
+					document.getElementById('audio').play();
+				}
 			}
 		}
 
