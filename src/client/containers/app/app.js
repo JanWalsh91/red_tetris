@@ -3,12 +3,14 @@ import { connect } from 'react-redux'
 import styles from './app.css'
 import Button from '../../components/button/button'
 import HeaderBar from '../../components/headerBar/headerBar'
+import Instructions from '../../components/instructions/instructions'
 import Main from './main/main'
 import {alert} from '../../actions/client'
 // import {store} from '../../index'
 import socket from '../../socket'
 import * as ActionNames from '../../../server/serverActions'
 
+import {toggleInstructions} from '../../actions/client'
 
 const App = (props) => {
 	function KeyboardController(keys, repeat) {
@@ -71,10 +73,21 @@ const App = (props) => {
 		)
 	}
 
+	let instructions = null;
+
+	console.log("showInstructions: ", props.showInstructions);
+	if (props.showInstructions) {
+		instructions = (
+			<Instructions />
+		)
+	}
+
 	return (
 		<div className={styles.app} tabIndex="0">
 			<HeaderBar></HeaderBar>
 			<Main></Main>
+			<Button value="i" onClick={props.toggleInstructions}/>
+			{instructions}
 		</div>
 	)
 }
@@ -82,9 +95,16 @@ const App = (props) => {
 const mapStateToProps = (state) => {
 	return {
 		gameJoined: state.gameJoined,
-		errorMessage: state.errorMessage
-
+		errorMessage: state.errorMessage,
+		showInstructions: state.showInstructions
 	}
 }
 
-export default connect(mapStateToProps, null)(App)
+const mapDispatchToProps = dispatch => {
+	return {
+		toggleInstructions: () => dispatch(toggleInstructions())
+	}
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

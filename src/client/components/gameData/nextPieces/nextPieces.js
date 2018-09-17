@@ -6,29 +6,33 @@ const nextPieces = ( props ) => {
 	let cellClasses = [];
 	cellClasses.push(cellStyles.cell);
 
-	if (props.pieces) {
-		let pieces = props.pieces.map( piece => {
-			let pieceDOM = piece.cells.map( (row, rIndex) => {
-				let line = row.map( (cell, cIndex) => {
-					let classes = [...cellClasses];
-					classes.push(cellStyles[cell]);
-					classes = classes.join(' ');
-					return <div key={(rIndex + 1) * (cIndex + 1)} className={classes}></div>;
-				});
-				line = <div key={rIndex} className={styles.row}>{line}</div>
-				return line;
-			});
-			return pieceDOM;
-		});
+	let cellContent = null;
+	let rowContent = [];
+	let pieces = [];
 
-		return (
-			<div className={styles.nextPieces}>
-				{pieces}
-			</div>
-		)
+	for (let n = 0; n < 3; n++) {
+		rowContent = [];
+		for (let y = 0; y < 4; y++) {
+			cellContent = [];
+			for (let x = 0; x < 4; x++) {
+				let classes = [...cellClasses];
+
+				if (props.pieces && props.pieces[n].cells && props.pieces[n].cells[y] && props.pieces[n].cells[y][x]) {
+					classes.push(cellStyles[props.pieces[n].cells[y][x]]);
+				}
+				classes = classes.join(' ');
+				cellContent.push(<div key={(x + 1) * (y + 1)} className={classes}></div>);
+			}
+			rowContent.push(<div key={y}>{cellContent}</div>);
+		}
+		pieces.push(<div className={styles.piece} key={n}>{rowContent}</div>)
 	}
 
-	return null;
+	return (
+		<div className={styles.nextPieces}>
+			{pieces}
+		</div>
+	)
 }
 
 export default nextPieces

@@ -1,0 +1,28 @@
+.InstructionItem {
+	/* border: red solid 1px; */
+	display: grid;
+	grid-template-columns: 35% 1fr;
+	grid-column-gap: 50px;
+	padding: 5px;
+	color: #C62828;
+	user-select: none;
+}
+
+.name {
+	border: #C62828 1px solid;
+	border-radius: 5px;
+	text-align: center;
+	margin: 10px;
+	line-height: 22px;
+	width: 150px;
+}
+
+.instruction {
+	margin: 10px;
+	line-height: 25px;
+}
+
+.name:hover {
+	border: #A60808 1px solid;
+	color: #A60808;
+}

@@ -3,25 +3,20 @@ import styles from './endGameLeaderBoard.css'
 
 const endGameLeaderBoard = ( props ) => {
 	let leaderBoard = null;
-	let sortedPlayers = null;
 
 	// console.log("props: ", props);
 	if (props.playersInfo && props.playersInfo.size > 0) {
-		sortedPlayers = [...props.playersInfo.values()].sort((a, b) => {
+		let scoreW = [...props.playersInfo.values()].sort((a, b) => {
 			return b.score - a.score;
-		});
+		})[0];
 
-		let winnerByScore = null;
-		if (props.isWinnerByScore && sortedPlayers.length > 1) {
-			winnerByScore = (
-				<span>*</span>
-			)
-		}
+		console.log("asdf", scoreW );
 
-		leaderBoard = sortedPlayers.map( player => {
+		leaderBoard = props.playersLostList.map( uuid => {
+			let player = props.playersInfo.get(uuid);
 			let playerName = null;
 
-			if (winnerByScore && player.id == props.uuid) {
+			if (player.id == scoreW.id) {
 				playerName = "*" + player.name
 			} else {
 				playerName = player.name
@@ -43,7 +38,7 @@ const endGameLeaderBoard = ( props ) => {
 	}
 
 	let status = null;
-	if (!sortedPlayers || sortedPlayers.length == 1 || props.isWinner == false) {
+	if (props.playersLostList.length == 1 || props.isWinner == false) {
 		status = <h2>You lose...</h2>
 	} else {
 		status = <h2>You win!</h2>

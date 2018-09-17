@@ -50,8 +50,8 @@ socket.on(ActionNames.IS_WINNER_BY_SCORE, () => {
 	store.dispatch(isWinnerByScore());
 })
 
-socket.on(ActionNames.END_GAME, () => {
-	store.dispatch(endGame());
+socket.on(ActionNames.END_GAME, (playersLostList) => {
+	store.dispatch(endGame(playersLostList));
 })
 
 

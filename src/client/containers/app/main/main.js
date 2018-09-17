@@ -103,7 +103,13 @@ const Main = ( props ) => {
 
 		let endGameContent = null;
 		if (props.endGame) {
-			endGameContent = <EndGameLeaderBoard uuid={props.playerUUID} isWinnerByScore={props.isWinnerByScore} isWinner={props.isWinner} playersInfo={props.shadowState}/>
+			endGameContent = <EndGameLeaderBoard
+				uuid={props.playerUUID}
+				isWinnerByScore={props.isWinnerByScore}
+				isWinner={props.isWinner}
+				playersInfo={props.shadowState}
+				playersLostList={props.playersLostList}
+			/>
 		}
 
 		// console.log("MAIN PROPS: ", props);
@@ -161,7 +167,8 @@ const mapStateToProps = (state) => {
 		isWinnerByScore: state.isWinnerByScore,
 		endGame: state.endGame,
 		leaderBoard: state.leaderBoard,
-		invisibleMode: state.invisibleMode
+		invisibleMode: state.invisibleMode,
+		playersLostList: state.playersLostList
 	}
 }
 

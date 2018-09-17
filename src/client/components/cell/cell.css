@@ -1,62 +1,56 @@
 
 .cell {
-	width: 2rem;
-	height: 2rem;
-	/* border: solid 1px #dadada; */
-
+	width: calc(calc(4vh + 1vw)/2);
+	height: calc(calc(4vh + 1vw)/2);
 	outline-offset: -8px;
-}
-
-@media screen and (min-width: 2560px) {
-	.cell {
-		width: 2.5rem;
-		height: 2.5rem;
-	}
+	color: unset;
+	outline: 8px outset;
+	outline-color: rgba(0, 0, 0, 0);
 }
 
 .line {
 	background: #00B8D4;
-	outline: 8px outset #00E5FF;
+	outline-color: #00E5FF;
 }
 
 .l1 {
 	background: #2264D4;
-	outline: 8px outset #2979FF;
+	outline-color: #2979FF;
 }
 
 .l2 {
 	background: #D67A00;
-	outline: 8px outset #FF9100;
+	outline-color: #FF9100;
 }
 
 .square {
 	background: #D6C500;
-	outline: 8px outset #FFEA00;
+	outline-color: #FFEA00;
 }
 
 .squiggle1 {
 	background: #00C465;
-	outline: 8px outset #00E676;
+	outline-color: #00E676;
 }
 
 .t {
 	background: #A800C4;
-	outline: 8px outset #D500F9;
+	outline-color: #D500F9;
 }
 
 .squiggle2 {
 	background: #CC1236;
-	outline: 8px outset #FF1744;
+	outline-color: #FF1744;
 }
 
 .gameOver {
 	background: #757575;
-	outline: 8px outset #9E9E9E;
+	outline-color: #9E9E9E;
 }
 
 .frozenLine {
 	background: #3D3D3D;
-	outline: 8px outset #525252;
+	outline-color: #525252;
 }
 
 .previewPiece {

@@ -215,11 +215,16 @@ class Server {
 				if (bestScorePlayer == null || player.score > bestScorePlayer.score) {
 					bestScorePlayer = player;
 				}
+				if (player.board.gameOver) {
+					if (!(player.uuid in game.playersLostList)) {
+						game.playersLostList.push(player.uuid);
+					}
+				}
 				return player.board.gameOver;
 			})) {
 				this.io.to(bestScorePlayer.socketID).emit(ActionNames.IS_WINNER_BY_SCORE);
 				clearInterval(game.interval);
-				this.io.to(game.id).emit(ActionNames.END_GAME);
+				this.io.to(game.id).emit(ActionNames.END_GAME, game.playersLostList);
 				game.isPlaying = false;
 				this.writeBestScore(bestScorePlayer);
 			}

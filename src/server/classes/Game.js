@@ -20,6 +20,7 @@ class Game {
 		if (gameID) {
 			this.id = gameID;
 		}
+		this.playersLostList = [];
 	}
 
 	getInfo() {

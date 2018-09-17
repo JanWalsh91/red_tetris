@@ -15,7 +15,9 @@ const initialState = {
 		nextPieces: undefined,
 		removedLines: 0,
 		savedPiece: null
-	}
+	},
+	showInstructions: false,
+	playersLostList: []
 }
 
 export default initialState

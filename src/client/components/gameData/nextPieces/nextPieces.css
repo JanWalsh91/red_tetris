@@ -6,3 +6,8 @@
 .row {
 	display: flex;
 }
+
+.piece {
+	display: flex;
+	margin: 1px 0;
+}
