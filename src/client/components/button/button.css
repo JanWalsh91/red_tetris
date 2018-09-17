@@ -8,6 +8,7 @@
 	font-size: 1rem;
 	outline: 8px outset #EF5350;
 	outline-offset: 0px;
+	cursor: pointer;
 }
 
 .Button:active {
