@@ -19,6 +19,23 @@ const hostList = ( props ) => {
 		socket.emit(ActionNames.CREATE_GAME);
 	}
 
+	let button = null;
+		console.log(props.hostList);
+		if (props.gameSelected != null && props.hostList.find(el => el.id == props.gameSelected )) {
+			button = (
+				<Button onClick={joinGame} type='button'
+					value={"JOIN GAME #" + props.gameSelected}
+				/>
+			)
+		} else {
+			button = (
+				<Button onClick={createGame} type='button'
+					value={"CREATE GAME"}
+				/>
+			)
+		}
+
+
 	if (props.hostList) {
 		console.log("creating lsit of hosts: ", props.hostList);
 		content = props.hostList.map( host => {
@@ -37,9 +54,7 @@ const hostList = ( props ) => {
 			<div className={styles.list}>
 				{content}
 			</div>
-			<Button onClick={() => props.gameSelected != null ? joinGame() : createGame()} type='button'
-				value={props.gameSelected != null ? "JOIN GAME #" + props.gameSelected : "CREATE GAME" }
-			/>
+			{button}
 		</div>
 	)
 }

@@ -29,13 +29,18 @@ const shadowBoard = ( props ) => {
 				return line;
 			});
 
+			let fontSize = '100%';
+			if (shadowBoard.name.length > 8) {
+				fontSize = '60%';
+			}
+
 			contentArray.push(
 				<div className={styles.shadowBoard} key={sbIndex} >
 					<div className={styles.board}>
 						{board}
 					</div>
 					<div className={styles.info}>
-						<div className={styles.name} >{decodeURIComponent(shadowBoard.name)}</div>
+						<div className={styles.name} style={{fontSize: fontSize}}>{decodeURIComponent(shadowBoard.name)}</div>
 						<div>Score: {shadowBoard.score}</div>
 					</div>
 				</div>

@@ -76,6 +76,7 @@ class Game {
 			player.reset();
 			player.board.reset();
 		})
+		this.piecesList = [];
 	}
 
 	setGameTic() {

@@ -1,6 +1,7 @@
 .Board {
 	border: #C62828 solid 8px;
     height: fit-content;
+	display: table;
 }
 
 .row {

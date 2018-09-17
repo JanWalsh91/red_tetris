@@ -5,6 +5,7 @@ import Button from '../../components/button/button'
 import HeaderBar from '../../components/headerBar/headerBar'
 import Instructions from '../../components/instructions/instructions'
 import Main from './main/main'
+import Modal from '../../components/Modal/Modal'
 import {alert} from '../../actions/client'
 // import {store} from '../../index'
 import socket from '../../socket'
@@ -87,10 +88,16 @@ const App = (props) => {
 			<HeaderBar></HeaderBar>
 			<Main></Main>
 			<Button value="i" onClick={props.toggleInstructions}/>
-			{instructions}
+			<Modal show={props.showInstructions} modalClosed={props.toggleInstructions}>
+				{instructions}
+			</Modal>
 		</div>
 	)
 }
+
+{/*}<Modal show={props.showInstructions} modalClosed={props.toggleInstructions}>
+	{instructions}
+</Modal>*/}
 
 const mapStateToProps = (state) => {
 	return {

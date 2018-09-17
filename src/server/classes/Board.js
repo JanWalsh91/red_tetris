@@ -314,6 +314,8 @@ class Board {
 		this.activePiece = null;
 		this.savedPiece = null;
 		this.gameOver = false;
+		this.piecesCopiedCount = 0;
+		this.piecesList = [];
 	}
 
 	getShadowCells() {

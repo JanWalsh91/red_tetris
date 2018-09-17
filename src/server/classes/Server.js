@@ -240,6 +240,7 @@ class Server {
 				this.io.to(game.id).emit(ActionNames.END_GAME, game.playersLostList);
 				game.isPlaying = false;
 				this.writeBestScore(bestScorePlayer);
+				this.updateHostList();
 			}
 
 		};
@@ -294,12 +295,12 @@ class Server {
 	}
 
 	playerDisconnect(socket) {
-		// console.log("[Server.js] playerDisconnect");
+		console.log("[Server.js] playerDisconnect");
 		return new Promise((resolve, reject) => {
 			this.lock.acquire("K", done => {
 				let game = this.games.get(socket.id);
 				let player = this.players.get(socket.id);
-				// console.log("[Server.js] playerDisconnect in mutex. Player: ", player ? player.name : null);
+				console.log("[Server.js] playerDisconnect in mutex. Player: ", player ? player.name : null);
 				if (player && game) {
 					this.updateShadowBoard(player, false);
 				}
@@ -308,7 +309,7 @@ class Server {
 				this.games.delete(socket.id);
 				if (!game) { done(); return ;}
 
-				// console.log("[Sevrer.js] playerDisconnect: leaving room");
+				console.log("[Sevrer.js] playerDisconnect: leaving room");
 
 
 				game.players = game.players.filter( player => player.socketID != socket.id);
