@@ -82,7 +82,7 @@ const readHash = () => {
 		let gameID = match[1];
 		let playerName = match[2];
 		if (gameID == store.getState().gameID && playerName == store.getState().playerName) return ;
-		console.log("UPDATE_REQUEST_URL", {gameID, playerName});
+		// console.log("UPDATE_REQUEST_URL", {gameID, playerName});
 		store.dispatch(resetState());
 		socket.emit(ActionNames.UPDATE_REQUEST_URL, {gameID, playerName});
 	}

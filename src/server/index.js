@@ -76,8 +76,8 @@ const initEngine = io => {
 
 		socket.on(ActionNames.QUIT_GAME, () => {
 			let playerName = server.players.get(socket.id).name;
-			server.playerDisconnect(socket);
-			server.addNewPlayerToLobby(socket, playerName);
+			server.playerDisconnect(socket)
+				.then(() => server.addNewPlayerToLobby(socket, playerName));
 		})
 
 		socket.on(ActionNames.UPDATE_INVISIBLE_MODE, (action) => {
