@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './Instructions.css'
+import styles from './instructions.css'
 
 import InstructionItem from './instructionItem/instructionItem'
 
