@@ -14,7 +14,7 @@ class Game {
 		this.isPlaying = false;
 		this.players = [player];
 		this.piecesList = [];
-		this.level = 0; // determines piece speed and score
+		this.level = 0;
 		this.highestScore = 0;
 		this.interval = undefined;
 		if (gameID) {
@@ -49,10 +49,8 @@ class Game {
 				}
 			},
 			updateScoreAndFrozenLinesInGame: (linesRemoved) => {
-				// update player score
-				const multiplier = [40, 100, 300, 1200];
+				const multiplier = [40, 100, 250, 600];
 				player.score += multiplier[linesRemoved - 1] * (this.level + 1);
-				// update game level
 				this.updateGameLevel(player.score);
 
 				if (linesRemoved >= 2) {
@@ -89,8 +87,7 @@ class Game {
 	}
 
 	updateGameLevel(playerScore) {
-		const thresholds = [1200, 2400, 3600, 4800, 6000, 7200, 8400, 9600, 10800, 12000];
-
+		const thresholds = [600, 1800, 3600, 6000, 9000, 12600, 16800, 21600, 27000, 33000];
 		if (playerScore > this.highestScore) {
 			this.highestScore = playerScore;
 			if (this.highestScore > thresholds[this.level] && this.level < thresholds.length - 1) {

@@ -7,7 +7,6 @@ import Instructions from '../../components/instructions/instructions'
 import Main from './main/main'
 import Modal from '../../components/Modal/Modal'
 import {alert} from '../../actions/client'
-// import {store} from '../../index'
 import socket from '../../socket'
 import * as ActionNames from '../../../server/serverActions'
 
@@ -22,11 +21,8 @@ const App = (props) => {
 		var lockedKey = [38, 32, 48, 96];
 
 		document.onkeydown = (event) => {
-		// document.body.onkeydown = (event) => {
 			if (props.gameJoined) {
 				let key = event.keyCode;
-				console.log("KEYS:");
-				console.log(key in keys);
 				if (!(key in keys) || !repeat) {
 					return true;
 				}
@@ -76,7 +72,6 @@ const App = (props) => {
 
 	let instructions = null;
 
-	console.log("showInstructions: ", props.showInstructions);
 	if (props.showInstructions) {
 		instructions = (
 			<Instructions />
@@ -94,10 +89,6 @@ const App = (props) => {
 		</div>
 	)
 }
-
-{/*}<Modal show={props.showInstructions} modalClosed={props.toggleInstructions}>
-	{instructions}
-</Modal>*/}
 
 const mapStateToProps = (state) => {
 	return {

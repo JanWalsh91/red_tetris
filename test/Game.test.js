@@ -60,7 +60,7 @@ describe('Game Test', function() {
 		game.ticFunction = function () {}
 		game.updateGameLevel(player.score);
 		expect(game.highestScore).equal(2000);
-		expect(game.level).equal(1);
+		expect(game.level).equal(2);
 
 		game.updateGameLevel(player.score * 2);
 		expect(game.level).equal(3);

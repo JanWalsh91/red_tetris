@@ -6,14 +6,12 @@ import {updateHostList, updateGameJoined, updateGameState, updateShadowState, up
 
 import * as ActionNames from '../server/serverActions'
 const socket = io.connect(params.server.getUrl())
-console.log("ID:" , socket.id);
 
 socket.on(ActionNames.UPDATE_HOST_LIST, (hostList) => {
 	store.dispatch(updateHostList(hostList));
 })
 
 socket.on(ActionNames.UPDATE_GAME_JOINED, (action) => {
-	// console.log("[socket.js] UPDATE_GAME_JOINED: ", action);
 	updateHash(store.getState().playerName, action.gameID);
 	store.dispatch(updateGameJoined(action));
 })
@@ -82,17 +80,24 @@ const readHash = () => {
 		let gameID = match[1];
 		let playerName = match[2];
 		if (gameID == store.getState().gameID && playerName == store.getState().playerName) return ;
-		// console.log("UPDATE_REQUEST_URL", {gameID, playerName});
 		store.dispatch(resetState());
-		socket.emit(ActionNames.UPDATE_REQUEST_URL, {gameID, playerName});
+		socket.emit(ActionNames.UPDATE_REQUEST_URL, {gameID, playerName: decodeURIComponent(playerName)});
 	}
 }
 
 const updateHash = (playerName, gameID) => {
 	if (!playerName || !gameID) {
-		window.location.href = '/';
+		try {
+			window.location.href = '/';
+		} catch(e) {
+			console.log("href assign error");
+		}
 	} else {
-		window.location.hash = `${gameID}[${playerName}]`;
+		try {
+			window.location.hash = `${gameID}[${playerName}]`;
+		} catch(e) {
+			console.log("href assign error");
+		}
 	}
 }
 

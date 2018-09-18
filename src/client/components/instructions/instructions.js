@@ -12,15 +12,15 @@ const instructions = () => {
 		},
 		{
 			name: '↑',
-			instruction: 'rotate'
+			instruction: 'Rotate'
 		},
 		{
 			name: '←',
-			instruction: 'move left'
+			instruction: 'Move left'
 		},
 		{
 			name: '→',
-			instruction: 'move right'
+			instruction: 'Move right'
 		},
 		{
 			name: '↓',
@@ -28,7 +28,7 @@ const instructions = () => {
 		},
 		{
 			name: '0',
-			instruction: 'hold piece'
+			instruction: 'Hold piece'
 		}
 	]
 

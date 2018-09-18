@@ -21,8 +21,6 @@ describe('server test', function(){
 		return new Promise((fn) => {
 			server.create( params.server )
 			.then( (endServer) => {
-				// console.log("create THEN: ", endServer);
-				// console.log(server.server.io);
 				serverIO = server.server.io;
 				stop = endServer.stop;
 				client.connect(params.server.getUrl());
@@ -33,30 +31,13 @@ describe('server test', function(){
 	let options = {};
 
 	after( function(done) {
+		client.disconnect();
 		stop(done);
 	});
 
 	it('UPDATE_HOST_LIST', function(done) {
-		// console.log(serverIO);
-
-		// console.log(client.id);
-		// client.connect(params.server.getUrl());
-
-		//
-		// console.log("clientID: ", client.id);
-
 		serverIO.to(client.id).emit(ActionNames.UPDATE_HOST_LIST, 'hostList');
-		// serverIO.to(client.id).emit(ActionNames.UPDATE_GAME_JOINED, 'hostList');
-		// serverIO.to(client.id).emit(ActionNames.UPDATE_GAME_START, 'hostList');
-		// serverIO.to(client.id).emit(ActionNames.UPDATE_GAME_STATE, 'hostList');
-		// serverIO.to(client.id).emit(ActionNames.UPDATE_SHADOW_STATE, 'hostList');
-		// serverIO.to(client.id).emit(ActionNames.UPDATE_HOST_STATUS, 'hostList');
-		// serverIO.to(client.id).emit(ActionNames.UPDATE_PLAYER_UUID, 'hostList');
-		// serverIO.to(client.id).emit(ActionNames.UPDATE_PLAYER_NAME, 'hostList');
-		// serverIO.to(client.id).emit(ActionNames.IS_WINNER);
-		// serverIO.to(client.id).emit(ActionNames.END_GAME, 'hostList');
 		done();
-
 	});
 
 	it('UPDATE_GAME_JOINED', function(done) {
@@ -123,7 +104,7 @@ describe('server test', function(){
 	})
 
 	it('SEND_ERROR_STATUS', function(done) {
-		serverIO.to(client.id).emit(ActionNames.UPDATE_LEADER_BOARD);
+		serverIO.to(client.id).emit(ActionNames.SEND_ERROR_STATUS);
 		done();
 	})
 })

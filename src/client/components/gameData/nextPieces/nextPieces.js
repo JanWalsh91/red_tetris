@@ -17,7 +17,7 @@ const nextPieces = ( props ) => {
 			for (let x = 0; x < 4; x++) {
 				let classes = [...cellClasses];
 
-				if (props.pieces && props.pieces[n].cells && props.pieces[n].cells[y] && props.pieces[n].cells[y][x]) {
+				if (props.pieces && props.pieces[n] && props.pieces[n].cells && props.pieces[n].cells[y] && props.pieces[n].cells[y][x]) {
 					classes.push(cellStyles[props.pieces[n].cells[y][x]]);
 				}
 				classes = classes.join(' ');

@@ -49,36 +49,6 @@ describe('app container', function () {
 		expect(component).to.be.a('object');
 		expect(component.find('h1').html()).to.include('RED TETRIS');
 	});
-
-	// it('should respond to click event', function() {
-	// 	const state = {
-	// 		gameJoined: false
-	//     };
-	// 	const onKeyPress = sinon.spy(document, 'addEventListener');
-	//     const store = createMockStore(state)
-	//     const component = mountWithStore(<App />, store);
-	//
-	// 	component.find('h1').simulate('keyDown', {keyCode: 13});
-	// 	expect(onKeyPress).to.have.property('callCount').gt(0)
-	// })
-
-	// it('should respond to key event in game', function() {
-	// 	const state = {
-	// 		gameJoined: true
-	//     };
-	// 	const store = createMockStore(state)
-	// 	console.log(document);
-	// 	const onKeyPress = sinon.spy(document.onkeydown, 'keydown');
-	//     const component = mountWithStore(<App />, store);
-	//
-	// 	// console.log(onKeyPress);
-	// 	component.find(Main).simulate('keydown');
-	// 	console.log(onKeyPress);
-	// 	expect(onKeyPress).to.have.property('callCount', 1);
-	// })
-
-
-
 });
 
 describe('main container', function () {
@@ -168,36 +138,4 @@ describe('main container', function () {
 		expect(component).to.be.a('object');
 		expect(component.contains(HostList)).be.true;
 	});
-
-	// TODO: fuc**** fct startGame, quitGame, updateName
-	// it('should click on start Game', function() {
-	// 	const state = {
-	// 		playerName: "playerName",
-	// 		isHost: true,
-	// 		gameStart: false,
-	// 		gameJoined: true
-	// 	};
-	// 	const store = createMockStore(state)
-	//     const component = mountWithStore(<Main />, store);
-	// 	const onClick = sinon.spy();
-	//
-	// 	console.log(component.html());
-	// 	console.log("===");
-	// 	// console.log(component.find('input[type="button"]').hostNodes());
-	// 	// console.log(component.find('input[type="button"]').get(0));
-	//
-	// 	// component.find(Button).forEach( (node) => {
-	// 	// 	node.simulate('click');
-	// 	// 	console.log("loop");
-	// 	// })
-	//
-	// 	expect(component.find('input')).to.have.lengthOf(3);
-	//
-	// 	component.find('input').at(0).simulate('click');
-	// 	// component.find('#invisibleMode').simulate('click');
-	// 	// console.log(onClick);
-	// 	expect(onClick).to.have.property('callCount', 1);
-	//
-	// })
-
 });

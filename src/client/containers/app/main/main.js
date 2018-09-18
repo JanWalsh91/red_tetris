@@ -16,9 +16,6 @@ import {updatePlayerName, updateSelectedGame, resetState, updateInvisibleMode} f
 import * as ActionNames from '../../../../server/serverActions'
 
 const Main = ( props ) => {
-
-	// window.sound = new Audio('/src/client/mainTheme.mp3');
-
 	const startGame = () => {
 		socket.emit(ActionNames.START_GAME);
 		document.getElementById('audio').loop = true;
@@ -26,7 +23,6 @@ const Main = ( props ) => {
 	}
 
 	const quitGame = () => {
-		console.log('QuitGame');
 		document.getElementById('audio').loop = false;
 		document.getElementById('audio').currentTime = 0.0;
 		document.getElementById('audio').pause();
@@ -41,10 +37,6 @@ const Main = ( props ) => {
 		if (name != undefined && name.length > 0) {
 			socket.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, name);
 			props.onUpdatePlayerName(name);
-		}
-		else {
-			// erorr
-			// display message
 		}
 	}
 
@@ -69,7 +61,6 @@ const Main = ( props ) => {
 		let startButton = null;
 		let invisibleMode = null;
 		if (props.isHost) {
-			console.log("salut");
 			if (!props.gameStart) {
 				startButton = <Button onClick={startGame} value="Start Game"/>;
 				invisibleMode = (
@@ -111,8 +102,6 @@ const Main = ( props ) => {
 				playersLostList={props.playersLostList}
 			/>
 		}
-
-		// console.log("MAIN PROPS: ", props);
 
 		if (props.gameJoined) {
 			content = (

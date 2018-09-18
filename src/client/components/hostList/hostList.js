@@ -20,7 +20,6 @@ const hostList = ( props ) => {
 	}
 
 	let button = null;
-		console.log(props.hostList);
 		if (props.gameSelected != null && props.hostList.find(el => el.id == props.gameSelected )) {
 			button = (
 				<Button onClick={joinGame} type='button'
@@ -37,9 +36,7 @@ const hostList = ( props ) => {
 
 
 	if (props.hostList) {
-		console.log("creating lsit of hosts: ", props.hostList);
 		content = props.hostList.map( host => {
-			console.log("creating host");
 			return <Host
 				key={host.id}
 				host={host}

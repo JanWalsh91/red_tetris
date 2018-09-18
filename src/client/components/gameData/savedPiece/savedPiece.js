@@ -21,7 +21,7 @@ const savedPiece = ( props ) => {
 			classes = classes.join(' ');
 			cellContent.push(<div key={(x + 1) * (y + 1)} className={classes}></div>);
 		}
-		rowContent.push(<div key={y}>{cellContent}</div>);
+		rowContent.push(<div className={styles.row} key={y}>{cellContent}</div>);
 	}
 
 	return (

@@ -8,7 +8,6 @@ const board = ( props ) => {
 	let cellClasses = [];
 	cellClasses.push(cellStyles.cell);
 
-	// TODO: pass board size info
 	if (props.gameState && props.gameState.cells != undefined) {
 		content = props.gameState.cells.map( (row, rIndex) => {
 

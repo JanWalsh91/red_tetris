@@ -165,7 +165,6 @@ const toggleInstructions = (state) => {
 }
 
 const reducer = (state = {} , action) => {
-	console.log("reducer action type: ", action.type);
 	switch(action.type) {
 		case UPDATE_HOST_LIST: return updateHostList(state, action);
 		case UPDATE_PLAYER_NAME: return updatePlayerName(state, action);

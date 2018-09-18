@@ -1,8 +1,5 @@
 import Piece from './Piece'
 
-// for testing:
-// var Piece = require('./Piece').Piece;
-
 /*
 *	Board:
 *		size: {x, y}
@@ -81,7 +78,6 @@ class Board {
 		if (!isPlaceable) {
 			let movedPiece = new Piece(this.activePiece);
 			movedPiece.move({x: 0, y: -1});
-			// TODO: check if overlaps and move up again
 			this.activePiece = movedPiece;
 			this.gameOver = true;
 			this.fillRed();
@@ -156,14 +152,10 @@ class Board {
 		this.needToBroadcast = true;
 	}
 
-	// TODO: create functions for actions requested by client. Modifies activePiece if possible
-	// Change tryToMovePiece and tryToRotatePiece to not modify activePiece.
-	// Update piece passed as param, and return true or false if can be placed
 	rotate() {
 		if (!this.activePiece) return ;
 
 		let rotatedPiece = new Piece(this.activePiece);
-		// rotate copy
 		let canPlace = this.tryToRotatePiece(rotatedPiece);
 		if (!canPlace) canPlace = this.tryToMovePiece(rotatedPiece, {x: -1, y: 0});
 		if (!canPlace) canPlace = this.tryToMovePiece(rotatedPiece, {x: -1, y: 0});
@@ -206,7 +198,6 @@ class Board {
 			this.activePiece = movedPiece;
 		}
 		return canMove;
-		// if move down cannot be done, freezePiece and setNextActivePiece ?
 	}
 
 	downShortcut() {
@@ -233,6 +224,9 @@ class Board {
 		if (!this.activePiece) return ;
 
 		if (this.savedPiece) {
+			this.savedPiece.coords = {x: this.activePiece.coords.x, y: this.activePiece.coords.y};
+			if (!this.pieceIsPlaceable(this.savedPiece)) return ;
+
 			let oldActivePiece = new Piece(this.activePiece);
 			this.activePiece = this.savedPiece;
 			this.savedPiece = oldActivePiece;
@@ -240,7 +234,6 @@ class Board {
 			this.savedPiece = this.activePiece;
 			this.setNextActivePiece();
 		}
-
 	}
 
 	removeFullLine() {

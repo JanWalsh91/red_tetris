@@ -69,7 +69,6 @@ class Server {
 	*	Emits the shadowBoard of a player to the whole room
 	*/
 	updateShadowBoard(player, update = true) {
-		// console.log("[Server.js] updateShadowBoard of player  ", player.name, " to game: ", this.games.get(player.socketID).id, "update: ", update);
 		let shadowCellData = {
 			id: player.uuid,
 			name: player.name,
@@ -105,12 +104,8 @@ class Server {
 	}
 
 	onURLJoin(socket, data) {
-		// console.log("\n[Server.js] onURLJoin");
-
 		const URLJoin = () => {
-			// console.log("\n[Server.js] URLJoin");
 			this.lock.acquire("K", done => {
-				// console.log("[Server.js] URLJoin in mutex");
 				this.players.set(socket.id, new Player(data.playerName, socket.id));
 
 				let game = this.getGameByID(data.gameID);
@@ -121,6 +116,11 @@ class Server {
 					this.updatePlayerUUID(this.players.get(socket.id));
 					this.updatePlayerName(this.players.get(socket.id));
 					if (game) {
+						if (game.players.length > 3) {
+							this.io.to(socket.id).emit(ActionNames.SEND_ERROR_STATUS, "Max players reached :/");
+							done();
+							return ;
+						}
 						this.joinGame(socket, game.id);
 					} else {
 						this.createGame(socket, data.gameID);
@@ -147,7 +147,6 @@ class Server {
 	}
 
 	joinGame(socket, gameID) {
-		// console.log("[Server.js] joinGame ", gameID);
 		let player = this.players.get(socket.id);
 		let game = this.getGameByID(gameID);
 		if (!game) return ;
@@ -156,7 +155,6 @@ class Server {
 
 		this.games.set(socket.id, game);
 		socket.leave('lobby');
-		// console.log("[Server.js] joinGame: player ", player.name, " joining game: ", gameID);
 		socket.join(gameID);
 
 		this.updateHostList();
@@ -171,7 +169,6 @@ class Server {
 	}
 
 	createGame(socket, gameID) {
-		// console.log("[Server.js] createGame");
 		let player = this.players.get(socket.id);
 		let game = new Game(player, gameID ? gameID : this.getValidGameID());
 		this.games.set(socket.id, game);
@@ -221,7 +218,8 @@ class Server {
 			});
 
 			let bestScorePlayer = null;
-			if (game.players.every(player => {
+
+			game.players.forEach( player => {
 				if (player.isWinner) {
 					this.io.to(player.socketID).emit(ActionNames.IS_WINNER);
 				}
@@ -229,27 +227,27 @@ class Server {
 					bestScorePlayer = player;
 				}
 				if (player.board.gameOver) {
-					if (!(player.uuid in game.playersLostList)) {
-						game.playersLostList.push(player.uuid);
+					if (!game.playersLostList.includes(player.uuid)) {
+						game.playersLostList.unshift(player.uuid);
 					}
 				}
-				return player.board.gameOver;
-			})) {
+			});
+
+			// if all players' boards are game over
+			if (game.players.every( player => player.board.gameOver )) {
 				this.io.to(bestScorePlayer.socketID).emit(ActionNames.IS_WINNER_BY_SCORE);
 				clearInterval(game.interval);
 				this.io.to(game.id).emit(ActionNames.END_GAME, game.playersLostList);
+				game.playersLostList = [];
 				game.isPlaying = false;
 				this.writeBestScore(bestScorePlayer);
 				this.updateHostList();
 			}
-
 		};
 
 		game.setGameTic();
 		this.updateHostList();
 
-		// TODO: not sending value.
-		// TODO: resolve use of gameStart and game.isPlaying booleans on client side
 		this.io.to(game.id).emit(ActionNames.UPDATE_GAME_START);
 	}
 
@@ -295,12 +293,10 @@ class Server {
 	}
 
 	playerDisconnect(socket) {
-		console.log("[Server.js] playerDisconnect");
 		return new Promise((resolve, reject) => {
 			this.lock.acquire("K", done => {
 				let game = this.games.get(socket.id);
 				let player = this.players.get(socket.id);
-				console.log("[Server.js] playerDisconnect in mutex. Player: ", player ? player.name : null);
 				if (player && game) {
 					this.updateShadowBoard(player, false);
 				}
@@ -308,9 +304,6 @@ class Server {
 				this.players.delete(socket.id);
 				this.games.delete(socket.id);
 				if (!game) { done(); return ;}
-
-				console.log("[Sevrer.js] playerDisconnect: leaving room");
-
 
 				game.players = game.players.filter( player => player.socketID != socket.id);
 
@@ -343,8 +336,8 @@ class Server {
 				highScores.sort((a, b) => a.score < b.score)
 				highScores = highScores.slice(0, 9);
 
-				fs.writeFile(filePath, JSON.stringify(highScores), function (err) {
-					console.log(err);
+				fs.writeFile(filePath, JSON.stringify(highScores), (err) => {
+					if (err) console.log(err);
 				});
 				return highScores;
 			})

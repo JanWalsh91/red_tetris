@@ -6,6 +6,13 @@ div .savedPiece {
 	-webkit-box-sizing: border-box;
  	box-sizing: border-box;
 	display: flex;
+	flex-direction: column;
 	width: fit-content;
 	width: -moz-fit-content;
+	width: -webkit-fit-content;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
 }

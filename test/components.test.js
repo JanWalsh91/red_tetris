@@ -124,17 +124,21 @@ describe('endGameLeaderBoard component', function () {
 		let playersInfo = new Map();
 		playersInfo.set(1, playerInfo1);
 		playersInfo.set(2, playerInfo2);
+		let playersLostList = [
+			1, 2
+		];
 		props = {
 			uuid: 1,
 			playersInfo,
 			isWinner: false,
-			isWinnerByScore: true
+			isWinnerByScore: true,
+			playersLostList
 		}
 		wrapper = shallow(<EndGameLeaderBoard {...props}/>);
 		expect(wrapper.find('span').first().text()[0]).equal('*');
 	});
 });
-
+//
 describe('GameData component', function () {
 	let wrapper = null;
 	let props = {
@@ -161,9 +165,9 @@ describe('NextPieces component', function () {
 		// pieces: {}
 	};
 
-	it('should render nothing if no pieces is present', function () {
+	it('should render something if no pieces is present', function () {
 		wrapper = shallow(<NextPieces {...props}/>);
-		expect(wrapper.exists('div')).equals(false);
+		expect(wrapper.exists('div')).equals(true);
 	});
 
 	it('should render stuff when pieces is present', function () {
@@ -402,6 +406,4 @@ describe('ShadowBoard component', function () {
 		wrapper = shallow(<ShadowBoard {...props}/>);
 		expect(wrapper.find('div').length).to.be.gt(1);
 	});
-
-
 });

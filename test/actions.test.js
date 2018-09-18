@@ -71,7 +71,9 @@ describe('action test', function() {
 	});
 
 	it('endGame', function() {
-		expect(Actions.endGame()).deep.equal({type: Actions.END_GAME});
+		let action = Actions.endGame();
+		expect(action.type).equal(Actions.END_GAME);
+		expect(action.playersLostList).equal(undefined);
 	});
 
 	it('updateLeaderBoard', function() {

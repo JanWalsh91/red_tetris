@@ -2,9 +2,6 @@ import React from 'react'
 import styles from './shadowBoard.css'
 
 const shadowBoard = ( props ) => {
-
-	console.log("[ShadowBoard.js] shadowBoard");
-
 	let content = <div>EMPTY BOARD</div>;
 	let info = '';
 	let shadowCellClasses = [];
@@ -16,9 +13,6 @@ const shadowBoard = ( props ) => {
 			if (shadowBoard.id == props.playerUUID) return;
 			let board = shadowBoard.board.map( (row, rIndex) => {
 				let line = row.map( (cell, cIndex) => {
-
-					// console.log(cell);
-
 					let classes = [...shadowCellClasses];
 					classes.push(styles[cell]);
 					classes = classes.join(' ');

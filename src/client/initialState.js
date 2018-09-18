@@ -1,8 +1,8 @@
 const initialState = {
 	hostList: [],
 	playerName: '',
-	gameSelected: null, // Null / #
-	gameJoined: false, // True / False
+	gameSelected: null,
+	gameJoined: false,
 	gameID: null,
 	isHost: false,
 	endGame: false,

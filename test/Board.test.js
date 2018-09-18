@@ -122,9 +122,7 @@ describe('Board Test', function() {
 		let ret = board.rotate();
 		board.activePiece = new Piece({type: 0, orientation: 1});
 		board.cells[2][3] = 'l1';
-		// console.log(board.getBinaryCells());
 		ret = board.rotate();
-		// console.log(board.getBinaryCells());
 		expect(ret).equal(true);
 	})
 
@@ -141,9 +139,7 @@ describe('Board Test', function() {
 		let ret = board.rotate();
 		board.activePiece = new Piece({type: 0, orientation: 1});
 		board.cells[2] = new Array(10).fill(0x1);
-		// console.log(board.getBinaryCells());
 		ret = board.rotate();
-		// console.log(board.getBinaryCells());
 		expect(ret).equal(true);
 	})
 
