@@ -15,13 +15,22 @@ const initApp = (app, params, cb) => {
 
 	const {host, port} = params
 	const handler = (req, res) => {
-
-		const file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../index.html'
-		fs.readFile(__dirname + file, (err, data) => {
+		let file = '';
+		switch (req.url) {
+			case '/public/index.css':
+				file = __dirname + '/../../public/index.css';
+				break;
+			case '/public/mainTheme.mp3':
+				file = __dirname + '/../../public/mainTheme.mp3';
+				break;
+			default:
+				file = __dirname + (req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../index.html');
+		}
+		fs.readFile(file, (err, data) => {
 			if (err) {
 				logerror(err)
 				res.writeHead(500)
-				return res.end('Error loading index.html')
+				return res.end('Error loading resource')
 			}
 			res.writeHead(200)
 			res.end(data)

@@ -117,7 +117,7 @@ const Main = ( props ) => {
 						<GameData gameData={props.gameState}/>
 					</div>
 					<audio controls loop="true" id="audio" className={styles.audio}>
-							<source src="/src/client/mainTheme.mp3" type="audio/mpeg"/>
+							<source src="/public/mainTheme.mp3" type="audio/mpeg"/>
 					</audio>
 				</div>
 			)
