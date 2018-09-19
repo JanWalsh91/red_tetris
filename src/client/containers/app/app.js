@@ -66,7 +66,9 @@ const App = (props) => {
 
 	if (props.errorMessage) {
 		return (
-			<span>ERROR : {props.errorMessage}</span>
+			<div className={styles.error}>
+				<span>ERROR : {props.errorMessage}</span>
+			</div>
 		)
 	}
 
