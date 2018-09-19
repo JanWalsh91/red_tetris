@@ -238,9 +238,11 @@ class Server {
 				this.io.to(bestScorePlayer.socketID).emit(ActionNames.IS_WINNER_BY_SCORE);
 				clearInterval(game.interval);
 				this.io.to(game.id).emit(ActionNames.END_GAME, game.playersLostList);
-				game.playersLostList = [];
+				
 				game.isPlaying = false;
-				this.writeBestScore(bestScorePlayer);
+				this.writeBestScore( game.players.map( player => {
+					return ({playerName: player.name, score: player.score});
+				}));
 				this.updateHostList();
 			}
 		};
@@ -326,13 +328,14 @@ class Server {
 
 	}
 
-	writeBestScore(player) {
+	writeBestScore(playerScores) {
 		this.lock.acquire("writeHighScores", done => {
 
 			let filePath = __dirname + '/../../../bestScore';
 
 			let highScore = this.readBestScore( highScores => {
-				highScores.push({playerName: player.name, score: player.score});
+
+				highScores.push(...playerScores);
 				highScores.sort((a, b) => a.score < b.score)
 				highScores = highScores.slice(0, 9);
 

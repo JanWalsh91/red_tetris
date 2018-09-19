@@ -75,6 +75,10 @@ class Game {
 			player.board.reset();
 		})
 		this.piecesList = [];
+		this.level = 0;
+		this.highestScore = 0;
+		this.playersLostList = [];
+
 	}
 
 	setGameTic() {

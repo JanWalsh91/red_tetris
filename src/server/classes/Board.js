@@ -308,6 +308,8 @@ class Board {
 		this.savedPiece = null;
 		this.gameOver = false;
 		this.piecesCopiedCount = 0;
+		this.frozenLines = 0;
+		this.removedLines = 0;
 		this.piecesList = [];
 	}
 
