@@ -14,10 +14,6 @@ describe('Board Test', function() {
 		board = new Board(params);
 	})
 
-	afterEach(function() {
-		// ?
-	})
-
 	it('Constructor Test', function() {
 
 		expect(board.removedLines).equal(0);

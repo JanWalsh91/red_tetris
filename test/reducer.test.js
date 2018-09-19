@@ -6,8 +6,6 @@ import * as Actions from '../src/client/actions/client'
 
 describe('reducer test', function() {
 
-	// let state = {}
-
 	it('updateHostList', function() {
 		let hostList = 1;
 		expect(reducer(undefined, Actions.updateHostList(hostList)).hostList).equal(hostList);
@@ -85,12 +83,6 @@ describe('reducer test', function() {
 		let isWinner = true;
 		expect(reducer(undefined, Actions.isWinner(isWinner)).isWinner).equal(isWinner);
 	});
-
-	it('isWinnerByScore', function() {
-		let isWinnerByScore = true;
-		expect(reducer(undefined, Actions.isWinnerByScore(isWinnerByScore)).isWinnerByScore).equal(isWinnerByScore);
-	});
-
 
 	it('endGame', function() {
 		let gameStart = 1;

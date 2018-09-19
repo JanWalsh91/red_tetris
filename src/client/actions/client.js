@@ -109,14 +109,6 @@ export const isWinner = () => {
 	}
 }
 
-export const IS_WINNER_BY_SCORE = 'IS_WINNER_BY_SCORE'
-
-export const isWinnerByScore = () => {
-	return {
-		type: IS_WINNER_BY_SCORE
-	}
-}
-
 export const END_GAME = 'END_GAME'
 
 export const endGame = (playersLostList) => {
@@ -146,7 +138,7 @@ export const updateInvisibleMode = (invisibleMode) => {
 
 export const TOGGLE_INSTRUCTIONS = 'TOGGLE_INSTRUCTIONS'
 
-export const toggleInstructions = (invisibleMode) => {
+export const toggleInstructions = () => {
 	return {
 		type: TOGGLE_INSTRUCTIONS
 	}

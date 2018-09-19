@@ -5,6 +5,8 @@ import Player from './classes/Player'
 
 import * as ActionNames from './serverActions'
 
+import * as ClientActions from '../client/actions/server'
+
 /*
 *	index.js handles socket io initialization and callbacks
 */
@@ -52,30 +54,30 @@ const initEngine = io => {
 	io.on(ActionNames.CONNECTION, function(socket) {
 		server.sendBestScore(socket);
 
-		socket.on(ActionNames.UPDATE_REQUEST_URL, (data) => {
+		socket.on(ClientActions.SERVER_UPDATE_REQUEST_URL, (data) => {
 			server.onURLJoin(socket, data);
 		})
 
 		/*
 		*	Emitted when client updates name in GUI
 		*/
-		socket.on(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, (playerName) => {
+		socket.on(ClientActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, (playerName) => {
 			server.addNewPlayerToLobby(socket, playerName);
 		})
 
-		socket.on(ActionNames.JOIN_GAME, (gameID) => {
+		socket.on(ClientActions.SERVER_JOIN_GAME, (gameID) => {
 			server.joinGame(socket, gameID);
 		})
 
-		socket.on(ActionNames.CREATE_GAME, () => {
+		socket.on(ClientActions.SERVER_CREATE_GAME, () => {
 			server.createGame(socket);
 		})
 
-		socket.on(ActionNames.START_GAME, () => {
+		socket.on(ClientActions.SERVER_START_GAME, () => {
 			server.startGame(socket);
 		})
 
-		socket.on(ActionNames.SEND_GAME_ACTION, (action) => {
+		socket.on(ClientActions.SERVER_GAME_ACTION, (action) => {
 			server.playerAction(socket, action);
 		})
 
@@ -83,13 +85,13 @@ const initEngine = io => {
 			server.playerDisconnect(socket);
 		})
 
-		socket.on(ActionNames.QUIT_GAME, () => {
+		socket.on(ClientActions.SERVER_QUIT_GAME, () => {
 			let playerName = server.players.get(socket.id).name;
 			server.playerDisconnect(socket)
 				.then(() => server.addNewPlayerToLobby(socket, playerName));
 		})
 
-		socket.on(ActionNames.UPDATE_INVISIBLE_MODE, (action) => {
+		socket.on(ClientActions.SERVER_UPDATE_INVISIBLE_MODE, (action) => {
 			server.setInvisibleMode(socket, action);
 		})
 

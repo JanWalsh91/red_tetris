@@ -3,32 +3,22 @@ import styles from './hostList.css'
 import Host from './host/host'
 import Button from '../button/button'
 
-import socket from '../../socket'
-
 import * as ActionNames from '../../../server/serverActions'
 
 const hostList = ( props ) => {
 
 	let content = null;
 
-	const joinGame = () => {
-		socket.emit(ActionNames.JOIN_GAME, props.gameSelected);
-	}
-
-	const createGame = () => {
-		socket.emit(ActionNames.CREATE_GAME);
-	}
-
 	let button = null;
 		if (props.gameSelected != null && props.hostList.find(el => el.id == props.gameSelected )) {
 			button = (
-				<Button onClick={joinGame} type='button'
+				<Button onClick={ () => props.joinGame(props.gameSelected)} type='button'
 					value={"JOIN GAME #" + props.gameSelected}
 				/>
 			)
 		} else {
 			button = (
-				<Button onClick={createGame} type='button'
+				<Button onClick={props.createGame} type='button'
 					value={"CREATE GAME"}
 				/>
 			)

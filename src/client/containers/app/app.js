@@ -7,14 +7,16 @@ import Instructions from '../../components/instructions/instructions'
 import Main from './main/main'
 import Modal from '../../components/Modal/Modal'
 import {alert} from '../../actions/client'
-import socket from '../../socket'
+
 import * as ActionNames from '../../../server/serverActions'
+import {serverGameAction} from '../../actions/server'
+
 
 import {toggleInstructions} from '../../actions/client'
 
 const App = (props) => {
-	function KeyboardController(keys, repeat) {
 
+	function KeyboardController(keys, repeat) {
 		var timers = {};
 		var locked = {};
 
@@ -54,13 +56,13 @@ const App = (props) => {
 	}
 
 	KeyboardController({
-		32: function() { socket.emit(ActionNames.SEND_GAME_ACTION, "downShortcut") },
-    	37: function() { socket.emit(ActionNames.SEND_GAME_ACTION, "left") },
-    	38: function() { socket.emit(ActionNames.SEND_GAME_ACTION, "rotate") },
-    	39: function() { socket.emit(ActionNames.SEND_GAME_ACTION, "right") },
-    	40: function() { socket.emit(ActionNames.SEND_GAME_ACTION, "down") },
-		48: function() { socket.emit(ActionNames.SEND_GAME_ACTION, "savePiece") },
-		96: function() { socket.emit(ActionNames.SEND_GAME_ACTION, "savePiece") }
+		32: function() { props.serverGameAction("downShortcut") },
+    	37: function() { props.serverGameAction("left") },
+    	38: function() { props.serverGameAction("rotate") },
+    	39: function() { props.serverGameAction("right") },
+    	40: function() { props.serverGameAction("down") },
+		48: function() { props.serverGameAction("savePiece") },
+		96: function() { props.serverGameAction("savePiece") }
 
 	}, 125);
 
@@ -102,7 +104,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		toggleInstructions: () => dispatch(toggleInstructions())
+		toggleInstructions: () => dispatch(toggleInstructions()),
+
+		serverGameAction: gameAction => dispatch(serverGameAction(gameAction))
 	}
 }
 

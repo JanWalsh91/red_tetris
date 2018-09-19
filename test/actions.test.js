@@ -2,6 +2,7 @@ import chai from "chai"
 import { expect } from 'chai'
 
 import * as Actions from '../src/client/actions/client'
+import * as ServerActions from '../src/client/actions/server'
 
 describe('action test', function() {
 
@@ -66,10 +67,6 @@ describe('action test', function() {
 		expect(Actions.isWinner()).deep.equal({type: Actions.IS_WINNER});
 	});
 
-	it('isWinnerByScore', function() {
-		expect(Actions.isWinnerByScore()).deep.equal({type: Actions.IS_WINNER_BY_SCORE});
-	});
-
 	it('endGame', function() {
 		let action = Actions.endGame();
 		expect(action.type).equal(Actions.END_GAME);
@@ -85,5 +82,48 @@ describe('action test', function() {
 		let invisibleMode = '1';
 		expect(Actions.updateInvisibleMode(invisibleMode)).deep.equal({type: Actions.UPDATE_INVISIBLE_MODE, invisibleMode});
 	});
+
+	it('toggleInstructions', function() {
+		expect(Actions.toggleInstructions()).deep.equal({type: Actions.TOGGLE_INSTRUCTIONS});
+	});
+
+})
+
+describe('server action test', function() {
+
+	it('serverCreateGame', function() {
+		expect(ServerActions.serverCreateGame()).deep.equal({type: ServerActions.SERVER_CREATE_GAME});
+	});
+
+	it('serverJoinGame', function() {
+		let gameSelected = 1;
+		expect(ServerActions.serverJoinGame(gameSelected)).deep.equal({type: ServerActions.SERVER_JOIN_GAME, payload: gameSelected});
+	});
+
+	it('serverGameAction', function() {
+		let gameAction = 'left';
+		expect(ServerActions.serverGameAction(gameAction)).deep.equal({type: ServerActions.SERVER_GAME_ACTION, payload: gameAction});
+	});
+
+	it('serverStartGame', function() {
+		expect(ServerActions.serverStartGame()).deep.equal({type: ServerActions.SERVER_START_GAME});
+	});
+
+	it('serverQuitGame', function() {
+		expect(ServerActions.serverQuitGame()).deep.equal({type: ServerActions.SERVER_QUIT_GAME});
+	});
+
+	it('serverAddNewPlayerToLobby', function() {
+		let name = "Josephe";
+		expect(ServerActions.serverAddNewPlayerToLobby(name)).deep.equal({type: ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, payload: name});
+	});
+
+	it('serverUpdateInvisibleMode', function() {
+		let isInvisibleMode = false;
+		expect(ServerActions.serverUpdateInvisibleMode(isInvisibleMode)).deep.equal({type: ServerActions.SERVER_UPDATE_INVISIBLE_MODE, payload: isInvisibleMode});
+	});
+
+
+
 
 })

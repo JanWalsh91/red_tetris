@@ -9,6 +9,7 @@ import io from 'socket.io-client'
 import params from '../params'
 
 import * as ActionNames from '../src/server/serverActions'
+import * as ServerActions from '../src/client/actions/server'
 
 chai.should()
 
@@ -32,7 +33,7 @@ describe('server test', function(){
 	 	let client = io.connect(params.server.getUrl(), options);
 		let name = "name";
 
-		client.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, name);
+		client.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, name);
 		let p1 = new Promise( (resolve, reject) => {
 				client.on(ActionNames.UPDATE_PLAYER_UUID, (uuid) => {
 				expect(!!uuid).equal(true);
@@ -54,8 +55,8 @@ describe('server test', function(){
 
 	it('CREATE_GAME check gameJoined', function(done) {
 		let client = io.connect(params.server.getUrl(), options);
-		client.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name');
-		client.emit(ActionNames.CREATE_GAME);
+		client.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name');
+		client.emit(ServerActions.SERVER_CREATE_GAME);
 
 		client.on(ActionNames.UPDATE_GAME_JOINED, ({gameJoined, gameID}) => {
 			expect(gameJoined).equal(true);
@@ -68,8 +69,8 @@ describe('server test', function(){
 		let client1 = io.connect(params.server.getUrl(), options);
 		let client2 = io.connect(params.server.getUrl(), options);
 
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client2.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name2');
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client2.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name2');
 
 		let check = false
 		client1.on(ActionNames.UPDATE_GAME_JOINED, () => {
@@ -84,25 +85,25 @@ describe('server test', function(){
 			}
 		});
 
-		client1.emit(ActionNames.CREATE_GAME);
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
 	});
 
 	it('JOIN_GAME', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
 		let client2 = io.connect(params.server.getUrl(), options);
 		let client3 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client2.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name2');
-		client3.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name3');
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client2.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name2');
+		client3.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name3');
 
 		client1.on(ActionNames.UPDATE_PLAYER_UUID, () => {
-			client1.emit(ActionNames.CREATE_GAME);
+			client1.emit(ServerActions.SERVER_CREATE_GAME);
 		});
 
 		let check = false;
 		client2.on(ActionNames.UPDATE_HOST_LIST, (list) => {
 			if (list.length == 1) {
-				client2.emit(ActionNames.JOIN_GAME, (1));
+				client2.emit(ServerActions.SERVER_JOIN_GAME, (1));
 				check = true;
 			}
 		})
@@ -118,8 +119,8 @@ describe('server test', function(){
 
 	it('UPDATE_GAME_STATE', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
 
 		client1.on(ActionNames.UPDATE_GAME_STATE, gameState => {
 			expect(!!gameState).equal(true);
@@ -129,9 +130,9 @@ describe('server test', function(){
 
 	it('START_GAME, -> updating game state', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
-		client1.emit(ActionNames.START_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
+		client1.emit(ServerActions.SERVER_START_GAME);
 		client1.on(ActionNames.UPDATE_GAME_START, () => {
 			done();
 		})
@@ -139,13 +140,17 @@ describe('server test', function(){
 
 	it('SEND_GAME_ACTION, downShortcut', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
-		client1.emit(ActionNames.START_GAME);
-		client1.emit(ActionNames.SEND_GAME_ACTION, "downShortcut");
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
+		client1.emit(ServerActions.SERVER_START_GAME);
 
 		let check = true;
+		let emitted = false;
 		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
+			if (!emitted) {
+				client1.emit(ServerActions.SERVER_GAME_ACTION, "downShortcut");
+				emitted = true;
+			}
 			let newPiece = server.server.players.get(client1.id).board.activePiece;
 			if (newPiece.coords.y = 19) {
 				if (check) {
@@ -158,20 +163,24 @@ describe('server test', function(){
 
 	it('SEND_GAME_ACTION, left', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
-		client1.emit(ActionNames.START_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
+		client1.emit(ServerActions.SERVER_START_GAME);
 
 		let activePiece = undefined;
+		let check = true;
 		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
 			if (!activePiece) {
 				activePiece = server.server.players.get(client1.id).board.activePiece;
-				client1.emit(ActionNames.SEND_GAME_ACTION, "left");
+				client1.emit(ServerActions.SERVER_GAME_ACTION, "left");
 				return ;
 			}
 			let newPiece = server.server.players.get(client1.id).board.activePiece;
 			if (newPiece.coords.x - activePiece.coords.x == -1) {
-				done();
+				if (check) {
+					done();
+					check = false;
+				}
 			}
 		})
 	});
@@ -179,15 +188,15 @@ describe('server test', function(){
 
 	it('SEND_GAME_ACTION, rotate', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
-		client1.emit(ActionNames.START_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
+		client1.emit(ServerActions.SERVER_START_GAME);
 
 		let activePiece = undefined;
 		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
 			if (!activePiece) {
 				activePiece = server.server.players.get(client1.id).board.activePiece;
-				client1.emit(ActionNames.SEND_GAME_ACTION, "rotate");
+				client1.emit(ServerActions.SERVER_GAME_ACTION, "rotate");
 				return ;
 			}
 			let newPiece = server.server.players.get(client1.id).board.activePiece;
@@ -199,16 +208,16 @@ describe('server test', function(){
 
 	it('SEND_GAME_ACTION, right', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
-		client1.emit(ActionNames.START_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
+		client1.emit(ServerActions.SERVER_START_GAME);
 
 		let activePiece = undefined;
 		let check = true;
 		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
 			if (!activePiece) {
 				activePiece = server.server.players.get(client1.id).board.activePiece;
-				client1.emit(ActionNames.SEND_GAME_ACTION, "right");
+				client1.emit(ServerActions.SERVER_GAME_ACTION, "right");
 				return ;
 			}
 			let newPiece = server.server.players.get(client1.id).board.activePiece;
@@ -223,15 +232,15 @@ describe('server test', function(){
 
 	it('SEND_GAME_ACTION, down', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
-		client1.emit(ActionNames.START_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
+		client1.emit(ServerActions.SERVER_START_GAME);
 
 		let activePiece = undefined;
 		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
 			if (!activePiece) {
 				activePiece = server.server.players.get(client1.id).board.activePiece;
-				client1.emit(ActionNames.SEND_GAME_ACTION, "down");
+				client1.emit(ServerActions.SERVER_GAME_ACTION, "down");
 				return ;
 			}
 			let newPiece = server.server.players.get(client1.id).board.activePiece;
@@ -243,15 +252,15 @@ describe('server test', function(){
 
 	it('SEND_GAME_ACTION, invalid action', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
-		client1.emit(ActionNames.START_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
+		client1.emit(ServerActions.SERVER_START_GAME);
 
 		let activePiece = undefined;
 		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
 			if (!activePiece) {
 				activePiece = server.server.players.get(client1.id).board.activePiece;
-				client1.emit(ActionNames.SEND_GAME_ACTION, "invalid");
+				client1.emit(ServerActions.SERVER_GAME_ACTION, "invalid");
 				return ;
 			}
 			let newPiece = server.server.players.get(client1.id).board.activePiece;
@@ -265,8 +274,8 @@ describe('server test', function(){
 	// player DISCONNECT delete game
 	it('DISCONNECT, delete game', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
 
 		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
 			client1.disconnect();
@@ -279,15 +288,15 @@ describe('server test', function(){
 	it('DISCONNECT, update game host', function (done) {
 		let client1 = io.connect(params.server.getUrl(), options);
 		let client2 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client2.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name2');
-		client1.emit(ActionNames.CREATE_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client2.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name2');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
 		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
 			if (gameState) {
 				client2.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
 					client1.disconnect();
 				})
-				client2.emit(ActionNames.JOIN_GAME, 1);
+				client2.emit(ServerActions.SERVER_JOIN_GAME, 1);
 			}
 		})
 		client2.on(ActionNames.UPDATE_HOST_STATUS, () => {
@@ -297,7 +306,7 @@ describe('server test', function(){
 
 	it('onURLJOIN', function (done) {
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.UPDATE_REQUEST_URL, {gameID: 1, playerName: 'Josephine'});
+		client1.emit(ServerActions.SERVER_UPDATE_REQUEST_URL, {gameID: 1, playerName: 'Josephine'});
 		client1.on(ActionNames.UPDATE_HOST_STATUS, () => {
 			done();
 		});
@@ -306,11 +315,11 @@ describe('server test', function(){
 	it('update shadowBoard', function (done) {
 		let client1 = io.connect(params.server.getUrl(), options);
 		let client2 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client2.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name2');
-		client1.emit(ActionNames.CREATE_GAME);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client2.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name2');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
 		client1.on(ActionNames.UPDATE_GAME_STATE, (gameState) => {
-			client2.emit(ActionNames.JOIN_GAME, 1);
+			client2.emit(ServerActions.SERVER_JOIN_GAME, 1);
 		});
 		let check = true;
 		client1.on(ActionNames.UPDATE_SHADOW_STATE, (shadowCellData) => {
@@ -323,9 +332,9 @@ describe('server test', function(){
 	it('set invisible mode', function (done) {
 
 		let client1 = io.connect(params.server.getUrl(), options);
-		client1.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, 'name1');
-		client1.emit(ActionNames.CREATE_GAME);
-		client1.emit(ActionNames.UPDATE_INVISIBLE_MODE, true);
+		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
+		client1.emit(ServerActions.SERVER_CREATE_GAME);
+		client1.emit(ServerActions.SERVER_UPDATE_INVISIBLE_MODE, true);
 		done();
 	})
 });

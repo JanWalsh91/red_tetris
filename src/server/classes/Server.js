@@ -235,10 +235,9 @@ class Server {
 
 			// if all players' boards are game over
 			if (game.players.every( player => player.board.gameOver )) {
-				this.io.to(bestScorePlayer.socketID).emit(ActionNames.IS_WINNER_BY_SCORE);
 				clearInterval(game.interval);
 				this.io.to(game.id).emit(ActionNames.END_GAME, game.playersLostList);
-				
+
 				game.isPlaying = false;
 				this.writeBestScore( game.players.map( player => {
 					return ({playerName: player.name, score: player.score});
@@ -334,9 +333,8 @@ class Server {
 			let filePath = __dirname + '/../../../bestScore';
 
 			let highScore = this.readBestScore( highScores => {
-
 				highScores.push(...playerScores);
-				highScores.sort((a, b) => a.score < b.score)
+				highScores.sort((a, b) => b.score - a.score)
 				highScores = highScores.slice(0, 9);
 
 				fs.writeFile(filePath, JSON.stringify(highScores), (err) => {

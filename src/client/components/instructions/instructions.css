@@ -1,8 +1,6 @@
 .Instructions {
 	position: fixed;
 	background: #182024;
-	/* top: 30vh; */
-	/* width: 50vw; */
 	opacity: 0.95;
 	border: solid 4px #C62828;
 	display: flex;

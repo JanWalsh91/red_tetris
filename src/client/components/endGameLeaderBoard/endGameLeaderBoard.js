@@ -9,6 +9,7 @@ const endGameLeaderBoard = ( props ) => {
 
 		leaderBoard = props.playersLostList.map( uuid => {
 			let player = props.playersInfo.get(uuid);
+			if (!player) return null;
 			let playerName = ((player.score == bestScore) ? '*' : '') + player.name;
 
 			return (

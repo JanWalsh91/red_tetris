@@ -33,6 +33,9 @@
 .rankPosition span {
 	flex-grow: 1;
 	flex-basis: 0;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .rankPosition span:last-child {

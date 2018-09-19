@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import { Provider } from 'react-redux'
-import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
 import App from './containers/app/app'
 import {alert} from './actions/client'
 import store from './store'

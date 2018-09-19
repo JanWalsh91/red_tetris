@@ -1,6 +1,4 @@
-import { UPDATE_HOST_LIST, UPDATE_PLAYER_NAME, UPDATE_SELECTED_GAME, UPDATE_GAME_JOINED, UPDATE_GAME_STATE, UPDATE_SHADOW_STATE, UPDATE_HOST_STATUS, UPDATE_PLAYER_UUID, UPDATE_ERROR, RESET_STATE, UPDATE_GAME_START, IS_WINNER, IS_WINNER_BY_SCORE, END_GAME, UPDATE_LEADER_BOARD, UPDATE_INVISIBLE_MODE, TOGGLE_INSTRUCTIONS} from '../actions/client'
-
-import * as ActionNames from '../../server/serverActions'
+import * as ClientActions from '../actions/client'
 import initialState from '../initialState'
 
 const updateHostList = (state, action) => {
@@ -127,13 +125,6 @@ const isWinner = state => {
 	}
 }
 
-const isWinnerByScore = state => {
-	return {
-		...state,
-		isWinnerByScore: true
-	}
-}
-
 const endGame = (state, action) => {
 	return {
 		...state,
@@ -166,24 +157,23 @@ const toggleInstructions = (state) => {
 
 const reducer = (state = {} , action) => {
 	switch(action.type) {
-		case UPDATE_HOST_LIST: return updateHostList(state, action);
-		case UPDATE_PLAYER_NAME: return updatePlayerName(state, action);
-		case UPDATE_SELECTED_GAME: return updateSelectedGame(state, action);
-		case UPDATE_GAME_JOINED: return updateGameJoined(state, action);
-		case UPDATE_GAME_STATE: return updateGameState(state, action);
-		case UPDATE_SHADOW_STATE: return updateShadowState(state, action);
-		case UPDATE_HOST_STATUS: return updateHostStatus(state, action);
-		case UPDATE_PLAYER_UUID: return updatePlayerUUID(state, action);
-		case UPDATE_ERROR: return updateError(state, action);
-		case RESET_STATE: return resetState(state, action);
-		case UPDATE_GAME_START: return updateGameStart(state);
-		case IS_WINNER: return isWinner(state);
-		case IS_WINNER_BY_SCORE: return isWinnerByScore(state);
-		case END_GAME: return endGame(state, action);
-		case UPDATE_LEADER_BOARD: return updateLeaderBoard(state, action);
-		case UPDATE_INVISIBLE_MODE: return updateInvisibleMode(state, action);
-		case TOGGLE_INSTRUCTIONS: return toggleInstructions(state);
-		default: console.log('default'); return state;
+		case ClientActions.UPDATE_HOST_LIST: return updateHostList(state, action);
+		case ClientActions.UPDATE_PLAYER_NAME: return updatePlayerName(state, action);
+		case ClientActions.UPDATE_SELECTED_GAME: return updateSelectedGame(state, action);
+		case ClientActions.UPDATE_GAME_JOINED: return updateGameJoined(state, action);
+		case ClientActions.UPDATE_GAME_STATE: return updateGameState(state, action);
+		case ClientActions.UPDATE_SHADOW_STATE: return updateShadowState(state, action);
+		case ClientActions.UPDATE_HOST_STATUS: return updateHostStatus(state, action);
+		case ClientActions.UPDATE_PLAYER_UUID: return updatePlayerUUID(state, action);
+		case ClientActions.UPDATE_ERROR: return updateError(state, action);
+		case ClientActions.RESET_STATE: return resetState(state, action);
+		case ClientActions.UPDATE_GAME_START: return updateGameStart(state);
+		case ClientActions.IS_WINNER: return isWinner(state);
+		case ClientActions.END_GAME: return endGame(state, action);
+		case ClientActions.UPDATE_LEADER_BOARD: return updateLeaderBoard(state, action);
+		case ClientActions.UPDATE_INVISIBLE_MODE: return updateInvisibleMode(state, action);
+		case ClientActions.TOGGLE_INSTRUCTIONS: return toggleInstructions(state);
+		default: return state;
 	}
 }
 

@@ -16,10 +16,6 @@ describe('Game Test', function() {
 		game = new Game(player, gameID);
 	})
 
-	afterEach(function() {
-		// ?
-	})
-
 	it('Constructor', function() {
 		expect(Game.gameCount).equal(1);
 	})

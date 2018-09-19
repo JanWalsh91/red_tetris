@@ -9,15 +9,15 @@ import ShadowBoard from '../../../components/shadowBoard/shadowBoard'
 import EndGameLeaderBoard from '../../../components/endGameLeaderBoard/endGameLeaderBoard'
 import GameData from '../../../components/gameData/gameData'
 import Button from '../../../components/button/button'
-import socket from '../../../socket'
-import {updatePlayerName, updateSelectedGame, resetState, updateInvisibleMode} from '../../../actions/client'
 
+import {updatePlayerName, updateSelectedGame, resetState, updateInvisibleMode} from '../../../actions/client'
+import {serverCreateGame, serverJoinGame, serverAddNewPlayerToLobby, serverStartGame, serverQuitGame, serverUpdateInvisibleMode} from '../../../actions/server'
 
 import * as ActionNames from '../../../../server/serverActions'
 
 const Main = ( props ) => {
 	const startGame = () => {
-		socket.emit(ActionNames.START_GAME);
+		props.serverStartGame();
 		document.getElementById('audio').loop = true;
 		document.getElementById('audio').play();
 	}
@@ -26,7 +26,7 @@ const Main = ( props ) => {
 		document.getElementById('audio').loop = false;
 		document.getElementById('audio').currentTime = 0.0;
 		document.getElementById('audio').pause();
-		socket.emit(ActionNames.QUIT_GAME);
+		props.serverQuitGame();
 		props.resetState({playerName: props.playerName});
 		window.history.pushState(null, '', '/');
 	}
@@ -35,14 +35,14 @@ const Main = ( props ) => {
 		let name = document.getElementById('playerInputName').value;
 
 		if (name != undefined && name.length > 0) {
-			socket.emit(ActionNames.ADD_NEW_PLAYER_TO_LOBBY, name);
+			props.serverAddNewPlayerToLobby(name);
 			props.onUpdatePlayerName(name);
 		}
 	}
 
 	const updateInvisibleMode = () => {
 		let isInvisibleMode = document.getElementById('invisibleMode').checked
-		socket.emit(ActionNames.UPDATE_INVISIBLE_MODE, isInvisibleMode);
+		props.serverUpdateInvisibleMode(isInvisibleMode);
 		props.updateInvisibleMode(isInvisibleMode);
 	}
 
@@ -127,7 +127,9 @@ const Main = ( props ) => {
 				<HostList
 					hostList={props.hostList}
 					gameSelected={props.gameSelected}
-					onSelectGame={props.onSelectGame}>
+					onSelectGame={props.onSelectGame}
+					createGame={props.serverCreateGame}
+					joinGame={props.serverJoinGame}>
 				</HostList>
 			);
 		}
@@ -163,11 +165,18 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
 	return {
+		serverAddNewPlayerToLobby: name => dispatch(serverAddNewPlayerToLobby(name)),
+		serverStartGame: () => dispatch(serverStartGame()),
+		serverQuitGame: () => dispatch(serverQuitGame()),
+		serverUpdateInvisibleMode: isInvisibleMode => dispatch(serverUpdateInvisibleMode(isInvisibleMode)),
+
 		onUpdatePlayerName: playerName => dispatch(updatePlayerName(playerName)),
 		onSelectGame: hostID => dispatch(updateSelectedGame(hostID)),
 		onUpdateGameJoined: gameJoined => dispatch(onUpdateGameJoined(gameJoined)),
 		resetState: action => dispatch(resetState(action)),
-		updateInvisibleMode: isInvisibleMode => dispatch(updateInvisibleMode(isInvisibleMode))
+		updateInvisibleMode: isInvisibleMode => dispatch(updateInvisibleMode(isInvisibleMode)),
+		serverCreateGame: () => dispatch(serverCreateGame()),
+		serverJoinGame: gameSelected => dispatch(serverJoinGame(gameSelected))
 	}
 }
 

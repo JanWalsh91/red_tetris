@@ -22,8 +22,8 @@ import Host from '../src/client/components/hostList/host/host'
 import LeaderBoard from '../src/client/components/leaderBoard/leaderBoard'
 import PlayerForm from '../src/client/components/playerForm/playerForm'
 import ShadowBoard from '../src/client/components/shadowBoard/shadowBoard'
-
-
+import Instructions from '../src/client/components/instructions/instructions'
+import InstructionItem from '../src/client/components/instructions/instructionItem/instructionItem'
 
 
 describe('board component', function () {
@@ -247,20 +247,12 @@ describe('HostList component', function () {
 		let onClick = sinon.spy();
 		props = {
 			hostList: [ host1 ],
-			gameSelected: true
+			gameSelected: true,
+			joinGame: onClick
 		}
 		wrapper = mount(<HostList {...props}/>);
 		wrapper.find('input[type="button"]').simulate('click');
-	});
-
-	it('should call joinGame on click', function () {
-		let onClick = sinon.spy();
-		props = {
-			hostList: [ host1 ],
-			gameSelected: null
-		}
-		wrapper = mount(<HostList {...props}/>);
-		wrapper.find('input[type="button"]').simulate('click');
+		expect(onClick).to.have.property('callCount', 1);
 	});
 });
 
@@ -405,5 +397,36 @@ describe('ShadowBoard component', function () {
 		};
 		wrapper = shallow(<ShadowBoard {...props}/>);
 		expect(wrapper.find('div').length).to.be.gt(1);
+	});
+});
+
+describe('Instructions component', function () {
+	let wrapper = null;
+
+	it('should always render', function () {
+		wrapper = shallow(<Instructions	/>);
+		expect(wrapper.find('h3').length).equals(1);
+	});
+});
+
+describe('Instruction Item component', function () {
+	let wrapper = null;
+
+
+	it('should always render if has instruction', function () {
+		let props = {
+			instruction: {
+				name: "test",
+				instruction: "test"
+			}
+		};
+		wrapper = shallow(<InstructionItem	{...props}/>);
+		expect(wrapper.find('div').length).equals(3);
+	});
+
+	it('should not render if has no instruction', function () {
+		let props = {};
+		wrapper = shallow(<InstructionItem	{...props}/>);
+		expect(wrapper.find('div').length).equals(0);
 	});
 });
