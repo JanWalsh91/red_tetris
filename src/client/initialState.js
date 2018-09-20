@@ -14,7 +14,7 @@ const initialState = {
 		cells: undefined,
 		nextPieces: undefined,
 		removedLines: 0,
-		savedPiece: null
+		savedPiece: undefined
 	},
 	showInstructions: false,
 	playersLostList: []

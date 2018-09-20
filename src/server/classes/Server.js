@@ -36,11 +36,7 @@ class Server {
 		let gameState = {
 			cells: player.board.getCells(),
 		};
-
-		if (player.board.savedPiece) {
-			gameState.savedPiece = player.board.savedPiece;
-		}
-
+		gameState.savedPiece = player.board.savedPiece;
 		if (player.board.needToBroadcast) {
 			this.updateShadowBoard(player);
 			gameState.score = player.score;

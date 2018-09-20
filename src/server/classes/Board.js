@@ -305,7 +305,7 @@ class Board {
 			this.cells[y] = new Array(this.size.x).fill(0x0);
 		}
 		this.activePiece = null;
-		this.savedPiece = null;
+		this.savedPiece = undefined;
 		this.gameOver = false;
 		this.piecesCopiedCount = 0;
 		this.frozenLines = 0;

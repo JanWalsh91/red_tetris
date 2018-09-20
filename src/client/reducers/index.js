@@ -37,7 +37,9 @@ const updateGameState = (state, action) => {
 		...state.gameState,
 		...action.gameState
 	};
-
+	if (action.gameState.savedPiece == undefined) {
+		delete gameState.savedPiece;
+	}
 	return {
 		...state,
 		gameState: gameState
