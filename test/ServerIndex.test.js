@@ -1,7 +1,6 @@
 import rootReducer from '../src/client/reducers'
 import chai from "chai"
 import { expect } from 'chai'
-// import {startServer, configureStore} from './helpers/server'
 
 import * as server from '../src/server/index'
 
@@ -27,7 +26,6 @@ describe('server test', function(){
 	afterEach( function(done) {
 		stop(done);
 	});
-
 
 	it('ADD_NEW_PLAYER_TO_LOBBY, first connection', function(done) {
 	 	let client = io.connect(params.server.getUrl(), options);
@@ -185,7 +183,6 @@ describe('server test', function(){
 		})
 	});
 
-
 	it('SEND_GAME_ACTION, rotate', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
 		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
@@ -271,7 +268,6 @@ describe('server test', function(){
 		})
 	});
 
-	// player DISCONNECT delete game
 	it('DISCONNECT, delete game', function(done) {
 		let client1 = io.connect(params.server.getUrl(), options);
 		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
@@ -330,7 +326,6 @@ describe('server test', function(){
 	});
 
 	it('set invisible mode', function (done) {
-
 		let client1 = io.connect(params.server.getUrl(), options);
 		client1.emit(ServerActions.SERVER_ADD_NEW_PLAYER_TO_LOBBY, 'name1');
 		client1.emit(ServerActions.SERVER_CREATE_GAME);

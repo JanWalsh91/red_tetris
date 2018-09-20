@@ -16,7 +16,6 @@ import GameData from '../src/client/components/gameData/gameData'
 import NextPieces from '../src/client/components/gameData/nextPieces/nextPieces'
 import SavedPiece from '../src/client/components/gameData/savedPiece/savedPiece'
 import HeaderBar from '../src/client/components/headerBar/headerBar'
-// broken bc window error
 import HostList from '../src/client/components/hostList/hostList'
 import Host from '../src/client/components/hostList/host/host'
 import LeaderBoard from '../src/client/components/leaderBoard/leaderBoard'
@@ -24,7 +23,6 @@ import PlayerForm from '../src/client/components/playerForm/playerForm'
 import ShadowBoard from '../src/client/components/shadowBoard/shadowBoard'
 import Instructions from '../src/client/components/instructions/instructions'
 import InstructionItem from '../src/client/components/instructions/instructionItem/instructionItem'
-
 
 describe('board component', function () {
 	let wrapper = null;
@@ -138,7 +136,7 @@ describe('endGameLeaderBoard component', function () {
 		expect(wrapper.find('span').first().text()[0]).equal('*');
 	});
 });
-//
+
 describe('GameData component', function () {
 	let wrapper = null;
 	let props = {
@@ -411,7 +409,6 @@ describe('Instructions component', function () {
 
 describe('Instruction Item component', function () {
 	let wrapper = null;
-
 
 	it('should always render if has instruction', function () {
 		let props = {

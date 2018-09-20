@@ -20,7 +20,6 @@ const gameData = ( props ) => {
 			</div>
 		)
 	}
-
 	return null;
 }
 

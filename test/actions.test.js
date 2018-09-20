@@ -86,7 +86,6 @@ describe('action test', function() {
 	it('toggleInstructions', function() {
 		expect(Actions.toggleInstructions()).deep.equal({type: Actions.TOGGLE_INSTRUCTIONS});
 	});
-
 })
 
 describe('server action test', function() {
@@ -122,8 +121,4 @@ describe('server action test', function() {
 		let isInvisibleMode = false;
 		expect(ServerActions.serverUpdateInvisibleMode(isInvisibleMode)).deep.equal({type: ServerActions.SERVER_UPDATE_INVISIBLE_MODE, payload: isInvisibleMode});
 	});
-
-
-
-
 })

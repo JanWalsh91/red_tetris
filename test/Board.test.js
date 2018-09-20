@@ -43,7 +43,6 @@ describe('Board Test', function() {
 		board.setNextActivePiece();
 		expect(board.activePiece).equal(piece);
 		expect(board.needToBroadcast).equal(true);
-
 		//3
 		board.cells[0][5] = 'line';
 		board.cells[1][5] = 'line';
@@ -264,5 +263,4 @@ describe('Board Test', function() {
 			}
 		}
 	})
-
 })

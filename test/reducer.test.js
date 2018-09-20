@@ -41,7 +41,6 @@ describe('reducer test', function() {
 	it('updateShadowState', function() {
 		let state = undefined;
 		let shadowCellsData = {	id: 1, update: true };
-		// shadowState undefined
 		state = reducer(undefined, Actions.updateShadowState(shadowCellsData));
 		expect(state.shadowState.get(1)).equal(shadowCellsData);
 
@@ -100,7 +99,4 @@ describe('reducer test', function() {
 		let invisibleMode = true;
 		expect(reducer(undefined, Actions.updateInvisibleMode(invisibleMode)).invisibleMode).equal(invisibleMode);
 	});
-
-
-
 })

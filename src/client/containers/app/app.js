@@ -11,7 +11,6 @@ import {alert} from '../../actions/client'
 import * as ActionNames from '../../../server/serverActions'
 import {serverGameAction} from '../../actions/server'
 
-
 import {toggleInstructions} from '../../actions/client'
 
 const App = (props) => {
@@ -105,10 +104,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
 	return {
 		toggleInstructions: () => dispatch(toggleInstructions()),
-
 		serverGameAction: gameAction => dispatch(serverGameAction(gameAction))
 	}
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

@@ -6,8 +6,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import * as server from '../src/server/index'
 import {storeStateMiddleWare} from '../src/client/middleware/storeStateMiddleWare'
 import * as ActionNames from '../src/server/serverActions'
-
-import { expect, assert } from 'chai'
+import { expect } from 'chai'
 
 describe('Store MiddleWare', function () {
 
@@ -62,5 +61,4 @@ describe('Store MiddleWare', function () {
 			done();
 		})
 	});
-
 });

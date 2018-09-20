@@ -6,6 +6,7 @@ import sinon from 'sinon'
 import { configure, shallow, mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-15.4';
 configure({ adapter: new Adapter() });
+import {createMockStore} from 'redux-test-utils'
 
 // components:
 import App from '../src/client/containers/app/app'
@@ -15,7 +16,6 @@ import Button from '../src/client/components/button/button'
 import EndGameLeaderBoard from '../src/client/components/endGameLeaderBoard/endGameLeaderBoard'
 import HostList from '../src/client/components/hostList/hostList'
 
-import {createMockStore} from 'redux-test-utils'
 
 describe('app container', function () {
 	let wrapper = null;
@@ -85,7 +85,6 @@ describe('main container', function () {
 
 		expect(component).to.be.a('object');
 		expect(!!component.find(Button)).be.true;
-		// expect(component).;
 	});
 
 	it('should contain Host Interface', function () {

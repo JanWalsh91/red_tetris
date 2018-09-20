@@ -233,7 +233,6 @@ class Server {
 				}
 			});
 
-			// if all players' boards are game over
 			if (game.players.every( player => player.board.gameOver )) {
 				clearInterval(game.interval);
 				this.io.to(game.id).emit(ActionNames.END_GAME, game.playersLostList);
@@ -324,7 +323,6 @@ class Server {
 			})
 			.then(resolve);
 		});
-
 	}
 
 	writeBestScore(playerScores) {
@@ -342,7 +340,6 @@ class Server {
 				});
 				return highScores;
 			})
-
 		    done();
 		})
 	}

@@ -15,7 +15,6 @@ const leaderBoard = ( props ) => {
 		})
 	}
 
-
 	return (
 		<div className={styles.LeaderBoard}>
 			<h3>Leader Board</h3>

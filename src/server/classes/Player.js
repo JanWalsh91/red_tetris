@@ -2,7 +2,6 @@ import uuidv4 from 'uuid/v4'
 
 class Player {
 
-
 	constructor(name, socketID) {
 		this.name = name;
 		this.socketID = socketID;
@@ -16,7 +15,5 @@ class Player {
 		this.isWinner = false;
 	}
 }
-
-
 
 export default Player

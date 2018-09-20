@@ -1,7 +1,7 @@
 {
-  "name": "red_tetrisboilerplate",
-  "version": "0.0.1",
-  "author": "redpelicans",
+  "name": "red_tetris",
+  "version": "1.0.0",
+  "author": "wg",
   "license": "MIT",
   "scripts": {
     "eslint": "eslint src",
@@ -22,7 +22,6 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
-    "redux-thunk": "^2.0.1",
     "socket.io": "^1.4.6",
     "style-loader": "^0.23.0",
     "uuid": "^3.3.2"

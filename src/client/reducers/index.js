@@ -85,7 +85,6 @@ const updateError = (state, action) => {
 			hostList: [...initialState.hostList],
 			gameState: {...initialState.gameState}
 		}
-
 		return {
 			...resetState,
 			errorMessage: action.errorMessage
