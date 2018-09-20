@@ -1,6 +1,4 @@
-let host = '10.13.4.12'
-
-
+let host = '127.0.0.1'
 
 const params = {
   server: {
