@@ -1,5 +1,14 @@
 # Red Tetris
 
+### React-Redux Project: Play Tetris online in multiplayer!
+*Ecole 42 Project*
+
+##### Instructions: 
+
+- Use the arrow keys to rotate, move and drop.
+- Hit space for a hard drop.
+- Hold a piece with 0.
+
 ### Install
 
 Install [node](https://nodejs.org/en/) first. After that:
