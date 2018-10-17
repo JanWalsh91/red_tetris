@@ -10,9 +10,21 @@
 - Hold a piece with 0.
 
 <img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%201.gif" alt="drawing" width="600"/>
+
+Play against others in multiplayer!
+
 <img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%202.gif" alt="drawing" width="600"/>
+
+View other's boards in real time.
+
 <img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%203.gif" alt="drawing" width="600"/>
+
+Destroying more than one line at once gives you extra points and a debuf to all other players!
+
 <img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%204.gif" alt="drawing" width="600"/>
+
+Last one standing wins!
+
 <img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%205.gif" alt="drawing" width="600"/>
 
 ### Install
