@@ -37,7 +37,6 @@ $ npm install
 
 Edit `params.js` for your needs.
 
-
 ### Development Mode
 
 #### Launch Server
@@ -48,7 +47,7 @@ $ npm run  srv-dev
 > DEBUG=tetris:* babel-watch -w src src/server/main.js
 ```
 
-It launches a node.js server listening for socket.io connexions, that is wired to receive `ping` messages and answered to … `pong`.
+It launches a node.js server listening for socket.io connections.
 
 #### Launch Client
 
@@ -64,14 +63,7 @@ content is served from /home/eric/JS/red_tetris
 webpack: bundle is now VALID.
 ```
 
-URL is not yet editable in `params.js`, change it directly inside `package.json`.
-
-As you can guess we are using webpack `hot reload` module, try to update any file under `src/client` and your browser should reload your code.
-
-```
-[WDS] App updated. Recompiling...
-```
-
+URL is editable in `params.js` and `package.json`.
 
 #### Test
 
@@ -97,8 +89,6 @@ Check results …. of this command, and launch your browser to `./coverage/lcov-
 
 ### Production Mode
 
-It’s not a production recipe to run your Tetris over billions of players, but just 2 commands to run it without live reload.
-
 ```
 $ npm run srv-dist
 
@@ -121,5 +111,3 @@ $  DEBUG=tetris:* node dist/server/main.js
   tetris:info tetris listen on http://0.0.0.0:3004 +0ms
   not yet ready to play tetris with U ...
 ```
-
-In production mode, node.js server serves `index.html` and `bundle.js`, so you have to point to url set up in `params.js`
