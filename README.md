@@ -15,7 +15,7 @@ Play against others in multiplayer!
 
 <img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%202.gif" alt="drawing" width="600"/>
 
-View other's boards in real time.
+View other players' boards in real time.
 
 <img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%203.gif" alt="drawing" width="600"/>
 
