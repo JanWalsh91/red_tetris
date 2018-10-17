@@ -9,6 +9,12 @@
 - Hit space for a hard drop.
 - Hold a piece with 0.
 
+<img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%201.gif" alt="drawing" width="600"/>
+<img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%202.gif" alt="drawing" width="600"/>
+<img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%203.gif" alt="drawing" width="600"/>
+<img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%204.gif" alt="drawing" width="600"/>
+<img src="https://github.com/JanWalsh91/red_tetris/blob/master/media/GIF%205.gif" alt="drawing" width="600"/>
+
 ### Install
 
 Install [node](https://nodejs.org/en/) first. After that:
